@@ -37,6 +37,10 @@ const Login = () => {
           required 
         />
         <button type="submit">Log in</button>
+        <div id="loginDiv">
+          <span>Don't have an account? </span>
+          <button onClick={() => navigate("/register")}>Register</button>
+        </div>
       </form>
     </div>
   );
