@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import supabase from '../helper/supabaseClient'
+import {Link} from 'react-router-dom'
 
 function Register() {
 
@@ -10,20 +11,25 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     setMessage("")
+
+    //Authenticate user & email with supabase
     const {data, error} = await supabase.auth.signUp({
       email: email,
       password: password
     })
 
+    //if error exists, display message
     if(error){
       setMessage(error.message) 
       return
     }
 
+    //if success, display message
     if(data){
       setMessage("User Account created!")
     }
 
+    //clear textbox
     setEmail("")
     setPassword("")
   }
@@ -47,6 +53,8 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}></input>
         <button type='submit'>Create Account</button>
       </form>
+      <span>Already have an account?</span>
+      <Link to="/login">Login</Link>
     </div>
   )
 }
