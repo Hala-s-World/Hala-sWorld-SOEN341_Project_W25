@@ -24,19 +24,19 @@ const Login = () => {
       {errorMessage && <span className="error-message">{errorMessage}</span>} 
         <input 
           type="email" 
-          placeholder="Email" 
+          placeholder="e-mail" 
           value={email}
           onChange={(e) => setEmail(e.target.value)} 
           required 
         />
         <input 
           type="password" 
-          placeholder="Password" 
+          placeholder="password" 
           value={password}
           onChange={(e) => setPassword(e.target.value)} 
           required 
         />
-        <button type="submit">Log in</button>
+        <button type="submit">LOGIN</button>
         <div id="loginDiv">
           <span>Don't have an account? </span>
           <Link to="/register" id="loginLink">Register</Link>
