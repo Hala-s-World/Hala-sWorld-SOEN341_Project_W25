@@ -1,4 +1,5 @@
-Copyright 2018 The Cute Font Project Authors
+Copyright (c) 2011, Juan Pablo del Peral (juan@huertatipografica.com.ar), 
+with Reserved Font Names "Gochi" and "Gochi Hand"
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

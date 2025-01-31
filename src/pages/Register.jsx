@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import supabase from '../helper/supabaseClient'
 import {Link} from 'react-router-dom'
+import '/src/assets/styles/Authentication.css'
 
 function Register() {
 
@@ -36,25 +37,26 @@ function Register() {
 
   return (
     <div>
-      <h2>Register</h2>
-      <br></br>
+      <h1>Register</h1>
       {message && <span>{message}</span>}
       <form onSubmit={handleSubmit}>
         <input
           type='email' 
-          placeholder='Email' 
+          placeholder='e-mail' 
           required 
           onChange={(e) => setEmail(e.target.value)}></input>
         <input 
           type='password' 
-          placeholder='Password'
+          placeholder='password'
           value={password}
           required 
           onChange={(e) => setPassword(e.target.value)}></input>
-        <button type='submit'>Create Account</button>
+        <button type='submit' id="registerButton">CREATE ACCOUNT</button>
       </form>
-      <span>Already have an account?</span>
-      <Link to="/login">Login</Link>
+      <div id="loginDiv">
+      <span>Already have an account? </span>
+      <Link to="/login" id="loginLink">Login</Link>
+      </div>
     </div>
   )
 }

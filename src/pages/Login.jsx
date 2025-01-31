@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import supabase from '../helper/supabaseClient'
 import {Link, useNavigate} from 'react-router-dom'
-import '/src/assets/styles/Login.css'
+import '/src/assets/styles/Authentication.css'
 
 
 function Login() {
@@ -39,25 +39,26 @@ function Login() {
 
   return (
     <div>
-          <h2>LOGIN</h2>
-          <br></br>
+          <h1>LOGIN</h1>
           {message && <span>{message}</span>}
           <form onSubmit={handleSubmit}>
             <input
               type='email' 
-              placeholder='Email' 
+              placeholder='e-mail' 
               required 
               onChange={(e) => setEmail(e.target.value)}></input>
             <input 
               type='password' 
-              placeholder='Password'
+              placeholder='password'
               value={password}
               required 
               onChange={(e) => setPassword(e.target.value)}></input>
-            <button type='submit'>Log in</button>
+            <button type='submit'>LOGIN</button>
           </form>
-          <span id="register">Don't have an account?</span>
-          <Link to="/register">Register</Link>
+          <div id="registerDiv">
+          <span id="register">Don't have an account? </span>
+            <Link to="/register" id="registerLink">Register</Link>
+          </div>
         </div>
   )
 }
