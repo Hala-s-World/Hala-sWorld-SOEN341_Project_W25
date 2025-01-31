@@ -1,13 +1,15 @@
 import React from "react";
 import supabase from "../helper/supabaseClient";
 import { useNavigate } from "react-router-dom";
+import {useAuthStore} from "../store/authStore"
 
 function Dashboard() {
   const navigate = useNavigate();
+  const {logout, errorMessage} = useAuthStore() 
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    logout()
+    if (errorMessage) throw errorMessage;
     navigate("/login");
   };
 

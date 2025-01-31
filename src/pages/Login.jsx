@@ -1,66 +1,45 @@
-import React, {useState} from 'react'
-import supabase from '../helper/supabaseClient'
-import {Link, useNavigate} from 'react-router-dom'
-import '/src/assets/styles/Authentication.css'
+import React, { useState } from "react";
+import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router-dom";
 
-
-function Login() {
-
-  const navigate = useNavigate()
-  const [email,setEmail] = useState("")
-  const [password,setPassword] = useState("")
-  const [message,setMessage] = useState("")
+const Login = () => {
+  const navigate = useNavigate();
+  const { login, errorMessage } = useAuthStore();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    setMessage("")
+    event.preventDefault();
+    const success = await login(email, password);
 
-    //Authenticate user & email with supabase
-    const {data, error} = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    })
-
-    //if error exists, display message
-    if(error){
-      setMessage(error.message) 
-      //clear textbox
-      setEmail("")
-      setPassword("")
-      return
+    if (success) {
+      navigate("/dashboard");
     }
-
-    //if success, display message
-    if(data){
-      navigate('/dashboard')
-      return null
-    }
-  }
+  };
 
   return (
-    <div>
-          <h1>LOGIN</h1>
-          {message && <span>{message}</span>}
-          <form onSubmit={handleSubmit}>
-            <input
-              type='email' 
-              placeholder='e-mail' 
-              required 
-              onChange={(e) => setEmail(e.target.value)}></input>
-            <input 
-              type='password' 
-              placeholder='password'
-              value={password}
-              required 
-              onChange={(e) => setPassword(e.target.value)}></input>
-            <button type='submit'>LOGIN</button>
-          </form>
-          <div id="registerDiv">
-          <span id="register">Don't have an account? </span>
-            <Link to="/register" id="registerLink">Register</Link>
-          </div>
-        </div>
-  )
-}
+    <div className="login-container">
+      <h2>LOGIN</h2>
+      <form onSubmit={handleSubmit}>
+      {errorMessage && <span className="error-message">{errorMessage}</span>} 
+        <input 
+          type="email" 
+          placeholder="Email" 
+          value={email}
+          onChange={(e) => setEmail(e.target.value)} 
+          required 
+        />
+        <input 
+          type="password" 
+          placeholder="Password" 
+          value={password}
+          onChange={(e) => setPassword(e.target.value)} 
+          required 
+        />
+        <button type="submit">Log in</button>
+      </form>
+    </div>
+  );
+};
 
-export default Login
+export default Login;
