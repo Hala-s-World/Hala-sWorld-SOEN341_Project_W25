@@ -37,7 +37,7 @@ function Register() {
 
   return (
     <div>
-      <h1>Register</h1>
+      <h1>REGISTER</h1>
       {message && <span>{message}</span>}
       <form onSubmit={handleSubmit}>
         <input
