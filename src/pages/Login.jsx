@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import supabase from '../helper/supabaseClient'
 import {Link, useNavigate} from 'react-router-dom'
+import '/src/assets/styles/Login.css'
+
 
 function Login() {
 
@@ -37,7 +39,7 @@ function Login() {
 
   return (
     <div>
-          <h2>Login</h2>
+          <h2>LOGIN</h2>
           <br></br>
           {message && <span>{message}</span>}
           <form onSubmit={handleSubmit}>
@@ -54,7 +56,7 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}></input>
             <button type='submit'>Log in</button>
           </form>
-          <span>Don't have an account?</span>
+          <span id="register">Don't have an account?</span>
           <Link to="/register">Register</Link>
         </div>
   )
