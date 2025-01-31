@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/authStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Login = () => {
         <button type="submit">Log in</button>
         <div id="loginDiv">
           <span>Don't have an account? </span>
-          <button onClick={() => navigate("/register")}>Register</button>
+          <Link to="/register" id="loginLink">Register</Link>
         </div>
       </form>
     </div>
