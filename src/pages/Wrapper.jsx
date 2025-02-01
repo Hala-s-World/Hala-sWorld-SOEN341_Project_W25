@@ -24,7 +24,7 @@ function Wrapper({ children }) {
     if (authenticated) {
       return <>{children}</>;
     }
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 }
 

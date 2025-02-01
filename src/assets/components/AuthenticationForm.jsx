@@ -20,11 +20,11 @@ export default function AuthenticationForm({isLogin, handleSubmit, title}) {
     content = 
     <div id="loginDiv">
       <span>Already have an account? </span>
-      <Link to="/login" id="loginLink">Login</Link>
+      <Link to="/" id="loginLink">Login</Link>
     </div>
   }
 
-  //switch between 
+  
   return (
     <div className="login-container">
     <h1>{title}</h1>
