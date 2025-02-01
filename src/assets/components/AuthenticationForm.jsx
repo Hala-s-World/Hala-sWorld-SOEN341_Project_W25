@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function AuthenticationForm({isLogin, handleSubmit, title}) {
   const navigate = useNavigate();
-  const { login, logout, errorMessage } = useAuthStore();
+  const { errorMessage } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

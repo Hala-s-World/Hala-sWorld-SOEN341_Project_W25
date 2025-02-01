@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import supabase from '../helper/supabaseClient'
-import {Link} from 'react-router-dom'
 import '/src/assets/styles/Authentication.css'
 import AuthenticationForm from '../assets/Components/AuthenticationForm'
 

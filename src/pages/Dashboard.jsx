@@ -10,7 +10,7 @@ function Dashboard() {
   const signOut = async () => {
     logout()
     if (errorMessage) throw errorMessage;
-    navigate("/login");
+    navigate("/");
   };
 
   return (

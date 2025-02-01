@@ -7,6 +7,8 @@ export const useAuthStore = create(
         (set) => ({
             user: null,
             errorMessage: "", 
+            authenticated: false,
+            loading: true,
 
             login: async (email, password) => {
                 set({ errorMessage: "" }); 
@@ -36,7 +38,16 @@ export const useAuthStore = create(
                 if(data.session){
                     set({user: data.session.user})
                 }
+            },
+
+            isAuthenticated: async () => {
+                const {
+                    data
+                  } = await supabase.auth.getSession();
+
+                set({authenticated: !!data.session, loading: false})
             }
+
 }),
 {name: "auth-storage"}
 ));
