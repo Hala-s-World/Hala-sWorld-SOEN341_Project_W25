@@ -1,53 +1,71 @@
 import { create } from "zustand";
-import {persist} from "zustand/middleware"
-import supabase from '../helper/supabaseClient'
+import { persist } from "zustand/middleware";
+import supabase from "../helper/supabaseClient";
 
 export const useAuthStore = create(
-    persist(
-        (set) => ({
-            user: null,
-            errorMessage: "", 
-            authenticated: false,
-            loading: true,
+  persist(
+    (set) => ({
+      user: null,
+      role: null,
+      errorMessage: "",
+      authenticated: false,
+      loading: true,
 
-            login: async (email, password) => {
-                set({ errorMessage: "" }); 
+      login: async (email, password) => {
+        set({ errorMessage: "" });
 
-                const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-                });
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-                if (error) {
-                set({ errorMessage: error.message }); 
-                return false;
-                }
+        if (error) {
+          set({ errorMessage: error.message });
+          return false;
+        }
 
-                set({ user: data.user });
-                return true;
-            },
+        // Fetch the user's role during login
+        const { data: roleData, error: roleError } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.user.id)
+          .single();
 
-            logout: async () => {
-                await supabase.auth.signOut();
-                set({ user: null, errorMessage: "" });
-            },
+        if (roleError) {
+          set({ errorMessage: "Failed to fetch role" });
+          return false;
+        }
 
-            checkSession: async () => {
-                const {data} = await supabase.auth.checkSession()
+        // Set user, role, and authenticated status
+        set({
+          user: data.user,
+          role: roleData?.role || "user",
+          authenticated: true,
+          errorMessage: "",
+        });
 
-                if(data.session){
-                    set({user: data.session.user})
-                }
-            },
+        return true;
+      },
 
-            isAuthenticated: async () => {
-                const {
-                    data
-                  } = await supabase.auth.getSession();
+      logout: async () => {
+        await supabase.auth.signOut();
+        set({ user: null, role: null, errorMessage: "", authenticated: false });
+      },
 
-                set({authenticated: !!data.session, loading: false})
-            }
+      checkSession: async () => {
+        const { data } = await supabase.auth.checkSession();
 
-}),
-{name: "auth-storage"}
-));
+        if (data.session) {
+          set({ user: data.session.user, authenticated: true });
+        }
+      },
+
+      isAuthenticated: async () => {
+        const { data } = await supabase.auth.getSession();
+        set({ authenticated: !!data.session, loading: false });
+      },
+    }),
+    { name: "auth-storage" }
+  )
+);
+
