@@ -1,0 +1,83 @@
+@font-face {
+    font-family: "Gochi-Hand";
+    src: url("src/assets/fonts/Gochi_Hand/GochiHand-Regular.ttf") format("truetype");
+}
+
+body {
+    font-family: "Gochi-Hand", sans-serif;
+    font-size: xx-large;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    color: rgb(77, 77, 77);
+    font-size: 4rem;
+    margin: 0;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 600px;  
+    height: auto;
+    margin: auto;
+}
+
+input {
+    background-color: rgb(124, 124, 124);
+    border-radius: 20px; 
+    border: none;
+    width: 50%; 
+    padding: 15px;
+    margin: 15px auto;
+    font-size: 1rem; 
+}
+
+input::placeholder {
+    font-family: "Gochi-Hand", sans-serif;
+    font-size: 1.5rem; 
+    color: white;
+    text-align: center;
+}
+
+button {
+    font-family: "Gochi-Hand", sans-serif;
+    font-size: 1.5rem; 
+    width: 30%; 
+    color: rgb(124, 124, 124);
+    background-color: white;
+    border-color: rgb(124, 124, 124);
+    padding: 15px;
+    margin: 15px auto;
+    box-shadow: 0 0 10px rgb(137, 137, 137);
+    cursor: pointer;
+}
+
+#registerButton {
+    width: auto;
+}
+
+button:hover {
+    background-color: rgb(124, 124, 124);
+    color: white;
+}
+
+#registerDiv, #loginDiv {
+    font-size: 1.2rem; 
+    color: rgb(124, 124, 124);
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+#registerLink, #loginLink {
+    color: rgb(77, 77, 77);
+    box-shadow: rgb(124, 124, 124);
+    border: 1px;
+    text-decoration: none;
+    padding: 1px;
+}
