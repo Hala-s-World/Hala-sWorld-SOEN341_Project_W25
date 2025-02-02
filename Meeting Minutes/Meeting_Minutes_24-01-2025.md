@@ -5,6 +5,7 @@
 **Date:** January 24, 2025  
 **Time:** 6:30 PM - 8:10 PM 
 **Location:** Hall Building 817
+
 **Attendees:**  
 - Hala  
 - Haitham  
