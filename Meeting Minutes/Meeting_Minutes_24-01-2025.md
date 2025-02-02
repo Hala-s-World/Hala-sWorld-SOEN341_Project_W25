@@ -8,7 +8,7 @@
 **Attendees:**  
 - Hala  
 - Haitham  
-- Chayan  
+- Shayaan  
 
 ### Key Points Discussed:
 - Team members got introduced to each other.
