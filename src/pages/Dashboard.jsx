@@ -1,14 +1,14 @@
 import React from "react";
 import supabase from "../helper/supabaseClient";
 import { useNavigate } from "react-router-dom";
-import {useAuthStore} from "../store/authStore"
+import { useAuthStore } from "../store/authStore";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const {logout, errorMessage} = useAuthStore() 
+  const { logout, errorMessage, role } = useAuthStore();
 
   const signOut = async () => {
-    logout()
+    logout();
     if (errorMessage) throw errorMessage;
     navigate("/");
   };
@@ -16,6 +16,7 @@ function Dashboard() {
   return (
     <div>
       <h1>Hello, you are logged in.</h1>
+      {role === "admin" && <p>ADMIN TEST</p>}
       <button onClick={signOut}>Sign out</button>
     </div>
   );
