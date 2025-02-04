@@ -14,13 +14,27 @@
 
 body {
     display: flex;
-    background-color: rgb(170, 170, 170);
+    background-color: rgb(173, 173, 180);
     justify-content: center;
     align-items: center;
     flex-direction: column;
     font-family: "good-matcha", sans-serif;
     overflow: hidden;
     height: 100vh;
+}
+
+header{
+    color: #333;
+    text-shadow: 0 10px 10px rgba(255, 255, 255, 0.5);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    font-size: x-large;
+    position: absolute;
+    top: 20%;
+    left: 38%;
 }
 
 h1 {
@@ -39,8 +53,8 @@ h1.title {
 
 p {
   font-family: "dmsans", sans-serif;
-  font-size: 14px;
-  font-weight: 200;
+  font-size: 16px;
+  font-weight: 300;
   line-height: 20px;
   letter-spacing: 0.5px;
   margin: 20px 0 30px;
@@ -78,8 +92,9 @@ button {
   background-color: white;
   border-color: rgb(124, 124, 124);
   box-shadow: 0 0 10px rgb(137, 137, 137);
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
+  font-family: "good-matcha", sans-serif;
   margin: 10px;
   padding: 12px 80px;
   letter-spacing: 1px;
@@ -122,13 +137,13 @@ button.ghost i.login{
 }
 
 button.ghost:hover i.register{
-  right: 40px;
-  opacity: 1;
+    right: 40px;
+    opacity: 1;
 }
 
 button.ghost:hover i.login{
-  left: 40px;
-  opacity: 1;
+    left: 40px;
+    opacity: 1;
 }
 form {
     background-color: #fff;
@@ -153,6 +168,8 @@ input {
 input::placeholder {
     color: white;
     text-align: center;
+    font-family: "dmsans", sans-serif;
+    font-size: medium;
 }
 
 

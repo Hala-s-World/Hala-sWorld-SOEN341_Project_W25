@@ -4,6 +4,7 @@ import "../assets/styles/authentication.css";
 import Login from "../assets/components/Login";
 import Register from "../assets/components/Register";
 import LoginOverlay from "../assets/components/LoginOverlay";
+import Banner from "../assets/components/Banner";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -14,6 +15,10 @@ function LoginPage() {
 
 
     return (
+      <>
+        <header>
+          <Banner />
+        </header>
       <div className={`container ${isRegister ? "right-panel-active" : ""}`} id="container">
         <div className="form-container login-container">
         <Login />
@@ -23,6 +28,7 @@ function LoginPage() {
         </div> 
         <LoginOverlay isRegister={isRegister} togglePanel={togglePanel} />
       </div>
+      </>
   );
 }
 
