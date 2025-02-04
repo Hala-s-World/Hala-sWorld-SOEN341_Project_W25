@@ -23,18 +23,30 @@ body {
     height: 100vh;
 }
 
+
 header{
-    color: #333;
-    text-shadow: 0 10px 10px rgba(255, 255, 255, 0.5);
-    align-items: center;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    margin: 0;
-    padding: 0;
-    font-size: x-large;
-    position: absolute;
-    top: 20%;
-    left: 38%;
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.banner{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner-title{
+  color: #333;
+  font-size: 50px;
+  text-shadow: 0 10px 10px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  letter-spacing: 2px;
 }
 
 h1 {
