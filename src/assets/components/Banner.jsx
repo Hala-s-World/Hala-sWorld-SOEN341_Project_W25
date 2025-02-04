@@ -1,9 +1,11 @@
 import React from 'react';
+import logo from '../media/cat.jpg';
 
 function Banner(){
     return (
         <div className="banner">
-            <h1>Chat Haven</h1>
+            <img src={logo} alt="logo" style={{width: '150px', height: 'auto'}} />
+            <h1 className="banner-title">C H A T H A V E N</h1>
         </div>
     );
 }
