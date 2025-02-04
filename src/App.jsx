@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Register from "./assets/components/Register";
+import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import Wrapper from "./pages/Wrapper";
 
@@ -10,11 +10,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Login */}
-        <Route path="/" element={<Login/>} />
-
-        {/* register */}
-        <Route path="/register" element={<Register />} />
-
+        <Route path="/" element={<LoginPage />} />
+       
         {/* dashboard */}
         <Route
           path="/dashboard"

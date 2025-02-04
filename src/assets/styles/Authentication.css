@@ -1,83 +1,296 @@
+
 @font-face {
-    font-family: "Gochi-Hand";
-    src: url("src/assets/fonts/Gochi_Hand/GochiHand-Regular.ttf") format("truetype");
+    font-family: "dmsans";
+    src: url("..\fonts\DMSans-VariableFont_opsz,wght.ttf") format("truetype");
+  }
+@font-face {
+    font-family: "good-matcha";
+    src: url("..\fonts\Good Matcha.otf") format("truetype");
 }
 
+* {
+    box-sizing: border-box;
+  }
+
 body {
-    font-family: "Gochi-Hand", sans-serif;
-    font-size: xx-large;
-    text-align: center;
     display: flex;
+    background-color: rgb(170, 170, 170);
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    font-family: "good-matcha", sans-serif;
+    overflow: hidden;
     height: 100vh;
-    margin: 0;
 }
 
 h1 {
-    color: rgb(77, 77, 77);
-    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -1.5px;
     margin: 0;
+    margin-bottom: 15px;
 }
 
+h1.title {
+  font-size: 45px;
+  line-height: 45px;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(16, 64, 74, 0.5);
+}
+
+p {
+  font-family: "dmsans", sans-serif;
+  font-size: 14px;
+  font-weight: 200;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
+  text-shadow: 0 0 10px rgba(16, 64, 74, 0.5);
+}
+
+span {
+  font-size: 14px;
+  margin-top: 25px;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.content input {
+  accent-color: #333;
+  width: 12px;
+  height: 12px;
+}
+
+.content label {
+  font-size: 14px;
+  user-select: none;
+  padding-left: 5px;
+}
+
+button {
+  position: relative;;
+  color: rgb(124, 124, 124);
+  background-color: white;
+  border-color: rgb(124, 124, 124);
+  box-shadow: 0 0 10px rgb(137, 137, 137);
+  font-size: 15px;
+  font-weight: 700;
+  margin: 10px;
+  padding: 12px 80px;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  transition: 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: rgb(124, 124, 124);
+  color: white;
+  letter-spacing: 3px;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+button.ghost {
+  background-color: rgba(225, 225, 225, 0.2);
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+button.ghost i{
+  position: absolute;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
+button.ghost i.register{
+  right: 70px;
+}
+
+button.ghost i.login{
+  left: 70px;
+}
+
+button.ghost:hover i.register{
+  right: 40px;
+  opacity: 1;
+}
+
+button.ghost:hover i.login{
+  left: 40px;
+  opacity: 1;
+}
 form {
+    background-color: #fff;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    width: 600px;  
-    height: auto;
-    margin: auto;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
 }
 
 input {
     background-color: rgb(124, 124, 124);
-    border-radius: 20px; 
+    border-radius: 15px; 
     border: none;
-    width: 50%; 
-    padding: 15px;
-    margin: 15px auto;
-    font-size: 1rem; 
+    width: 100%; 
+    padding: 12px 15px;
+    margin: 8px 0;
 }
 
 input::placeholder {
-    font-family: "Gochi-Hand", sans-serif;
-    font-size: 1.5rem; 
     color: white;
     text-align: center;
 }
 
-button {
-    font-family: "Gochi-Hand", sans-serif;
-    font-size: 1.5rem; 
-    width: 30%; 
-    color: rgb(124, 124, 124);
-    background-color: white;
-    border-color: rgb(124, 124, 124);
-    padding: 15px;
-    margin: 15px auto;
-    box-shadow: 0 0 10px rgb(137, 137, 137);
-    cursor: pointer;
-}
 
-#registerButton {
-    width: auto;
+.container {
+    background-color: #fff;
+    border-radius: 25px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 500px;
+    
+  }
+  
+.form-container {
+    color: #333;
+    font-size: x-large;
+    position: absolute;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
-
-button:hover {
+  
+.login-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+  
+  .container.right-panel-active .login-container {
+    transform: translateX(100%);
+  }
+  
+  .register-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  .container.right-panel-active .register-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+  }
+  
+  @keyframes show {
+    0%,
+    49.99% {
+      opacity: 0;
+      z-index: 1;
+    }
+  
+    50%,
+    100% {
+      opacity: 1;
+      z-index: 5;
+    }
+  }
+  
+  .overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+  }
+  
+  .container.right-panel-active .overlay-container {
+    transform: translate(-100%);
+  }
+  
+  .overlay {
+    background-image: url('image/image.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+  }
+  
+  .overlay::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     background-color: rgb(124, 124, 124);
-    color: white;
-}
-
-#registerDiv, #loginDiv {
-    font-size: 1.2rem; 
-    color: rgb(124, 124, 124);
-    text-decoration: none;
-    margin-top: 20px;
-}
-
-#registerLink, #loginLink {
-    color: rgb(77, 77, 77);
-    box-shadow: rgb(124, 124, 124);
-    border: 1px;
-    text-decoration: none;
-    padding: 1px;
-}
+  }
+  
+  .container.right-panel-active .overlay {
+    transform: translateX(50%);
+  }
+  
+  .overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+  }
+  
+  .overlay-left {
+    transform: translateX(-20%);
+  }
+  
+  .container.right-panel-active .overlay-left {
+    transform: translateX(0);
+  }
+  
+  .overlay-right {
+    right: 0;
+    transform: translateX(0);
+  }
+  
+  .container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+  }
+  
+  

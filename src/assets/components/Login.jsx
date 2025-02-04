@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../../store/authStore";
 import { Link, useNavigate } from "react-router-dom";
-import AuthenticationForm from "../assets/Components/AuthenticationForm";
+import AuthenticationForm from "./AuthenticationForm";
 
-const Login = () => {
+
+const Login = () =>{
   const navigate = useNavigate();
   const { login, errorMessage } = useAuthStore();
 
@@ -18,7 +19,7 @@ const Login = () => {
 
   return (
     
-    <AuthenticationForm title="LOGIN" isLogin={true} handleSubmit={handleSubmit}></AuthenticationForm>
+    <AuthenticationForm title="LOGIN" handleSubmit={handleSubmit}></AuthenticationForm>
   );
 };
 

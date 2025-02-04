@@ -1,9 +1,8 @@
 import React, {useState} from 'react'
-import supabase from '../helper/supabaseClient'
-import '/src/assets/styles/Authentication.css'
-import AuthenticationForm from '../assets/Components/AuthenticationForm'
+import supabase from '../../helper/supabaseClient'
+import AuthenticationForm from './AuthenticationForm'
 
-function Register() {
+const Register = () => {
 
   const handleSubmit = async (event, email, password) => {
     event.preventDefault()
@@ -32,7 +31,7 @@ function Register() {
   }
 
   return (
-     <AuthenticationForm title="REGISTER" isLogin={false} handleSubmit={handleSubmit}></AuthenticationForm>
+     <AuthenticationForm title="REGISTER"  handleSubmit={handleSubmit}></AuthenticationForm>
   )
 }
 
