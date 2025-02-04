@@ -203,31 +203,30 @@ input::placeholder {
     z-index: 2;
 }
   
-  .container.right-panel-active .login-container {
+.container.right-panel-active .login-container {
     transform: translateX(100%);
-  }
+}
   
-  .register-container {
+.register-container {
     left: 0;
     width: 50%;
     opacity: 0;
     z-index: 1;
-  }
+}
   
-  .container.right-panel-active .register-container {
+.container.right-panel-active .register-container {
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
     animation: show 0.6s;
-  }
+}
   
-  @keyframes show {
+@keyframes show {
     0%,
     49.99% {
       opacity: 0;
       z-index: 1;
-    }
-  
+}
     50%,
     100% {
       opacity: 1;
@@ -235,7 +234,7 @@ input::placeholder {
     }
   }
   
-  .overlay-container {
+.overlay-container {
     position: absolute;
     top: 0;
     left: 50%;
@@ -246,11 +245,11 @@ input::placeholder {
     z-index: 100;
   }
   
-  .container.right-panel-active .overlay-container {
+.container.right-panel-active .overlay-container {
     transform: translate(-100%);
   }
   
-  .overlay {
+.overlay {
     background-image: url('image/image.gif');
     background-repeat: no-repeat;
     background-size: cover;
@@ -262,9 +261,9 @@ input::placeholder {
     width: 200%;
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
-  }
+}
   
-  .overlay::before {
+.overlay::before {
     content: "";
     position: absolute;
     left: 0;
@@ -272,13 +271,13 @@ input::placeholder {
     top: 0;
     bottom: 0;
     background-color: rgb(124, 124, 124);
-  }
+}
   
-  .container.right-panel-active .overlay {
+.container.right-panel-active .overlay {
     transform: translateX(50%);
-  }
+}
   
-  .overlay-panel {
+.overlay-panel {
     position: absolute;
     display: flex;
     align-items: center;
@@ -291,23 +290,23 @@ input::placeholder {
     width: 50%;
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
-  }
+}
   
-  .overlay-left {
+.overlay-left {
     transform: translateX(-20%);
-  }
+}
   
-  .container.right-panel-active .overlay-left {
+.container.right-panel-active .overlay-left {
     transform: translateX(0);
-  }
+}
   
-  .overlay-right {
+.overlay-right {
     right: 0;
     transform: translateX(0);
-  }
+}
   
-  .container.right-panel-active .overlay-right {
+.container.right-panel-active .overlay-right {
     transform: translateX(20%);
-  }
+}
   
   
