@@ -194,7 +194,7 @@ input::placeholder {
     width: 768px;
     max-width: 100%;
     min-height: 500px;
-    
+    justify-self: center;
   }
   
 .form-container {
