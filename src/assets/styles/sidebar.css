@@ -1,0 +1,46 @@
+/*SIDE BAR*/
+.sidebar{
+    width:300px;
+    height: 100%;
+    padding-top: 40px;
+    color: rgb(240, 240, 240);
+}
+
+.user-profile{
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 50px;
+    text-align: center;
+
+}
+
+.user-picture{
+    height: 50px;
+    width: 50px;
+    border: 2px solid white;
+    border-radius: 50px;
+    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+}
+
+.user-name{
+    margin-top: 10px;
+}
+
+.elements-container{
+    padding: 10px;
+}
+
+.sidebar-element{
+    display: flex;
+    align-items: start;
+    margin: 10px;
+    margin-bottom: 30px;
+    padding: 5px;
+}
+
+.sidebar-icon{
+    margin-right: 10px;
+    padding: 0;
+}
