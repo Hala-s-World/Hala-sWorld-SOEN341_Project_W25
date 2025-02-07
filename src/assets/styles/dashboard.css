@@ -3,18 +3,14 @@
     src: url("..\fonts\Good Matcha.otf") format("truetype");
 }
 
-body{
-    margin: 0;
-}
+
 
 #root{
-    width: 100%;
-    height: 100%;
+    width: 100%; 
+    height: 100%; 
     background: rgb(127,112,199);
 background: linear-gradient(180deg, rgba(127,112,199,1) 0%, rgba(90,99,162,1) 100%);
 }
-
-
 
 .dashboard{
     height: 100%;
@@ -27,7 +23,6 @@ background: linear-gradient(180deg, rgba(127,112,199,1) 0%, rgba(90,99,162,1) 10
 
 /*MAIN SECTION*/
 .main{
-    
     background-color: #F2F6FD;
     border-radius: 20px 0 0 20px;
     width: 100%;
@@ -42,8 +37,7 @@ background: linear-gradient(180deg, rgba(127,112,199,1) 0%, rgba(90,99,162,1) 10
     display: flex;
     flex-direction: row;
     gap: 30px;
-    
-  
+
 }
 
 /*CHAT CONTAINER LEFT*/

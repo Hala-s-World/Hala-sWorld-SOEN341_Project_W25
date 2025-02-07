@@ -12,7 +12,6 @@
 
     margin-bottom: 50px;
     text-align: center;
-
 }
 
 .user-picture{
@@ -28,6 +27,32 @@
     margin-top: 10px;
 }
 
+.dropdown{
+    position: relative;
+    width: 100%;
+
+}
+
+.dropdown-list{
+    padding: 2px;
+    display: none;
+    font-size: small;
+
+}
+
+.dropdown-item{
+    cursor: pointer;
+}
+
+.dropdown-list .dropdown-item:hover{
+}
+
+
+.user-name:hover .dropdown-list{
+    display: block;
+    cursor: pointer;
+}
+
 .elements-container{
     padding: 10px;
 }
@@ -38,6 +63,11 @@
     margin: 10px;
     margin-bottom: 30px;
     padding: 5px;
+}
+
+.sidebar-element:hover{
+    cursor: pointer;
+    color: white;
 }
 
 .sidebar-icon{

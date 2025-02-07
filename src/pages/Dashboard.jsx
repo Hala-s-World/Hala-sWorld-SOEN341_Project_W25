@@ -7,10 +7,17 @@ import { FaBars, FaTimes, FaComments, FaCog, FaSlidersH, FaMicrophone, FaSmile, 
 import ChatItem from "../assets/components/ChatItem";
 import Chat from "../assets/components/Chat";
 import SideBar from "../assets/components/SideBar";
+import { useActiveComponent } from "../helper/activeComponent";
+import ChannelManager from "../assets/components/ChannelManager";
+import AddChannel from "../assets/components/AddChannel";
+import "../assets/styles/channelmanager.css"
 
 function Dashboard() {
+
   const navigate = useNavigate();
   const { logout, errorMessage, role } = useAuthStore();
+  const {activeComponent} = useActiveComponent();
+
 
   const signOut = async () => {
     logout();
@@ -18,8 +25,6 @@ function Dashboard() {
     navigate("/");
   };
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState("Messaging");
 
 
 
@@ -29,7 +34,8 @@ function Dashboard() {
       {role === "admin" && <p>ADMIN TEST</p>}
       <button onClick={signOut}>Sign out</button> */}
       <SideBar />
-      <Chat/>
+      {activeComponent === "Chat" && <Chat/>}
+      {activeComponent === "Channel-Manager" && <AddChannel/>}
     </div>
   );
 }

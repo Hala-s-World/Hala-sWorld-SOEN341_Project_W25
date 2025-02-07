@@ -25,9 +25,9 @@ export default function Homepage() {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/dashboard">Dashboard</Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/login">Login</Link>
           </li>
