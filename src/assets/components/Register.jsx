@@ -1,38 +1,34 @@
-import React, {useState} from 'react'
-import supabase from '../../helper/supabaseClient'
-import AuthenticationForm from './AuthenticationForm'
+import React, { useState } from "react";
+import supabase from "../../helper/supabaseClient";
+import AuthenticationForm from "./AuthenticationForm";
 
 const Register = () => {
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event, email, password) => {
-    event.preventDefault()
-    setMessage("")
+    event.preventDefault();
+    setMessage("");
 
-    //Authenticate user & email with supabase
-    const {data, error} = await supabase.auth.signUp({
-      email: email,
-      password: password
-    })
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
-    //if error exists, display message
-    if(error){
-      setMessage(error.message) 
-      return
+    // if (error) {
+    //   setMessage(error.message);
+    //   return;
+    // }
+
+    if (data) {
+      setMessage("User Account created! Check your email for verification.");
     }
-
-    //if success, display message
-    if(data){
-      setMessage("User Account created!")
-    }
-
-    //clear textbox
-    setEmail("")
-    setPassword("")
-  }
+  };
 
   return (
-     <AuthenticationForm title="REGISTER"  handleSubmit={handleSubmit}></AuthenticationForm>
-  )
-}
+    <div>
+      <AuthenticationForm title="REGISTER" handleSubmit={handleSubmit} />
+    </div>
+  );
+};
 
-export default Register
+export default Register;
