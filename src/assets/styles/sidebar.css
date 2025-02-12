@@ -1,76 +1,98 @@
 /*SIDE BAR*/
-.sidebar{
-    width:300px;
-    height: 100%;
-    padding-top: 40px;
-    color: rgb(240, 240, 240);
+.sidebar {
+  width: 300px;
+  height: 100vh;
+  color: rgb(240, 240, 240);
+  transition: transform 0.3s ease-in-out;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
 }
 
-.user-profile{
-    display: flex;
-    flex-direction: column;
-
-    margin-bottom: 50px;
-    text-align: center;
+.sidebar.closed {
+  transform: translateX(-300px);
 }
 
-.user-picture{
-    height: 50px;
-    width: 50px;
-    border: 2px solid white;
-    border-radius: 50px;
-    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.3);
-    margin-top: 10px;
+.sidebar.open {
+  transform: translateX(0);
 }
 
-.user-name{
-    margin-top: 10px;
+.sidebar-toggle {
+  position: absolute;
+  top: 15px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1100;
+  padding: 5px;
+  transition: left 0.3s ease-in-out;
 }
 
-.dropdown{
-    position: relative;
-    width: 100%;
+.user-profile {
+  display: flex;
+  flex-direction: column;
 
+  margin-bottom: 50px;
+  text-align: center;
 }
 
-.dropdown-list{
-    padding: 2px;
-    display: none;
-    font-size: small;
-
+.user-picture {
+  height: 50px;
+  width: 50px;
+  border: 2px solid white;
+  border-radius: 50px;
+  box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.3);
+  margin-top: 10px;
 }
 
-.dropdown-item{
-    cursor: pointer;
+.user-name {
+  margin-top: 10px;
 }
 
-.dropdown-list .dropdown-item:hover{
+.dropdown {
+  position: relative;
+  width: 100%;
 }
 
-
-.user-name:hover .dropdown-list{
-    display: block;
-    cursor: pointer;
+.dropdown-list {
+  padding: 2px;
+  display: none;
+  font-size: small;
 }
 
-.elements-container{
-    padding: 10px;
+.dropdown-item {
+  cursor: pointer;
 }
 
-.sidebar-element{
-    display: flex;
-    align-items: start;
-    margin: 10px;
-    margin-bottom: 30px;
-    padding: 5px;
+.dropdown-list .dropdown-item:hover {
 }
 
-.sidebar-element:hover{
-    cursor: pointer;
-    color: white;
+.user-name:hover .dropdown-list {
+  display: block;
+  cursor: pointer;
 }
 
-.sidebar-icon{
-    margin-right: 10px;
-    padding: 0;
+.elements-container {
+  padding: 10px;
+}
+
+.sidebar-element {
+  display: flex;
+  align-items: start;
+  margin: 10px;
+  margin-bottom: 30px;
+  padding: 5px;
+}
+
+.sidebar-element:hover {
+  cursor: pointer;
+  color: white;
+}
+
+.sidebar-icon {
+  margin-right: 10px;
+  padding: 0;
 }
