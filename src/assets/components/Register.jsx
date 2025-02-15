@@ -1,12 +1,10 @@
-import React from "react";
 import supabase from "../../helper/supabaseClient";
 import AuthenticationForm from "./AuthenticationForm";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/authStore";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { setErrorMessage } = useAuthStore(); 
+  // const { setErrorMessage } = useAuthStore(); 
 
   const handleSubmit = async (event, email, password) => {
     event.preventDefault();
@@ -23,7 +21,7 @@ const Register = () => {
 
     console.log("Registered successfully:", signUpData);
 
-    const { data: userInsertData, error: userInsertError } = await supabase
+    const {error: userInsertError } = await supabase
       .from("user")
       .insert({ id: signUpData.user.id, username: "temp_username" });
 
