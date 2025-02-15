@@ -13,14 +13,15 @@ export const useAuthStore = create(
 
       login: async (email, password) => {
         set({ errorMessage: "" });
-
+        
         const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+          email: email,
+          password: password,
         });
 
         if (error) {
           set({ errorMessage: error.message });
+            console.log(error)
           return false;
         }
 
@@ -50,14 +51,6 @@ export const useAuthStore = create(
       logout: async () => {
         await supabase.auth.signOut();
         set({ user: null, role: null, errorMessage: "", authenticated: false });
-      },
-
-      checkSession: async () => {
-        const { data } = await supabase.auth.checkSession();
-
-        if (data.session) {
-          set({ user: data.session.user, authenticated: true });
-        }
       },
 
       isAuthenticated: async () => {

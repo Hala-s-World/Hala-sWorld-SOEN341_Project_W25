@@ -5,11 +5,6 @@ import App from './App.jsx'
 import { useAuthStore } from './store/authStore.js'
 
 const InitApp = () => {
-  const {checkSession} = useAuthStore();
-
-  useEffect(() => {
-    checkSession()
-  },[])
 
   return <App/>
 }

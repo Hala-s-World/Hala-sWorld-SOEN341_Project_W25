@@ -8,10 +8,9 @@ const Login = () =>{
   const navigate = useNavigate();
   const { login, errorMessage } = useAuthStore();
 
-  const handleSubmit = async (event, email, password) => {
-    event.preventDefault();
+  const handleSubmit = async (email, password) => {
     const success = await login(email, password);
-
+    console.log(success)
     if (success) {
       navigate("/dashboard");
     }
