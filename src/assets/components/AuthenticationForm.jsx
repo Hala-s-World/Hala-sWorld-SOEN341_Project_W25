@@ -11,7 +11,7 @@ export default function AuthenticationForm({handleSubmit, title}) {
 
   return (
     <div >
-    <form onSubmit={handleSubmit(email, password)}>
+    <form onSubmit={(event) => {handleSubmit(event,email, password)}}>
     <h1>{title}</h1>
     {errorMessage && <span className="error-message"></span>} 
       <input 

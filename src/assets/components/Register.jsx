@@ -11,7 +11,6 @@ const Register = () => {
   const handleSubmit = async (event, email, password) => {
     event.preventDefault();
 
-    
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
@@ -24,20 +23,18 @@ const Register = () => {
 
     console.log("Registered successfully:", signUpData);
 
-    
     const { data: userInsertData, error: userInsertError } = await supabase
       .from("user")
-      .insert({ id: signUpData.user.id , username: "temp_username"}); 
+      .insert({ id: signUpData.user.id, username: "temp_username" });
 
     if (userInsertError) {
       console.log(userInsertError);
       return false;
     }
 
-    
     const { error: roleInsertError } = await supabase
       .from("user_roles")
-      .insert({ id: signUpData.user.id, role: "user" }); 
+      .insert({ id: signUpData.user.id, role: "user" });
 
     if (roleInsertError) {
       console.log(roleInsertError);
@@ -45,6 +42,7 @@ const Register = () => {
     }
 
     console.log("User role assigned successfully");
+    navigate("/dashboard"); // Navigate to a welcome page or another route after successful registration
   };
 
   return (
