@@ -1,38 +1,55 @@
-import React, {useState} from 'react'
-import supabase from '../../helper/supabaseClient'
-import AuthenticationForm from './AuthenticationForm'
+import React from "react";
+import supabase from "../../helper/supabaseClient";
+import AuthenticationForm from "./AuthenticationForm";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/authStore";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { setErrorMessage } = useAuthStore(); 
 
   const handleSubmit = async (event, email, password) => {
-    event.preventDefault()
-    setMessage("")
+    event.preventDefault();
 
-    //Authenticate user & email with supabase
-    const {data, error} = await supabase.auth.signUp({
-      email: email,
-      password: password
-    })
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
-    //if error exists, display message
-    if(error){
-      setMessage(error.message) 
-      return
+    if (signUpError) {
+      console.log(signUpError);
+      return false;
     }
 
-    //if success, display message
-    if(data){
-      setMessage("User Account created!")
+    console.log("Registered successfully:", signUpData);
+
+    const { data: userInsertData, error: userInsertError } = await supabase
+      .from("user")
+      .insert({ id: signUpData.user.id, username: "temp_username" });
+
+    if (userInsertError) {
+      console.log(userInsertError);
+      return false;
     }
 
-    //clear textbox
-    setEmail("")
-    setPassword("")
-  }
+    const { error: roleInsertError } = await supabase
+      .from("user_roles")
+      .insert({ id: signUpData.user.id, role: "user" });
+
+    if (roleInsertError) {
+      console.log(roleInsertError);
+      return false;
+    }
+
+    console.log("User role assigned successfully");
+    navigate("/dashboard"); // Navigate to a welcome page or another route after successful registration
+  };
 
   return (
-     <AuthenticationForm title="REGISTER"  handleSubmit={handleSubmit}></AuthenticationForm>
-  )
-}
+    <div>
+      <AuthenticationForm title="REGISTER" handleSubmit={handleSubmit} />
+    </div>
+  );
+};
 
-export default Register
+export default Register;
