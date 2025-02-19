@@ -14,7 +14,6 @@ import {
   FaPaperclip,
   FaTelegram,
 } from "react-icons/fa";
-import ChatItem from "../assets/components/ChatItem";
 import Chat from "../assets/components/Chat";
 import SideBar from "../assets/components/SideBar";
 import { useActiveComponent } from "../helper/activeComponent";
