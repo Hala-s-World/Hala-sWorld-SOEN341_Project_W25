@@ -1,16 +1,22 @@
-import { supabase } from "./supabaseClient";
+import supabase from "./supabaseClient";
 
 const SupabaseAPI = {
   /** ─────────────────────────────
    *   AUTHENTICATION METHODS
    *  ───────────────────────────── */
   async signUp(email, password) {
+    //create user in supabase
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
+
+    //insert new record in user table
     if (error) throw new Error(error.message);
-    await this.createUser({ id: data.user.id, username: 'testUsername' });
+    await this.createUser(data.user.id,'testUsefasdrname' );
+
+    //insert role "user" for new user
+    await this.createUserRole(data.user.id)
     return data.user;
   },
 
@@ -43,10 +49,12 @@ const SupabaseAPI = {
     return data;
   },
 
+ 
+
   async createUserRole(userId){
     const { error } = await supabase
       .from("user_roles")
-      .insert({ id: signUpData.user.id, role: "user" });
+      .insert({ id: userId, role: "user" });
       if (error) throw new Error(error.message);
       
   },
