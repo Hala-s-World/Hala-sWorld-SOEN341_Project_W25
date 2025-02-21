@@ -37,10 +37,18 @@ const SupabaseAPI = {
   /** ─────────────────────────────
    *   USER MANAGEMENT
    *  ───────────────────────────── */
-  async createUser(userData) {
-    const { data, error } = await supabase.from('user').insert(userData);
+  async createUser(userId, username="temp_username") {
+    const { data, error } = await supabase.from('user').insert({ id: userId, username: username  });
     if (error) throw new Error(error.message);
     return data;
+  },
+
+  async createUserRole(userId){
+    const { error } = await supabase
+      .from("user_roles")
+      .insert({ id: signUpData.user.id, role: "user" });
+      if (error) throw new Error(error.message);
+      
   },
 
   async getUser(userId) {

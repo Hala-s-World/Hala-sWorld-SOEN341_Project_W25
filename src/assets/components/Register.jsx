@@ -1,6 +1,7 @@
 import supabase from "../../helper/supabaseClient";
 import AuthenticationForm from "./AuthenticationForm";
 import { useNavigate } from "react-router-dom";
+import SupabaseAPI from "../../helper/supabaseAPI";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -9,17 +10,15 @@ const Register = () => {
   const handleSubmit = async (event, email, password) => {
     event.preventDefault();
 
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (signUpError) {
-      console.log(signUpError);
-      return false;
-    }
-
     console.log("Registered successfully:", signUpData);
+
+    // try {
+    //   SupabaseAPI.signUp(email,password)
+    //   SupabaseAPI.createUser(signUpData.user.id,"temp_username" )
+    //   SupabaseAPI.createUserRole(signUpData.user.id)
+    // } catch (error) {
+    //   console.log(error)
+    // }
 
     const {error: userInsertError } = await supabase
       .from("user")
