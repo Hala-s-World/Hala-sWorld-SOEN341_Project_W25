@@ -1,4 +1,5 @@
 import supabase from "./supabaseClient";
+import { format } from "date-fns";
 
 const SupabaseAPI = {
   /** ─────────────────────────────
@@ -71,6 +72,8 @@ const SupabaseAPI = {
     return data;
   },
 
+
+  
   /** ─────────────────────────────
    *   TEXT CHANNEL MANAGEMENT
    *  ───────────────────────────── */
@@ -125,18 +128,28 @@ const SupabaseAPI = {
    *   DIRECT MESSAGING (DMs)
    *  ───────────────────────────── */
   async sendDirectMessage(senderId, receiverId, messageText) {
-    const { data, error } = await supabase.from('direct_messages').insert({ sender_id: senderId, receiver_id: receiverId, content: messageText });
-    if (error) throw new Error(error.message);
-    return data;
+    const { data, error } = await supabase.from('direct_messages').insert([{ sender_id: senderId, receiver_id: receiverId, content: messageText }]).select(); 
+  if (error) {
+    console.error("Error sending message:", error.message);
+    throw new Error(error.message);
+  }
+  console.log("data inserted sucessfully:", data) // make sure message sent to database
+
+  return data; 
   },
 
-  async getDirectMessages(userId, contactId) {
+  async getDirectMessages(senderId, receiverId) {
     const { data, error } = await supabase.from('direct_messages')
       .select('*')
-      .or(`(sender_id.eq.${userId},receiver_id.eq.${contactId}),(sender_id.eq.${contactId},receiver_id.eq.${userId})`)
+      .or(`sender_id.eq.${senderId},receiver_id.eq.${receiverId}),(sender_id.eq.${receiverId},receiver_id.eq.${senderId}`)
       .order('created_at', { ascending: true });
     if (error) throw new Error(error.message);
-    return data;
+
+    return data.map((message) => ({
+      ...message,
+      formattedDate: format(new Date(message.created_at), "dd MMM yyyy HH:mm"), 
+    }));
+
   },
 
   /** ─────────────────────────────

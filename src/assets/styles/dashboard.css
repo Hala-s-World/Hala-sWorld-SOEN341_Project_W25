@@ -3,14 +3,19 @@
   src: url("..\fonts\Good Matcha.otf") format("truetype");
 }
 
+@font-face {
+  font-family: "dmsans";
+  src: url("..\fonts\DMSans-VariableFont_opsz,wght.ttf");
+}
+
 #root {
   width: 100%;
   height: 100%;
-  background: rgb(127, 112, 199);
+  background: rgb(164, 157, 197);
   background: linear-gradient(
     180deg,
-    rgba(127, 112, 199, 1) 0%,
-    rgba(90, 99, 162, 1) 100%
+    rgb(144, 132, 212) 0%,
+    #c3c4cf 100%
   );
 }
 
@@ -47,32 +52,15 @@
   transition: maring-left 0.3s ease-in-out, width 0.3s ease-in-out;
 }
 
+/* CHAT AREA */
 .chat-container {
   display: flex;
-  flex-direction: row;
-  gap: 30px;
-}
-
-/*CHAT CONTAINER LEFT*/
-.chat-container-left {
-  width: 40%;
-  min-width: 150px;
-  display: flex;
   flex-direction: column;
-  margin-top: 20px;
-}
-
-.ChatItem {
-  padding: 10px;
-  margin-bottom: 20px;
-  display: flex;
-  max-height: 60px;
-  flex-direction: row;
-  position: relative;
-  padding-right: 50px;
-  background-color: white;
+  height: 100%;
+  width: 100%;
+  background-color: #36393f; /* Discord's dark background */
   border-radius: 10px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 10px;
 }
 
 .chat-item-profile-picture {
@@ -87,25 +75,30 @@
 }
 
 .chat-info {
-  height: 100%;
-  margin-left: 5px;
   display: flex;
   flex-direction: column;
-  align-self: center;
+  background-color: #c3c4cf; 
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
 }
 
 .chat-name {
-  font-size: small;
-  color: #051c6b;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 3px;
 }
 
 .chat-text {
-  font-size: x-small;
-  color: rgb(150, 150, 150);
+  font-size: medium;
+  font-family: "dmsans";
+  color: rgb(0, 0, 0);
   display: -webkit-box;
   -webkit-line-clamp: 3; /* Number of lines before truncating */
   -webkit-box-orient: vertical;
   overflow: hidden;
+  
 }
 
 .chat-number-of-messages {
@@ -119,85 +112,108 @@
   border-radius: 50px;
 }
 
-.chat-date {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  font-size: x-small;
-  color: rgb(150, 150, 150);
+.chat-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
-/*CHAT CONTAINER RIGHT*/
-.chat-container-right {
-  width: 60%;
-  min-width: none;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
+.chat-date {
+  font-size: small;
+  color: rgb(0, 0, 0);
+  font-family: "dmsans";
+  font-weight: 500;
 }
+
 
 .opened-chat-banner {
-  background-color: #f9fcfe;
-  padding: 10px;
-  margin-bottom: 20px;
+  background-color: #2f3136; /* Darker header */
+  color: white;
+  padding: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-align: center;
   border-radius: 10px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .opened-chat-box {
   display: flex;
   flex-direction: column;
   align-content: space-between;
-  height: 100%;
-  background-color: #f9fcfe;
+  height: 95%;
+  background-color: #2f3136;
   padding: 20px 10px 20px 10px;
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.chat-box-chat {
-  background-color: #f9fcfe;
-  height: 100%;
+.chat-messages {
+  height: 95%; 
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #f9f9f9;
+  scrollbar-width: thin; 
+}
+
+
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+
+chat-box-chat{
+  margin-top: 10px;
 }
 
 .input-area {
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  text-align: center;
-  background-color: white;
-}
-
-.text-input-area {
+  position: relative;
+  bottom: 0;
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
 }
 
 input {
-  background-color: white;
+  background-color: #c3c4cf;
   justify-self: center;
   outline: none;
   font-family: good-matcha;
-  color: #0e027b;
+  padding: 10px; 
+  text-align: left; 
+  border-radius: 0;
+  font-family: "dmsans";
+  font-size: medium;
+  font-weight: 600;
 }
 
 input::placeholder {
   color: #929499;
-  position: absolute;
-  left: 15px;
-  font-size: small;
+  font-size: medium;
+  text-align: left; 
+}
+
+.send-button {
+  background: none;
+  border: none;
+  color: #b9bbbe;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.send-button:hover {
+  color: #ffffff;
 }
 
 .microphone-icon {
   font-size: large;
   color: #756dbd;
-}
-
-.send-button {
-  font-size: x-large;
-  color: #756dbd;
-  margin-left: 10px;
 }
