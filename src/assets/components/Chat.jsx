@@ -2,24 +2,32 @@ import React, { useState } from "react";
 import SendMessage from "./SendMessage";
 import ReceiveMessage from "./ReceiveMessage";
 
-export default function Chat(){
+
+//Deprecated
+export default function Chat({messages, user, error, message, setMessage, handleSendMessage, isSending}) {
 
   return (
     <div className="main">
       <div className="chat-container">
-          <div className="opened-chat-banner">Chatbox title</div>
-          <div className="opened-chat-box">
-            {/* MESSAGES AREA */}
-            <div className="chat-messages">
-              <ReceiveMessage receiverId={"537f28ce-8b78-432a-84fe-b4d2740c97aa"} />
-            </div>
-            {/* INPUT AREA */}
-            <div className="chat-box-chat">
-            <SendMessage
-            receiverId={"537f28ce-8b78-432a-84fe-b4d2740c97aa"}
-          />
-            </div>
+        <div className="opened-chat-banner">Chatbox title</div>
+        <div className="opened-chat-box">
+          {/* MESSAGES AREA */}
+          <div className="chat-messages">
+            <ReceiveMessage 
+            messages={messages} 
+            user={user}
+            error={error}/>
           </div>
+          {/* INPUT AREA */}
+          <div className="chat-box-chat">
+            <SendMessage
+              message={message}
+              setMessage={setMessage}
+              handleSendMessage={handleSendMessage}
+              isSending={isSending}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

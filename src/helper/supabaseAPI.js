@@ -123,17 +123,24 @@ const SupabaseAPI = {
   },
 
   async getDirectMessages(senderId, receiverId) {
-    const { data, error } = await supabase.from('direct_messages')
-      .select('*')
-      .or(`sender_id.eq.${senderId},receiver_id.eq.${receiverId}),(sender_id.eq.${receiverId},receiver_id.eq.${senderId}`)
+    const { data, error } = await supabase
+      .from('direct_messages')
+      .select(`
+        *,
+        sender:sender_id ( username ),
+        receiver:receiver_id ( username )
+      `)
+      .or(`and(sender_id.eq.${senderId},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},receiver_id.eq.${senderId})`)
       .order('created_at', { ascending: true });
+
     if (error) throw new Error(error.message);
 
     return data.map((message) => ({
       ...message,
-      formattedDate: format(new Date(message.created_at), "dd MMM yyyy HH:mm"), 
+      sender_username: message.sender.username,
+      receiver_username: message.receiver.username,
+      formattedDate: format(new Date(message.created_at), "dd MMM yyyy HH:mm"),
     }));
-
   },
 
   /** ─────────────────────────────
