@@ -6,12 +6,18 @@ const SupabaseAPI = {
    *   AUTHENTICATION METHODS
    *  ───────────────────────────── */
   async signUp(email, password) {
+    //create user in supabase
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
+
+    //insert new record in user table
     if (error) throw new Error(error.message);
-    await this.createUser({ id: data.user.id, username: 'testUsername' });
+    await this.createUser(data.user.id,'testUsefasdrname' );
+
+    //insert role "user" for new user
+    await this.createUserRole(data.user.id)
     return data.user;
   },
 
@@ -38,10 +44,20 @@ const SupabaseAPI = {
   /** ─────────────────────────────
    *   USER MANAGEMENT
    *  ───────────────────────────── */
-  async createUser(userData) {
-    const { data, error } = await supabase.from('user').insert(userData);
+  async createUser(userId, username="temp_username") {
+    const { data, error } = await supabase.from('user').insert({ id: userId, username: username  });
     if (error) throw new Error(error.message);
     return data;
+  },
+
+ 
+
+  async createUserRole(userId){
+    const { error } = await supabase
+      .from("user_roles")
+      .insert({ id: userId, role: "user" });
+      if (error) throw new Error(error.message);
+      
   },
 
   async getUser(userId) {
