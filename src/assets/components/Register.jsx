@@ -1,5 +1,7 @@
 import supabase from "../../helper/supabaseClient";
 import AuthenticationForm from "./AuthenticationForm";
+import SupabaseAPI from "../../helper/supabaseAPI";
+
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -8,35 +10,12 @@ const Register = () => {
 
   const handleSubmit = async (event, email, password) => {
     event.preventDefault();
-
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (signUpError) {
-      console.log(signUpError);
-      return false;
-    }
-
-    console.log("Registered successfully:", signUpData);
-
-    const {error: userInsertError } = await supabase
-      .from("user")
-      .insert({ id: signUpData.user.id, username: "temp_username" });
-
-    if (userInsertError) {
-      console.log(userInsertError);
-      return false;
-    }
-
-    const { error: roleInsertError } = await supabase
-      .from("user_roles")
-      .insert({ id: signUpData.user.id, role: "user" });
-
-    if (roleInsertError) {
-      console.log(roleInsertError);
-      return false;
+ 
+   try {
+      const signUpData = await SupabaseAPI.signUp(email,password)
+      console.log(signUpData)
+    } catch (error) {
+      console.log(error)
     }
 
     console.log("User role assigned successfully");
