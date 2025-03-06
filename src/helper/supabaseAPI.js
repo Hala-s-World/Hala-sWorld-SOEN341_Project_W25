@@ -139,6 +139,43 @@ const SupabaseAPI = {
   async deleteChannel(channelId) {
     const { error } = await supabase.from('channel').delete().eq('id', channelId);
     if (error) throw new Error(error.message);
+  },
+
+  /** ─────────────────────────────
+   *   FRIENDS
+   *  ───────────────────────────── */
+
+  async getFriends(userId) {
+    const { data, error } = await supabase
+      .from('friends')
+      .select('friend_id, user(username)')
+      .eq('user_id', userId)
+      .eq('status', 'accepted')
+      .join('users', 'friends.friend_id', 'users.id');
+  
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
+  async acceptFriendRequest(userId, friendId) {
+    const { data, error } = await supabase
+      .from('friends')
+      .update({ status: 'accepted' })
+      .eq('user_id', userId)
+      .eq('friend_id', friendId);
+  
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
+
+  async addFriend(userId, friendId) {
+    const { data, error } = await supabase
+      .from('friends')
+      .insert([{ user_id: userId, friend_id: friendId, status: 'pending' }]);
+  
+    if (error) throw new Error(error.message);
+    return data;
   }
 }
 
