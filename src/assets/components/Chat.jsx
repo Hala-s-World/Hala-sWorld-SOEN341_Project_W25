@@ -3,13 +3,6 @@ import SendMessage from "./SendMessage";
 import ReceiveMessage from "./ReceiveMessage";
 
 export default function Chat(){
-  const [messages, setMessages] = useState([]); 
-
-  const handleNewMessage = (newMessage) => {
-    console.log("New message received:", newMessage);
-    setMessages((prevMessages) => [...prevMessages, newMessage]); 
-  };
-
 
   return (
     <div className="main">
@@ -24,7 +17,6 @@ export default function Chat(){
             <div className="chat-box-chat">
             <SendMessage
             receiverId={"537f28ce-8b78-432a-84fe-b4d2740c97aa"}
-            onMessageSent={handleNewMessage} 
           />
             </div>
           </div>
