@@ -1,16 +1,23 @@
-import { supabase } from "./supabaseClient";
+import supabase from "./supabaseClient";
+import { format } from "date-fns";
 
 const SupabaseAPI = {
   /** ─────────────────────────────
    *   AUTHENTICATION METHODS
    *  ───────────────────────────── */
   async signUp(email, password) {
+    //create user in supabase
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
+
+    //insert new record in user table
     if (error) throw new Error(error.message);
-    await this.createUser({ id: data.user.id, username: 'testUsername' });
+    await this.createUser(data.user.id,'testUsefasdrname' );
+
+    //insert role "user" for new user
+    await this.createUserRole(data.user.id)
     return data.user;
   },
 
@@ -37,10 +44,20 @@ const SupabaseAPI = {
   /** ─────────────────────────────
    *   USER MANAGEMENT
    *  ───────────────────────────── */
-  async createUser(userData) {
-    const { data, error } = await supabase.from('user').insert(userData);
+  async createUser(userId, username="temp_username") {
+    const { data, error } = await supabase.from('user').insert({ id: userId, username: username  });
     if (error) throw new Error(error.message);
     return data;
+  },
+
+ 
+
+  async createUserRole(userId){
+    const { error } = await supabase
+      .from("user_roles")
+      .insert({ id: userId, role: "user" });
+      if (error) throw new Error(error.message);
+      
   },
 
   async getUser(userId) {
@@ -55,6 +72,8 @@ const SupabaseAPI = {
     return data;
   },
 
+
+  
   /** ─────────────────────────────
    *   TEXT CHANNEL MANAGEMENT
    *  ───────────────────────────── */
@@ -109,18 +128,35 @@ const SupabaseAPI = {
    *   DIRECT MESSAGING (DMs)
    *  ───────────────────────────── */
   async sendDirectMessage(senderId, receiverId, messageText) {
-    const { data, error } = await supabase.from('direct_messages').insert({ sender_id: senderId, receiver_id: receiverId, content: messageText });
-    if (error) throw new Error(error.message);
-    return data;
+    const { data, error } = await supabase.from('direct_messages').insert([{ sender_id: senderId, receiver_id: receiverId, content: messageText }]).select(); 
+  if (error) {
+    console.error("Error sending message:", error.message);
+    throw new Error(error.message);
+  }
+  console.log("data inserted sucessfully:", data) // make sure message sent to database
+
+  return data; 
   },
 
-  async getDirectMessages(userId, contactId) {
-    const { data, error } = await supabase.from('direct_messages')
-      .select('*')
-      .or(`(sender_id.eq.${userId},receiver_id.eq.${contactId}),(sender_id.eq.${contactId},receiver_id.eq.${userId})`)
+  async getDirectMessages(senderId, receiverId) {
+    const { data, error } = await supabase
+      .from('direct_messages')
+      .select(`
+        *,
+        sender:sender_id ( username ),
+        receiver:receiver_id ( username )
+      `)
+      .or(`and(sender_id.eq.${senderId},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},receiver_id.eq.${senderId})`)
       .order('created_at', { ascending: true });
+
     if (error) throw new Error(error.message);
-    return data;
+
+    return data.map((message) => ({
+      ...message,
+      sender_username: message.sender.username,
+      receiver_username: message.receiver.username,
+      formattedDate: format(new Date(message.created_at), "dd MMM yyyy HH:mm"),
+    }));
   },
 
   /** ─────────────────────────────

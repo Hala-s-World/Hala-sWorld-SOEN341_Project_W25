@@ -1,38 +1,34 @@
-import React from "react";
-import ChatItem from "./ChatItem";
-import { FaBars, FaTimes, FaComments, FaCog, FaSlidersH, FaMicrophone, FaSmile, FaPaperclip, FaTelegram} from "react-icons/fa";
+import React, { useState } from "react";
+import SendMessage from "./SendMessage";
+import ReceiveMessage from "./ReceiveMessage";
 
-export default function Chat(){
-    return(
-        <div className="main">
-                <div className="chat-container">
-                  <div className="chat-container-left">
-                    <ChatItem />
-                    <ChatItem />
-                    <ChatItem />
-                    <ChatItem />
-                    <ChatItem />
-                    <ChatItem />
-                  </div>
-                  <div className="chat-container-right">
-                    <div className="opened-chat-banner">
-                      banner
-                    </div>
-                    <div className="opened-chat-box">
-                      <div className="chat-box-chat"></div>
-                      
-                      <div className="input-area">
-                        <div className="text-input-area">
-                          <FaMicrophone className="microphone-icon"/>
-                          <input placeholder="Type Here..."></input>
-                          <FaSmile className="microphone-icon"/>
-                          <FaPaperclip className="microphone-icon"/>
-                          <FaTelegram className="send-button"/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-    )
+
+//Deprecated
+export default function Chat({messages, user, error, message, setMessage, handleSendMessage, isSending}) {
+
+  return (
+    <div className="main">
+      <div className="chat-container">
+        <div className="opened-chat-banner">Chatbox title</div>
+        <div className="opened-chat-box">
+          {/* MESSAGES AREA */}
+          <div className="chat-messages">
+            <ReceiveMessage 
+            messages={messages} 
+            user={user}
+            error={error}/>
+          </div>
+          {/* INPUT AREA */}
+          <div className="chat-box-chat">
+            <SendMessage
+              message={message}
+              setMessage={setMessage}
+              handleSendMessage={handleSendMessage}
+              isSending={isSending}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -14,8 +14,7 @@ import {
   FaPaperclip,
   FaTelegram,
 } from "react-icons/fa";
-import ChatItem from "../assets/components/ChatItem";
-import Chat from "../assets/components/Chat";
+import DirectMessaging from "../assets/components/DirectMessaging";
 import SideBar from "../assets/components/SideBar";
 import { useActiveComponent } from "../helper/activeComponent";
 import ChannelManager from "../assets/components/ChannelManager";
@@ -62,7 +61,7 @@ function Dashboard() {
 
       {/* Main Content */}
       <div className="main-content">
-        {activeComponent === "Chat" && <Chat />}
+        {activeComponent === "Chat" && <DirectMessaging receiverId={"537f28ce-8b78-432a-84fe-b4d2740c97aa"} />}
         {activeComponent === "Channel-Manager" && <AddChannel />}
       </div>
     </div>
