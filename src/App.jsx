@@ -22,7 +22,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-           // <Wrapper>
+            //<Wrapper>
               <Dashboard />
             //</Wrapper>
           }

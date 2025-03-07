@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import supabase from "../helper/supabaseClient";
 
 export const useAuthStore = create(
@@ -10,16 +10,17 @@ export const useAuthStore = create(
       errorMessage: "",
       authenticated: false,
       loading: true,
-      currentFriend:null,
+      currentFriend: null,
       setCurrentFriend: (friend) => set({ currentFriend: friend }),
 
       login: async (email, password) => {
         set({ errorMessage: "" });
 
         try {
+          console.log(email, password)
           const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
-            password: password,
+            password: password
           });
 
           if (error) {
@@ -27,8 +28,6 @@ export const useAuthStore = create(
             set({ errorMessage: error.message });
             return false;
           }
-
-        
 
           // Fetch the user's role during login
           const { data: roleData, error: roleError } = await supabase
@@ -70,7 +69,17 @@ export const useAuthStore = create(
         set({ authenticated: !!data.session, loading: false });
       },
     }),
-    { name: "auth-storage" }
+    {
+      name: "newstoragekey",
+      storage: createJSONStorage(() => sessionStorage),
+    }
   )
 );
+
+// Clear session storage and Supabase session on browser close
+window.addEventListener("beforeunload", async () => {
+  
+  await supabase.auth.signOut();
+  sessionStorage.clear();
+});
 
