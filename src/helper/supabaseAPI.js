@@ -184,13 +184,22 @@ const SupabaseAPI = {
   async getFriends(userId) {
     const { data, error } = await supabase
       .from('friends')
-      .select('friend_id, user(username)')
-      .eq('user_id', userId)
-      .eq('status', 'accepted')
-      .join('users', 'friends.friend_id', 'users.id');
+      .select(`
+        *,
+        friend_id,
+        user:user_id ( username ),
+        friend:friend_id ( username )
+      `)
+      .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
+      .eq('status', 'accepted');
   
     if (error) throw new Error(error.message);
-    return data;
+  
+    return data.map((friend) => ({
+      ...friend,
+      user_username: friend.user.username,
+      friend_username: friend.friend.username,
+    }));
   },
 
   async acceptFriendRequest(userId, friendId) {
@@ -202,6 +211,15 @@ const SupabaseAPI = {
   
     if (error) throw new Error(error.message);
     return data;
+  },
+  
+  async deleteFriend(userId, friendId) {
+    const { error } = await supabase
+      .from('friends')
+      .delete()
+      .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${userId})`);
+  
+    if (error) throw new Error(error.message);
   },
 
 
