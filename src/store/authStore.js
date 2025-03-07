@@ -10,6 +10,8 @@ export const useAuthStore = create(
       errorMessage: "",
       authenticated: false,
       loading: true,
+      currentFriend:null,
+      setCurrentFriend: (friend) => set({ currentFriend: friend }),
 
       login: async (email, password) => {
         set({ errorMessage: "" });
@@ -26,7 +28,7 @@ export const useAuthStore = create(
             return false;
           }
 
-          console.log("User ID:", data.user.id);
+        
 
           // Fetch the user's role during login
           const { data: roleData, error: roleError } = await supabase

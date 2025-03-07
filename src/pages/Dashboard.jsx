@@ -20,10 +20,11 @@ import { useActiveComponent } from "../helper/activeComponent";
 import ChannelManager from "../assets/components/ChannelManager";
 import AddChannel from "../assets/components/AddChannel";
 import "../assets/styles/channelmanager.css";
+import FriendsPage from "./FriendsPage";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { logout, errorMessage, role } = useAuthStore();
+  const { logout, errorMessage, currentFriend } = useAuthStore();
   const { activeComponent } = useActiveComponent();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -57,12 +58,14 @@ function Dashboard() {
       <SideBar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
+
       />
 
       {/* Main Content */}
       <div className="main-content">
-        {activeComponent === "Chat" && <DirectMessaging receiverId={"537f28ce-8b78-432a-84fe-b4d2740c97aa"} />}
+        {activeComponent === "Direct-Messaging" && <DirectMessaging />}
         {activeComponent === "Channel-Manager" && <AddChannel />}
+        {activeComponent === "Friends-Page" && <FriendsPage />}
       </div>
     </div>
   );

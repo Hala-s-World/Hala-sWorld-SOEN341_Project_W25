@@ -4,12 +4,12 @@ import ReceiveMessage from "./ReceiveMessage";
 
 
 //Deprecated
-export default function Chat({messages, user, error, message, setMessage, handleSendMessage, isSending}) {
+export default function Chat({messages, user, error, message, setMessage, handleSendMessage, isSending, header}) {
 
   return (
     <div className="main">
       <div className="chat-container">
-        <div className="opened-chat-banner">Chatbox title</div>
+        <div className="opened-chat-banner">{header}</div>
         <div className="opened-chat-box">
           {/* MESSAGES AREA */}
           <div className="chat-messages">

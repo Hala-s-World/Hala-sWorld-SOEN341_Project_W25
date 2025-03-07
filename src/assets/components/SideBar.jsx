@@ -6,18 +6,14 @@ import {
   FaFileAlt,
   FaCog,
   FaAngleDown,
+  FaUserFriends,
 } from "react-icons/fa";
 import "../styles/sidebar.css";
 import { useActiveComponent } from "../../helper/activeComponent";
-import {
-  FaArrowDown,
-  FaArrowDown19,
-  FaArrowDown91,
-  FaArrowDownAZ,
-} from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import ChannelManager from "./ChannelManager";
+import FriendsPage from "../../pages/FriendsPage";
 
 export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
   const { setActiveComponent } = useActiveComponent();
@@ -35,6 +31,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
           <img
             className="user-picture"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ0FpBg5Myb9CQ-bQpFou9BY9JXoRG6208_Q&s"
+            alt="User"
           />
         </div>
         <div className="user-name">
@@ -44,7 +41,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
           </span>
           <div className="dropdown">
             <div className="dropdown-list">
-              <div className="dropdown-item">profile</div>
+              <div className="dropdown-item">Profile</div>
               <div className="dropdown-item">Log out</div>
             </div>
           </div>
@@ -54,26 +51,20 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         <div className="sidebar-element" onClick={() => handleClick("Home")}>
           <FaHome className="sidebar-icon" /> Home
         </div>
-        <div className="sidebar-element" onClick={() => handleClick("Chat")}>
+        <div className="sidebar-element" onClick={() => handleClick("Direct-Messaging")}>
           <FaComment className="sidebar-icon" /> Chat
         </div>
-        <div
-          className="sidebar-element"
-          onClick={() => handleClick("Calendar")}
-        >
+        <div className="sidebar-element" onClick={() => handleClick("Calendar")}>
           <FaCalendarAlt className="sidebar-icon" /> Calendar
         </div>
-        <div
-          className="sidebar-element"
-          onClick={() => handleClick("Documents")}
-        >
+        <div className="sidebar-element" onClick={() => handleClick("Documents")}>
           <FaFileAlt className="sidebar-icon" /> Documents
         </div>
-        <div
-          className="sidebar-element"
-          onClick={() => handleClick("Settings")}
-        >
+        <div className="sidebar-element" onClick={() => handleClick("Settings")}>
           <FaCog className="sidebar-icon" /> Settings
+        </div>
+        <div className="sidebar-element"  onClick={() => handleClick("Friends-Page")}>       
+            <FaUserFriends className="sidebar-icon" /> Friends
         </div>
         {role === "admin" && <ChannelManager />}
       </div>

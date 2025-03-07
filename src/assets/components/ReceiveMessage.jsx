@@ -23,7 +23,7 @@ const ReceiveMessage = ({ messages, user, error }) => {
                     />
                     <div className="chat-info">
                         <div className="chat-header">
-                            <div className="chat-name">{msg.sender_id === user.id ? "You" : msg.receiver.username}</div>
+                            <div className="chat-name">{msg.sender_id === user.id ? "You" : msg.sender.username}</div>
                             <div className="chat-date">{msg.formattedDate}</div>
                         </div>
                         <div className="chat-text">{msg.content}</div>

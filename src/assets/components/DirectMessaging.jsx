@@ -4,24 +4,23 @@ import SupabaseAPI from "../../helper/supabaseAPI";
 import { useAuthStore } from "../../store/authStore";
 import Chat from "./Chat";
 
-export default function DirectMessaging({ receiverId }) {
-  const { user } = useAuthStore();
+export default function DirectMessaging() {
+  const { user, currentFriend } = useAuthStore();
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [messages, setMessages] = useState([]);
 
+  let {friendId, friendName} = currentFriend;
+
   // Fetch all direct messages between user and selected friend
   useEffect(() => {
     if (!user) return;
 
-    console.log(user.id)
-
     const fetchMessages = async () => {
       try {
-        const data = await SupabaseAPI.getDirectMessages(user.id, receiverId);
+        const data = await SupabaseAPI.getDirectMessages(user.id, friendId);
         if (data) {
-          console.log(data)
           setMessages(data);
         }
       } catch (error) {
@@ -41,7 +40,7 @@ export default function DirectMessaging({ receiverId }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [user, receiverId]);
+  }, [user, friendId]);
 
   // Send a direct message
 
@@ -51,9 +50,9 @@ export default function DirectMessaging({ receiverId }) {
     setError("");
 
     try {
-      console.log("Sending message:", { senderId: user.id, receiverId, messageText: message });
+      console.log("Sending message:", { senderId: user.id, friendId, messageText: message });
 
-      const data = await SupabaseAPI.sendDirectMessage(user.id, receiverId, message);
+      const data = await SupabaseAPI.sendDirectMessage(user.id, friendId, message);
 
       if (data) {
         console.log("Message sent successfully!");
@@ -76,7 +75,8 @@ export default function DirectMessaging({ receiverId }) {
       error={error}
       setMessage={setMessage}
       handleSendMessage={handleSendMessage}
-      isSending={isSending}/>
+      isSending={isSending}
+      header={friendName}/>
   );
 }
 

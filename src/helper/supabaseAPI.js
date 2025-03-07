@@ -175,6 +175,61 @@ const SupabaseAPI = {
   async deleteChannel(channelId) {
     const { error } = await supabase.from('channel').delete().eq('id', channelId);
     if (error) throw new Error(error.message);
+  },
+
+  /** ─────────────────────────────
+   *   FRIENDS
+   *  ───────────────────────────── */
+
+  async getFriends(userId) {
+    const { data, error } = await supabase
+      .from('friends')
+      .select(`
+        *,
+        friend_id,
+        user:user_id ( username ),
+        friend:friend_id ( username )
+      `)
+      .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
+      .eq('status', 'accepted');
+  
+    if (error) throw new Error(error.message);
+  
+    return data.map((friend) => ({
+      ...friend,
+      user_username: friend.user.username,
+      friend_username: friend.friend.username,
+    }));
+  },
+
+  async acceptFriendRequest(userId, friendId) {
+    const { data, error } = await supabase
+      .from('friends')
+      .update({ status: 'accepted' })
+      .eq('user_id', userId)
+      .eq('friend_id', friendId);
+  
+    if (error) throw new Error(error.message);
+    return data;
+  },
+  
+  async deleteFriend(userId, friendId) {
+    const { error } = await supabase
+      .from('friends')
+      .delete()
+      .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${userId})`);
+  
+    if (error) throw new Error(error.message);
+  },
+
+
+  async addFriend(userId, friendId) {
+    const { data, error } = await supabase
+      .from('friends')
+      .insert([{ user_id: userId, friend_id: friendId, status: 'pending' }]);
+  
+    if (error) throw new Error(error.message);
+    return data;
   }
 }
 
