@@ -47,6 +47,7 @@ export const useAuthStore = create(
           set({
             user: data.user,
             role: roleData?.role || "user",
+            session: data.session,
             authenticated: true,
             errorMessage: "",
           });
@@ -58,7 +59,9 @@ export const useAuthStore = create(
           return false;
         }
       },
-
+      setAuthenticatedUser: (user) => set({ user, authenticated: true }),
+      setSession: (session) => set({ session }),
+      
       logout: async () => {
         await supabase.auth.signOut();
         set({ user: null, role: null, errorMessage: "", authenticated: false });
