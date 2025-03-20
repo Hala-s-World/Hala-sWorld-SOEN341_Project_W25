@@ -69,7 +69,10 @@ export const useAuthStore = create(
           return false;
         }
       },
-
+      
+      setAuthenticatedUser: (user) => set({ user, authenticated: true }),
+      setSession: (session) => set({ session }),
+      
       logout: async () => {
         if (get().user?.id) {
           await supabase

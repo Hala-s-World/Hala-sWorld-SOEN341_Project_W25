@@ -10,21 +10,56 @@ import {
 } from "react-icons/fa";
 import "../styles/sidebar.css";
 import { useActiveComponent } from "../../helper/activeComponent";
-import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import ChannelManager from "./ChannelManager";
 import FriendsPage from "../../pages/FriendsPage";
 import { useEffect } from "react";
 import GetUserStatus from "./GetUserStatus";
+import { Link, useNavigate} from "react-router-dom";
+import SupabaseAPI from "../../helper/supabaseAPI";
 
 export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
   const { setActiveComponent } = useActiveComponent();
   const [isOpen, setIsOpen] = useState(false);
   const { role } = useAuthStore();
+  const [username, setUsername] = useState(null);
+  const [loading, setLoading] = useState(true); 
+  const {user, logout} = useAuthStore();
+  const navigate = useNavigate();
 
   const handleClick = (componentName) => {
     setActiveComponent(componentName);
   };
+
+
+  const handleLogout = async () => {
+    try {
+      await logout(); 
+      navigate("/login"); 
+    } catch (error) {
+      console.error("Error logging out:", error.message);
+    }
+  };
+
+
+  useEffect(() => {
+    if (!user) return;
+    const fetchUsername = async () => {
+      try {
+          const username = await SupabaseAPI.getUsername(user.id); 
+          if (username) {
+          setUsername(username); 
+          }
+      }
+         catch (error) {
+        console.error("Error fetching username:", error.message);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchUsername(); 
+  }, []);
 
   return (
     <div className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
@@ -47,7 +82,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
           <div className="dropdown">
             <div className="dropdown-list">
               <div className="dropdown-item">Profile</div>
-              <div className="dropdown-item">Log out</div>
+              <div className="dropdown-item" onClick={handleLogout}>Logout</div>
             </div>
           </div>
         </div>
