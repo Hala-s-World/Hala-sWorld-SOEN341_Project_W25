@@ -16,7 +16,7 @@ const Register = () => {
   
     try {
 
-      const { data, error } = await SupabaseAPI.signUp(email, password);
+      const { error } = await SupabaseAPI.signUp(email, password);
   
       if (error) {
         setErrorMessage(error.message);

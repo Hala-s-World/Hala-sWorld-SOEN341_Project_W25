@@ -120,6 +120,12 @@ const SupabaseAPI = {
     supabase.removeChannel(channel); 
   },
 
+  async getLastActive(userId){
+    const {data,error} = await supabase.from('user_status').select('last_active').eq('user_id',userId).single();  
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
 
   /** ─────────────────────────────
    *   USER MANAGEMENT
@@ -155,7 +161,6 @@ const SupabaseAPI = {
   async getUsername(userId) {
     const { data, error } = await supabase.from('user').select('username').eq('id', userId).single();
     if (error) throw new Error(error.message);
-    console.log(data.username)
     return data.username;
     
   },

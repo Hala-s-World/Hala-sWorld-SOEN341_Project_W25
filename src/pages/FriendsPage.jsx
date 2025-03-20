@@ -7,7 +7,7 @@ import  supabase  from "../helper/supabaseClient"; // Import your Supabase clien
 
 const FriendsPage = () => {
   const { user } = useAuthStore();
-  const [error, setError] = useState("");
+  const [ setError] = useState("");
   const [friends, setFriends] = useState([]);
 
   
@@ -20,7 +20,6 @@ const FriendsPage = () => {
         try {
             const data = await SupabaseAPI.getFriends(user.id);
             if (data) {
-            console.log("Friends:", data);
             setFriends(data);
             }
         } catch (error) {
