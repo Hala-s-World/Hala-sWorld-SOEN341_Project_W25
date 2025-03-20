@@ -53,6 +53,7 @@ const SupabaseAPI = {
       .single();
   
     if (error) console.error("Error fetching user status:", error.message);
+    console.log("User status", data);
     return { data, error };
   },
 
@@ -71,30 +72,44 @@ const SupabaseAPI = {
   subscribeToUserStatus(userId, setStatus) {
     const channel = supabase
       .channel(`public:user_status:user_id=eq.${userId}`)
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'user_status' }, payload => {
-        console.log("Real-time status update:", payload); // Log the real-time payload
-        setStatus(payload.new.status); // Update status with the new value
-      })
-      .subscribe();
-
-    return channel;
-  },
-  // Subscribe to real-time updates for the friend's status
-  subscribeToFriendStatus(friendId, setStatus) {
-    const channel = supabase
-      .channel(`public:user_status:user_id=eq.${friendId}`)
       .on('postgres_changes', 
         { event: 'UPDATE', schema: 'public', table: 'user_status' }, 
         payload => {
-          console.log("Real-time status update:", payload); 
-          if(payload?.new?.status){
-          console.log("Friend status updated to:", payload.new.status); 
-          setStatus(payload.new.status);
-          } else if (payload?.new?.status === null){
-            console.log("Status is null or missing, setting to offline");
+          
+          if (payload?.new?.user_id !== userId) {
+            return;
+          }
+          if (payload?.new?.status) {
+            setStatus(payload.new.status);
+          } else {
             setStatus("offline");
           }
-      })
+        })
+      .subscribe();
+  
+    return channel;
+  },
+  
+  
+  // Subscribe to real-time updates for the friend's status
+  subscribeToFriendStatus(friendId, setStatus) {
+    const channel = supabase
+      .channel(`user_status_friend_${friendId}`) // Unique channel for the friend
+      .on('postgres_changes', 
+        { event: 'UPDATE', schema: 'public', table: 'user_status' }, 
+        async (payload) => {
+          console.log("Real-time update received:", payload);
+          
+          // Fetch the latest status from Supabase
+          const { data, error } = await SupabaseAPI.getFriendStatus(friendId);
+          if (error) {
+            console.error("Error fetching latest status:", error);
+            setStatus("offline");
+          } else {
+            console.log("Verified latest friend status:", data.status);
+            setStatus(data?.status ?? "offline");
+          }
+        })
       .subscribe();
 
     return channel;

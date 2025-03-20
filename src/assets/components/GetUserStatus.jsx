@@ -17,15 +17,11 @@ const GetUserStatus = () => {
       try {
         console.log("Fetching status for userId:", user.id);
         const { data, error } = await SupabaseAPI.getUserStatus(user.id);
-        console.log("Fetched status data:", data);
+        console.log("Fetched user status data:", data);
 
         if (error) throw new Error(error);
 
-        if (data?.status) {
-        setStatus(data.status); 
-        } else {
-        setStatus("online");
-        }
+        setStatus((prevStatus) => prevStatus === "loading" ? (data?.status || "online") : prevStatus);
       } catch (err) {
         console.error("Error fetching user status:", err.message);
         setStatus("unknown");
@@ -33,6 +29,8 @@ const GetUserStatus = () => {
     };
 
     fetchStatus();
+
+    console.log("status after fetching status:", status);
 
      // Subscribe to real-time updates for the user's status
     const channel = SupabaseAPI.subscribeToUserStatus(user.id, setStatus);
@@ -42,13 +40,7 @@ const GetUserStatus = () => {
       SupabaseAPI.unsubscribeFromUserStatus(channel);
     };
   }, [user?.id]); 
-
-  // When the user is logged out, set the status to offline
-  useEffect(() => {
-    if (!user) {
-      setStatus("offline");
-    }
-  }, [user]); 
+ 
 
  
   return (

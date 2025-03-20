@@ -10,6 +10,8 @@ const FriendStatus = ({ friendId }) => {
   const [friendStatus, setFriendStatus] = useState('loading');
   
   useEffect(() => {
+    let channel = null;
+
     const fetchFriendStatus = async () => {
         try{
             const { data, error } = await SupabaseAPI.getFriendStatus(friendId);
@@ -28,14 +30,19 @@ const FriendStatus = ({ friendId }) => {
 
     fetchFriendStatus();
 
+    if (channel) {
+      SupabaseAPI.unsubscribeFromUserStatus(channel);
+    }
+
     // Subscribe to real-time updates of the friend's status
-    const channel = SupabaseAPI.subscribeToFriendStatus(friendId, setFriendStatus);
+       channel = SupabaseAPI.subscribeToFriendStatus(friendId, (newStatus) => {
+        console.log("Real-time update received:", newStatus);
+        setFriendStatus(newStatus ?? "offline")
+      });
 
     // Cleanup subscription on component unmount
     return () => {
-      if (channel) {
-        supabase.removeChannel(channel); // Unsubscribe when the component unmounts
-      }
+      SupabaseAPI.unsubscribeFromUserStatus(channel);
     };
 
   }, [friendId]);
