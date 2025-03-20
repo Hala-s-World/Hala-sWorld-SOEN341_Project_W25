@@ -40,6 +40,7 @@ const FriendStatus = ({ friendId }) => {
 
   }, [friendId]);
 
+  const statusToDisplay = friendStatus;
 
   return (
     <div className="flex items-center space-x-2">
