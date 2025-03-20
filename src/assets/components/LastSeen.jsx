@@ -2,25 +2,7 @@ import SupabaseAPI from '../../helper/supabaseAPI';
 import { useEffect, useState } from "react";
 import "../styles/LastSeen.css"
 
-const LastSeen = ({ friendId }) => {
-    const [lastSeenTime, setLastSeenTime] = useState(null);
-
-    useEffect(() => {
-        const fetchLastSeen = async () => {
-            if (!friendId) return;
-
-            try {
-                const data = await SupabaseAPI.getLastActive(friendId);
-                
-
-                setLastSeenTime(data);
-            } catch (e) {
-                console.error("Error getting last seen time:", e.message);
-            }
-        };
-
-        fetchLastSeen();
-    }, [friendId]);
+const LastSeen = ({ friendId, lastSeenTime }) => {
 
     const formatTime = (time) => {
         if (!time || !time.last_active) return "Unknown";

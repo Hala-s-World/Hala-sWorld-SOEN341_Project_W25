@@ -4,6 +4,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { useActiveComponent } from "../../helper/activeComponent";
 import { useAuthStore } from '../../store/authStore';
 import SupabaseAPI from '../../helper/supabaseAPI';
+import supabase from "../../helper/supabaseClient";
 import FriendStatus from "./GetFriendStatus"
 import LastSeen from './LastSeen';
 
@@ -11,6 +12,7 @@ const FriendCard = ({ friendId, friendName }) => {
     const { setActiveComponent } = useActiveComponent();
     const { setCurrentFriend, user } = useAuthStore();
     const [userStatus, setUserStatus] = useState(null); 
+    const [lastSeenTime, setLastSeenTime] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
@@ -26,7 +28,19 @@ const FriendCard = ({ friendId, friendName }) => {
             }
         };
 
+        const fetchLastSeen = async () => {
+            if (!friendId) return;
+
+            try {
+                const data = await SupabaseAPI.getLastActive(friendId);
+                setLastSeenTime(data);
+            } catch (e) {
+                console.error("Error getting last seen time:", e.message);
+            }
+        };
+
         fetchStatus();
+        fetchLastSeen();
 
         const channel = SupabaseAPI.subscribeToFriendStatus(friendId, setUserStatus);
 
@@ -55,9 +69,11 @@ const FriendCard = ({ friendId, friendName }) => {
 
             {/* Only render status components after it's loaded */}
             {isLoaded && (
-                userStatus === 'offline' && <LastSeen friendId={friendId} /> 
+                <>
+                    {userStatus === 'offline' && <LastSeen friendId={friendId} lastSeenTime={lastSeenTime} />}
+                    <FriendStatus friendId={friendId} friendStatus={userStatus} />
+                </>
             )}
-            <FriendStatus friendId={friendId} />
             <LuMessageCircle className="icon message-icon" onClick={handleChatOnClick} />
             <TiDeleteOutline className="icon delete-icon" onClick={handleDeleteOnClick} />
         </div>
