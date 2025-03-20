@@ -4,6 +4,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { useActiveComponent } from "../../helper/activeComponent";
 import { useAuthStore } from '../../store/authStore';
 import SupabaseAPI from '../../helper/supabaseAPI';
+import FriendStatus from "./GetFriendStatus"
 
 const FriendCard = ({ friendId, friendName }) => {
 
@@ -28,6 +29,7 @@ const FriendCard = ({ friendId, friendName }) => {
                         alt="User avatar"
                     />
             <div className="friend-name">{friendName}</div>
+            <div className="friend-status"><FriendStatus friendId={friendId}></FriendStatus></div>
             <LuMessageCircle className="icon message-icon" onClick={handleChatOnClick} />
             <TiDeleteOutline className="icon delete-icon" onClick={handleDeleteOnClick}/>
         </div>
