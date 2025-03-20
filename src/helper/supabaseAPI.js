@@ -5,6 +5,7 @@ const SupabaseAPI = {
   /** ─────────────────────────────
    *   AUTHENTICATION METHODS
    *  ───────────────────────────── */
+   
   async signUp(email, password) {
     //create user in supabase
     const { data, error } = await supabase.auth.signUp({
@@ -134,6 +135,14 @@ const SupabaseAPI = {
     const { data, error } = await supabase.from('user').select('*');
     if (error) throw new Error(error.message);
     return data;
+  },
+
+  async getUsername(userId) {
+    const { data, error } = await supabase.from('user').select('username').eq('id', userId).single();
+    if (error) throw new Error(error.message);
+    console.log(data.username)
+    return data.username;
+    
   },
 
 
