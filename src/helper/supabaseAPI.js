@@ -41,14 +41,6 @@ const SupabaseAPI = {
     return data;
   },
 
-  async getUsername(userId) {
-    const { data, error } = await supabase.from('user').select('username').eq('id', userId).single();
-    if (error) throw new Error(error.message);
-    console.log(data.username)
-    return data.username;
-    
-  },
-
   /** ─────────────────────────────
    *   STATUS MANAGEMENT
    *  ───────────────────────────── */
