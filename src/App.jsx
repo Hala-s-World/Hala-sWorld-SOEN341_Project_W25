@@ -22,9 +22,9 @@ function App() {
         <Route
           path="/dashboard"
           element={
-           // <Wrapper>
+           <Wrapper>
               <Dashboard />
-            //</Wrapper>
+          </Wrapper>
           }
         />
               <Route path="/channels" element={<ChannelManager/>}></Route>

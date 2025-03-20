@@ -1,10 +1,11 @@
-import supabase from "./supabaseClient";
+import  supabase from "./supabaseClient";
 import { format } from "date-fns";
 
 const SupabaseAPI = {
   /** ─────────────────────────────
    *   AUTHENTICATION METHODS
    *  ───────────────────────────── */
+   
   async signUp(email, password) {
     //create user in supabase
     const { data, error } = await supabase.auth.signUp({
@@ -42,6 +43,85 @@ const SupabaseAPI = {
   },
 
   /** ─────────────────────────────
+   *   STATUS MANAGEMENT
+   *  ───────────────────────────── */
+  async getUserStatus(userId) {
+    const { data, error } = await supabase
+      .from("user_status")
+      .select("status")
+      .eq("user_id", userId)
+      .single();
+  
+    if (error) console.error("Error fetching user status:", error.message);
+    console.log("User status", data);
+    return { data, error };
+  },
+
+  async getFriendStatus(friendId) {
+    const { data, error } = await supabase
+      .from("user_status")
+      .select("status")
+      .eq("user_id", friendId)
+      .single();
+  
+    if (error) console.error("Error fetching friend status:", error.message);
+    return { data, error };
+  },
+
+  // Subscribe to real-time updates for the user's status
+  subscribeToUserStatus(userId, setStatus) {
+    const channel = supabase
+      .channel(`public:user_status:user_id=eq.${userId}`)
+      .on('postgres_changes', 
+        { event: 'UPDATE', schema: 'public', table: 'user_status' }, 
+        payload => {
+          
+          if (payload?.new?.user_id !== userId) {
+            return;
+          }
+          if (payload?.new?.status) {
+            setStatus(payload.new.status);
+          } else {
+            setStatus("offline");
+          }
+        })
+      .subscribe();
+  
+    return channel;
+  },
+  
+  
+  // Subscribe to real-time updates for the friend's status
+  subscribeToFriendStatus(friendId, setStatus) {
+    const channel = supabase
+      .channel(`user_status_friend_${friendId}`) // Unique channel for the friend
+      .on('postgres_changes', 
+        { event: 'UPDATE', schema: 'public', table: 'user_status' }, 
+        async (payload) => {
+          console.log("Real-time update received:", payload);
+          
+          // Fetch the latest status from Supabase
+          const { data, error } = await SupabaseAPI.getFriendStatus(friendId);
+          if (error) {
+            console.error("Error fetching latest status:", error);
+            setStatus("offline");
+          } else {
+            console.log("Verified latest friend status:", data.status);
+            setStatus(data?.status ?? "offline");
+          }
+        })
+      .subscribe();
+
+    return channel;
+  },
+
+  // Unsubscribe from real-time updates
+  unsubscribeFromUserStatus(channel) {
+    supabase.removeChannel(channel); 
+  },
+
+
+  /** ─────────────────────────────
    *   USER MANAGEMENT
    *  ───────────────────────────── */
   async createUser(userId, username="temp_username") {
@@ -70,6 +150,14 @@ const SupabaseAPI = {
     const { data, error } = await supabase.from('user').select('*');
     if (error) throw new Error(error.message);
     return data;
+  },
+
+  async getUsername(userId) {
+    const { data, error } = await supabase.from('user').select('username').eq('id', userId).single();
+    if (error) throw new Error(error.message);
+    console.log(data.username)
+    return data.username;
+    
   },
 
 
