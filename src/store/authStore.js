@@ -13,15 +13,20 @@ export const useAuthStore = create(
       currentFriend: null,
       setCurrentFriend: (friend) => set({ currentFriend: friend }),
       listening: false, 
+
+      isAuthenticated: async () => {
+        const { data } = await supabase.auth.getSession();
+        console.log(data);
+        set({ authenticated: !!data.session, loading: false });
+      },
     
       login: async (email, password) => {
         set({ errorMessage: "" });
 
         try {
-          console.log(email, password)
           const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password
+            email,
+            password
           });
 
           if (error) {
@@ -51,13 +56,15 @@ export const useAuthStore = create(
             authenticated: true,
             errorMessage: "",
           });
-            // Set the user's status to "online" upon login
+
+          // Set the user's status to "online" upon login
           await supabase
           .from('user_status')
           .upsert([
             {
               user_id: data.user.id,
               status: 'online', 
+              last_active: new Date().toISOString()
             }
           ]);
 
@@ -68,6 +75,7 @@ export const useAuthStore = create(
           return false;
         }
       },
+      
       setAuthenticatedUser: (user) => set({ user, authenticated: true }),
       setSession: (session) => set({ session }),
       
@@ -87,13 +95,22 @@ export const useAuthStore = create(
         set({ user: null, role: null, errorMessage: "", authenticated: false });
       },
 
-      isAuthenticated: async () => {
+      restoreSession: async () => {
         const { data } = await supabase.auth.getSession();
-        console.log(data);
-        set({ authenticated: !!data.session, loading: false });
+        
+        if (data?.session) {
+          set({
+            user: data.session.user,
+            authenticated: true,
+            loading: false,
+          });
+        } else {
+          console.log("No active session found.");
+          set({ authenticated: false, loading: false });
+        }
       },
 
-       subscribeToAuthChanges: () => {
+      subscribeToAuthChanges: () => {
         if (get().listening) return; 
         const authListener = supabase.auth.onAuthStateChange((event, session) => {
           if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
@@ -120,10 +137,8 @@ export const useAuthStore = create(
   )
 );
 
-// Clear session storage and Supabase session on browser close
-window.addEventListener("beforeunload", async () => {
-  
-  await supabase.auth.signOut();
-  sessionStorage.clear();
-});
+useAuthStore.getState().restoreSession();
 
+window.addEventListener("beforeunload", async () => {
+  await supabase.auth.signOut();
+});

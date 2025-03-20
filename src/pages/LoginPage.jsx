@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../assets/styles/authentication.css";
 import Login from "../assets/components/Login";
 import Register from "../assets/components/Register";

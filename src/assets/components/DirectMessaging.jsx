@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import supabase from "../../helper/supabaseClient";
 import SupabaseAPI from "../../helper/supabaseAPI";
 import { useAuthStore } from "../../store/authStore";
