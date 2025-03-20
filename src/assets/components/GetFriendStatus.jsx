@@ -40,13 +40,6 @@ const FriendStatus = ({ friendId }) => {
 
   }, [friendId]);
 
-  useEffect(() => {
-    // Logging for debugging purposes
-    console.log("Friend Status Updated:", friendStatus);
-  }, [friendStatus]);
-
-   // Make sure `friendStatus` is always a string before calling .charAt
-   const statusToDisplay = typeof friendStatus === 'string' ? friendStatus : 'offline';
 
   return (
     <div className="flex items-center space-x-2">
@@ -66,9 +59,6 @@ const FriendStatus = ({ friendId }) => {
           marginTop: "8px",
         }}
       ></span>
-      {/* <span className="text-sm font-medium">
-        {friendStatus.charAt(0).toUpperCase() + friendStatus.slice(1)}
-      </span> */}
     </div>
   );
 };

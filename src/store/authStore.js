@@ -11,7 +11,7 @@ export const useAuthStore = create(
       authenticated: false,
       loading: true,
       currentFriend:null,
-      listening: false, // Track if we are listening to auth changes
+      listening: false, 
 
       setCurrentFriend: (friend) => set({ currentFriend: friend }),
     
@@ -74,7 +74,6 @@ export const useAuthStore = create(
       setSession: (session) => set({ session }),
       
       logout: async () => {
-        // Update the status to "offline" when the user logs out
         if (get().user?.id) {
           await supabase
             .from("user_status")
@@ -96,18 +95,15 @@ export const useAuthStore = create(
         set({ authenticated: !!data.session, loading: false });
       },
 
-       // Function to subscribe to auth state changes
        subscribeToAuthChanges: () => {
-        if (get().listening) return; // Don't add multiple listeners
-
-        // Start listening for auth state changes
+        if (get().listening) return; 
         const authListener = supabase.auth.onAuthStateChange((event, session) => {
           if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
-            set({ user: session?.user ?? null }); // Update user state on auth change
+            set({ user: session?.user ?? null }); 
           }
         });
 
-        set({ listening: true }); // Mark as listening
+        set({ listening: true }); 
         return authListener;
       },
 

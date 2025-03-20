@@ -41,14 +41,14 @@ const GetUserStatus = () => {
     return () => {
       SupabaseAPI.unsubscribeFromUserStatus(channel);
     };
-  }, [user?.id]); // Depend on user.id to fetch status when it changes
+  }, [user?.id]); 
 
   // When the user is logged out, set the status to offline
   useEffect(() => {
     if (!user) {
       setStatus("offline");
     }
-  }, [user]); // Run this effect whenever the user changes
+  }, [user]); 
 
  
   return (

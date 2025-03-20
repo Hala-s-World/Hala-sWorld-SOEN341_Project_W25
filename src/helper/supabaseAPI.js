@@ -66,26 +66,6 @@ const SupabaseAPI = {
     if (error) console.error("Error fetching friend status:", error.message);
     return { data, error };
   },
-  // Subscribe to real-time updates for the friend's status
-  subscribeToFriendStatus(friendId, setStatus) {
-    const channel = supabase
-      .channel(`public:user_status:user_id=eq.${friendId}`)
-      .on('postgres_changes', 
-        { event: 'UPDATE', schema: 'public', table: 'user_status' }, 
-        payload => {
-          console.log("Real-time status update:", payload); // Log the real-time payload
-          if(payload?.new?.status){
-          console.log("Friend status updated to:", payload.new.status); // Log the new status value
-          setStatus(payload.new.status); // Update status with the new value
-          } else if (payload?.new?.status === null){
-            console.log("Status is null or missing, setting to offline");
-            setStatus("offline");
-          }
-      })
-      .subscribe();
-
-    return channel;
-  },
 
   // Subscribe to real-time updates for the user's status
   subscribeToUserStatus(userId, setStatus) {
@@ -99,10 +79,30 @@ const SupabaseAPI = {
 
     return channel;
   },
+  // Subscribe to real-time updates for the friend's status
+  subscribeToFriendStatus(friendId, setStatus) {
+    const channel = supabase
+      .channel(`public:user_status:user_id=eq.${friendId}`)
+      .on('postgres_changes', 
+        { event: 'UPDATE', schema: 'public', table: 'user_status' }, 
+        payload => {
+          console.log("Real-time status update:", payload); 
+          if(payload?.new?.status){
+          console.log("Friend status updated to:", payload.new.status); 
+          setStatus(payload.new.status);
+          } else if (payload?.new?.status === null){
+            console.log("Status is null or missing, setting to offline");
+            setStatus("offline");
+          }
+      })
+      .subscribe();
+
+    return channel;
+  },
 
   // Unsubscribe from real-time updates
   unsubscribeFromUserStatus(channel) {
-    supabase.removeChannel(channel); // Cleanly remove the channel when no longer needed
+    supabase.removeChannel(channel); 
   },
 
 
