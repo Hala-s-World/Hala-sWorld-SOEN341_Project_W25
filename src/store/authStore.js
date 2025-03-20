@@ -4,15 +4,17 @@ import supabase from "../helper/supabaseClient";
 
 export const useAuthStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       role: null,
       errorMessage: "",
       authenticated: false,
       loading: true,
       currentFriend:null,
-      setCurrentFriend: (friend) => set({ currentFriend: friend }),
+      listening: false, // Track if we are listening to auth changes
 
+      setCurrentFriend: (friend) => set({ currentFriend: friend }),
+    
       login: async (email, password) => {
         set({ errorMessage: "" });
 
@@ -51,6 +53,15 @@ export const useAuthStore = create(
             authenticated: true,
             errorMessage: "",
           });
+            // Set the user's status to "online" upon login
+          await supabase
+          .from('user_status')
+          .upsert([
+            {
+              user_id: data.user.id,
+              status: 'online', 
+            }
+          ]);
 
           return true;
         } catch (err) {
@@ -63,6 +74,18 @@ export const useAuthStore = create(
       setSession: (session) => set({ session }),
       
       logout: async () => {
+        // Update the status to "offline" when the user logs out
+        if (get().user?.id) {
+          await supabase
+            .from("user_status")
+            .upsert([
+              {
+                user_id: get().user.id,
+                status: "offline",
+              },
+            ]);
+        }
+
         await supabase.auth.signOut();
         set({ user: null, role: null, errorMessage: "", authenticated: false });
       },
@@ -72,7 +95,32 @@ export const useAuthStore = create(
         console.log(data);
         set({ authenticated: !!data.session, loading: false });
       },
+
+       // Function to subscribe to auth state changes
+       subscribeToAuthChanges: () => {
+        if (get().listening) return; // Don't add multiple listeners
+
+        // Start listening for auth state changes
+        const authListener = supabase.auth.onAuthStateChange((event, session) => {
+          if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+            set({ user: session?.user ?? null }); // Update user state on auth change
+          }
+        });
+
+        set({ listening: true }); // Mark as listening
+        return authListener;
+      },
+
+      stopListening: () => {
+        const listener = get().subscribeToAuthChanges(); 
+        if (listener) {
+          listener.unsubscribe(); 
+        }
+        set({ listening: false });
+      },
     }),
+
+    
     { name: "auth-storage" }
   )
 );

@@ -1,4 +1,4 @@
-import supabase from "./supabaseClient";
+import  supabase from "./supabaseClient";
 import { format } from "date-fns";
 
 const SupabaseAPI = {
@@ -41,6 +41,70 @@ const SupabaseAPI = {
     if (error) throw new Error(error.message);
     return data;
   },
+
+  /** ─────────────────────────────
+   *   STATUS MANAGEMENT
+   *  ───────────────────────────── */
+  async getUserStatus(userId) {
+    const { data, error } = await supabase
+      .from("user_status")
+      .select("status")
+      .eq("user_id", userId)
+      .single();
+  
+    if (error) console.error("Error fetching user status:", error.message);
+    return { data, error };
+  },
+
+  async getFriendStatus(friendId) {
+    const { data, error } = await supabase
+      .from("user_status")
+      .select("status")
+      .eq("user_id", friendId)
+      .single();
+  
+    if (error) console.error("Error fetching friend status:", error.message);
+    return { data, error };
+  },
+  // Subscribe to real-time updates for the friend's status
+  subscribeToFriendStatus(friendId, setStatus) {
+    const channel = supabase
+      .channel(`public:user_status:user_id=eq.${friendId}`)
+      .on('postgres_changes', 
+        { event: 'UPDATE', schema: 'public', table: 'user_status' }, 
+        payload => {
+          console.log("Real-time status update:", payload); // Log the real-time payload
+          if(payload?.new?.status){
+          console.log("Friend status updated to:", payload.new.status); // Log the new status value
+          setStatus(payload.new.status); // Update status with the new value
+          } else if (payload?.new?.status === null){
+            console.log("Status is null or missing, setting to offline");
+            setStatus("offline");
+          }
+      })
+      .subscribe();
+
+    return channel;
+  },
+
+  // Subscribe to real-time updates for the user's status
+  subscribeToUserStatus(userId, setStatus) {
+    const channel = supabase
+      .channel(`public:user_status:user_id=eq.${userId}`)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'user_status' }, payload => {
+        console.log("Real-time status update:", payload); // Log the real-time payload
+        setStatus(payload.new.status); // Update status with the new value
+      })
+      .subscribe();
+
+    return channel;
+  },
+
+  // Unsubscribe from real-time updates
+  unsubscribeFromUserStatus(channel) {
+    supabase.removeChannel(channel); // Cleanly remove the channel when no longer needed
+  },
+
 
   /** ─────────────────────────────
    *   USER MANAGEMENT

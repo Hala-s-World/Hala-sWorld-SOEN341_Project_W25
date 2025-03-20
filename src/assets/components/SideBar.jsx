@@ -16,6 +16,7 @@ import { useAuthStore } from "../../store/authStore";
 import ChannelManager from "./ChannelManager";
 import FriendsPage from "../../pages/FriendsPage";
 import { useEffect } from "react";
+import GetUserStatus from "./GetUserStatus";
 
 
 export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
@@ -74,6 +75,9 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         </div>
         <div className="user-name">
         {username}
+        <div className="status">
+          <GetUserStatus></GetUserStatus>
+        </div>
           <span>
             <FaAngleDown className="dropdown-icon" />
           </span>
