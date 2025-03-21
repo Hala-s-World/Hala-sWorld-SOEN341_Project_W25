@@ -1,8 +1,6 @@
-import SupabaseAPI from '../../helper/supabaseAPI';
-import { useEffect, useState } from "react";
 import "../styles/LastSeen.css"
 
-const LastSeen = ({ friendId, lastSeenTime }) => {
+const LastSeen = ({lastSeenTime }) => {
 
     const formatTime = (time) => {
         if (!time || !time.last_active) return "Unknown";

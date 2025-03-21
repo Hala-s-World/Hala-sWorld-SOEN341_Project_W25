@@ -53,7 +53,6 @@ const SupabaseAPI = {
       .single();
   
     if (error) console.error("Error fetching user status:", error.message);
-    console.log("User status", data);
     return { data, error };
   },
 
@@ -251,6 +250,102 @@ const SupabaseAPI = {
       formattedDate: format(new Date(message.created_at), "dd MMM yyyy HH:mm"),
     }));
   },
+
+  async subscribeToUnreadMessages(userId, friendId, setUnreadCount) {
+    const channel = supabase
+        .channel(`unread_messages_${userId}_${friendId}`)
+        .on('postgres_changes', 
+            { event: 'UPDATE', schema: 'public', table: 'unread_messages' }, 
+            async (payload) => {
+                console.log("Real-time update received:", payload);
+                
+                // Fetch the latest unread messages count from Supabase
+                const { data, error } = await SupabaseAPI.getUnreadMessagesCount(userId, friendId);
+                if (error) {
+                    console.error("Error fetching latest unread messages count:", error);
+                } else {
+                    console.log("Verified latest unread messages count:", data);
+                    setUnreadCount(data);
+                }
+            })
+        .subscribe();
+
+    return channel;
+},
+
+  async getUnreadMessagesCount(userId, friendId) {
+    const { data, error } = await supabase
+      .from('unread_messages')
+      .select('unread_count')
+      .eq('friend_id', friendId)
+      .eq('user_id', userId)
+      .single();
+
+    if (error && error.code !== 'PGRST116') { // Ignore "No Rows Found" error
+      throw new Error(error.message);
+    }
+    return data ? data.unread_count : 0;
+  },
+
+  async resetUnreadMessagesCount(userId, friendId) {
+    const { data, error } = await supabase
+      .from('unread_messages')
+      .update({ unread_count: 0 })
+      .eq('friend_id', friendId)
+      .eq('user_id', userId);
+
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
+  async IncrementUnreadMessagesCount(senderId, receiverId) {
+    // Check if an unread message record exists
+    const { data: existingRecord, error: fetchError } = await supabase
+        .from('unread_messages')
+        .select('unread_count')
+        .eq('friend_id', senderId)
+        .eq('user_id', receiverId)
+        .single();
+
+    if (fetchError && fetchError.code !== 'PGRST116') { // Ignore "No Rows Found" error
+        console.error("Error fetching unread message record:", fetchError);
+        throw new Error(fetchError.message);
+    }
+
+    if (existingRecord) {
+        // If the record exists, increment the unread_count
+        const { data, error } = await supabase
+            .from('unread_messages')
+            .update({ unread_count: existingRecord.unread_count + 1 }) // Manually increment
+            .eq('friend_id', senderId)
+            .eq('user_id', receiverId);
+
+        if (error) {
+            console.error("Error incrementing unread count:", error);
+            throw new Error(error.message);
+        }
+
+        console.log("Incremented unread count:", data);
+        return data;
+    } else {
+        // If no record exists, insert a new one with unread_count = 1
+        const { data, error } = await supabase
+            .from('unread_messages')
+            .insert([{ friend_id: senderId, user_id: receiverId, unread_count: 1 }]);
+
+        if (error) {
+            console.error("Error creating unread message record:", error);
+            throw new Error(error.message);
+        }
+
+        console.log("Created new unread message record:", data);
+        return data;
+    }
+},
+
+unsubscribeFromUnreadMessages(channel) {
+    supabase.removeChannel(channel);
+},
 
   /** ─────────────────────────────
    *   MODERATION
