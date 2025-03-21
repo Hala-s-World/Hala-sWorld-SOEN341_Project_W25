@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import SupabaseAPI from "../../helper/supabaseAPI";
 import { useAuthStore } from "../../store/authStore";
-import supabase from "../../helper/supabaseClient";
 
 const GetUserStatus = () => {
     const { user } = useAuthStore(); // Get current user from the store
@@ -15,9 +14,7 @@ const GetUserStatus = () => {
     // Function to fetch the initial status
     const fetchStatus = async () => {
       try {
-        console.log("Fetching status for userId:", user.id);
         const { data, error } = await SupabaseAPI.getUserStatus(user.id);
-        console.log("Fetched user status data:", data);
 
         if (error) throw new Error(error);
 
@@ -39,6 +36,7 @@ const GetUserStatus = () => {
     return () => {
       SupabaseAPI.unsubscribeFromUserStatus(channel);
     };
+    
   }, [user?.id]); 
  
 

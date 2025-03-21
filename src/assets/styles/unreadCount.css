@@ -1,0 +1,15 @@
+.unread-count {
+    font-size: 1rem;
+    color: rgb(196, 66, 66);
+    margin-top: 5px;
+    
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding-right: 5px;
+}
+
+p{
+    margin: 0;
+}
+

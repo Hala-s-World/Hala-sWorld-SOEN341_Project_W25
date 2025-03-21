@@ -53,7 +53,6 @@ const SupabaseAPI = {
       .single();
   
     if (error) console.error("Error fetching user status:", error.message);
-    console.log("User status", data);
     return { data, error };
   },
 
@@ -252,27 +251,51 @@ const SupabaseAPI = {
     }));
   },
 
-  async getUnreadMessagesCount(senderId, receiverId) {
+  async subscribeToUnreadMessages(userId, friendId, setUnreadCount) {
+    const channel = supabase
+        .channel(`unread_messages_${userId}_${friendId}`)
+        .on('postgres_changes', 
+            { event: 'UPDATE', schema: 'public', table: 'unread_messages' }, 
+            async (payload) => {
+                console.log("Real-time update received:", payload);
+                
+                // Fetch the latest unread messages count from Supabase
+                const { data, error } = await SupabaseAPI.getUnreadMessagesCount(userId, friendId);
+                if (error) {
+                    console.error("Error fetching latest unread messages count:", error);
+                } else {
+                    console.log("Verified latest unread messages count:", data);
+                    setUnreadCount(data);
+                }
+            })
+        .subscribe();
+
+    return channel;
+},
+
+  async getUnreadMessagesCount(userId, friendId) {
     const { data, error } = await supabase
       .from('unread_messages')
       .select('unread_count')
-      .eq('friend_id', senderId)
-      .eq('user_id', receiverId)
+      .eq('friend_id', friendId)
+      .eq('user_id', userId)
       .single();
 
-    if (error) throw new Error(error.message);
-    return data?.count ?? 0;
+    if (error && error.code !== 'PGRST116') { // Ignore "No Rows Found" error
+      throw new Error(error.message);
+    }
+    return data ? data.unread_count : 0;
   },
 
-  async resetUnreadMessagesCount(senderId, receiverId) {
-    const { error } = await supabase
+  async resetUnreadMessagesCount(userId, friendId) {
+    const { data, error } = await supabase
       .from('unread_messages')
-      .delete()
-      .eq('friend_id', senderId)
-      .eq('user_id', receiverId);
+      .update({ unread_count: 0 })
+      .eq('friend_id', friendId)
+      .eq('user_id', userId);
 
     if (error) throw new Error(error.message);
-    return true
+    return data;
   },
 
   async IncrementUnreadMessagesCount(senderId, receiverId) {
@@ -320,6 +343,9 @@ const SupabaseAPI = {
     }
 },
 
+unsubscribeFromUnreadMessages(channel) {
+    supabase.removeChannel(channel);
+},
 
   /** ─────────────────────────────
    *   MODERATION
