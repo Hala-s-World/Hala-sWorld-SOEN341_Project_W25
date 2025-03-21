@@ -10,6 +10,8 @@ export default function DirectMessaging() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [messages, setMessages] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [friendStatus, setFriendStatus] = useState("offline");
 
   let {friendId, friendName} = currentFriend;
 
@@ -29,7 +31,23 @@ export default function DirectMessaging() {
       }
     };
 
+    //fetch status of friend
+    const fetchStatus = async () => {
+      try {
+          const { data } = await SupabaseAPI.getUserStatus(friendId);
+          setFriendStatus(data?.status ?? "offline");
+      } catch (error) {
+          console.error("Error fetching user status:", error);
+          setFriendStatus("offline");
+      } finally {
+          setIsLoaded(true);
+      }
+    };
+
+    fetchStatus();
     fetchMessages();
+
+    const channel = SupabaseAPI.subscribeToFriendStatus(friendId, setFriendStatus);
 
     //subscribe to real time changes on direct messages table
     const subscription = supabase
@@ -39,6 +57,7 @@ export default function DirectMessaging() {
 
     return () => {
       subscription.unsubscribe();
+      SupabaseAPI.unsubscribeFromUserStatus(channel);
     };
   }, [user, friendId]);
 
@@ -59,6 +78,13 @@ export default function DirectMessaging() {
         setMessage("");
         setMessages((prevMessages) => [...prevMessages, data[0]]);
       }
+
+      // Increment unread messages count if friend is offline
+      if(friendStatus === "offline"){
+        await SupabaseAPI.IncrementUnreadMessagesCount(user.id, friendId);
+
+      }
+
     } catch (error) {
       console.log("Error sending message:", error);
       setError("There was an error sending your message.");

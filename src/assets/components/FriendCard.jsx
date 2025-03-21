@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import { LuMessageCircle } from "react-icons/lu";
 import { TiDeleteOutline } from "react-icons/ti";
 import { useActiveComponent } from "../../helper/activeComponent";
 import { useAuthStore } from '../../store/authStore';
 import SupabaseAPI from '../../helper/supabaseAPI';
-import supabase from "../../helper/supabaseClient";
 import FriendStatus from "./GetFriendStatus"
 import LastSeen from './LastSeen';
 
@@ -78,6 +78,10 @@ const FriendCard = ({ friendId, friendName }) => {
             <TiDeleteOutline className="icon delete-icon" onClick={handleDeleteOnClick} />
         </div>
     );
+};
+FriendCard.propTypes = {
+    friendId: PropTypes.string.isRequired,
+    friendName: PropTypes.string.isRequired,
 };
 
 export default FriendCard;

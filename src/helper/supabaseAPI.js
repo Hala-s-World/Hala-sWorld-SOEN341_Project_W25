@@ -252,6 +252,75 @@ const SupabaseAPI = {
     }));
   },
 
+  async getUnreadMessagesCount(senderId, receiverId) {
+    const { data, error } = await supabase
+      .from('unread_messages')
+      .select('unread_count')
+      .eq('friend_id', senderId)
+      .eq('user_id', receiverId)
+      .single();
+
+    if (error) throw new Error(error.message);
+    return data?.count ?? 0;
+  },
+
+  async resetUnreadMessagesCount(senderId, receiverId) {
+    const { error } = await supabase
+      .from('unread_messages')
+      .delete()
+      .eq('friend_id', senderId)
+      .eq('user_id', receiverId);
+
+    if (error) throw new Error(error.message);
+    return true
+  },
+
+  async IncrementUnreadMessagesCount(senderId, receiverId) {
+    // Check if an unread message record exists
+    const { data: existingRecord, error: fetchError } = await supabase
+        .from('unread_messages')
+        .select('unread_count')
+        .eq('friend_id', senderId)
+        .eq('user_id', receiverId)
+        .single();
+
+    if (fetchError && fetchError.code !== 'PGRST116') { // Ignore "No Rows Found" error
+        console.error("Error fetching unread message record:", fetchError);
+        throw new Error(fetchError.message);
+    }
+
+    if (existingRecord) {
+        // If the record exists, increment the unread_count
+        const { data, error } = await supabase
+            .from('unread_messages')
+            .update({ unread_count: existingRecord.unread_count + 1 }) // Manually increment
+            .eq('friend_id', senderId)
+            .eq('user_id', receiverId);
+
+        if (error) {
+            console.error("Error incrementing unread count:", error);
+            throw new Error(error.message);
+        }
+
+        console.log("Incremented unread count:", data);
+        return data;
+    } else {
+        // If no record exists, insert a new one with unread_count = 1
+        const { data, error } = await supabase
+            .from('unread_messages')
+            .insert([{ friend_id: senderId, user_id: receiverId, unread_count: 1 }]);
+
+        if (error) {
+            console.error("Error creating unread message record:", error);
+            throw new Error(error.message);
+        }
+
+        console.log("Created new unread message record:", data);
+        return data;
+    }
+},
+
+
   /** ─────────────────────────────
    *   MODERATION
    *  ───────────────────────────── */
