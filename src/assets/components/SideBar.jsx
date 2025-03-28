@@ -7,6 +7,7 @@ import {
   FaCog,
   FaAngleDown,
   FaUserFriends,
+  FaSatelliteDish
 } from "react-icons/fa";
 import SupabaseAPI from '../../helper/supabaseAPI';
 import "../styles/sidebar.css";
@@ -93,22 +94,25 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         <div className="sidebar-element" onClick={() => handleClick("Home")}>
           <FaHome className="sidebar-icon" /> Home
         </div>
-        <div className="sidebar-element" onClick={() => {}}>
-          <FaComment className="sidebar-icon" /> Chat
-        </div>
-        <div className="sidebar-element" onClick={() => handleClick("Calendar")}>
-          <FaCalendarAlt className="sidebar-icon" /> Calendar
-        </div>
-        <div className="sidebar-element" onClick={() => handleClick("Documents")}>
-          <FaFileAlt className="sidebar-icon" /> Documents
-        </div>
-        <div className="sidebar-element" onClick={() => handleClick("Settings")}>
-          <FaCog className="sidebar-icon" /> Settings
-        </div>
         <div className="sidebar-element"  onClick={() => handleClick("Friends-Page")}>       
             <FaUserFriends className="sidebar-icon" /> Friends
         </div>
-        {role === "admin" && <ChannelManager />}
+        <div className="sidebar-element"  onClick={() => handleClick("ChannelManager")}>       
+            <FaSatelliteDish className="sidebar-icon" /> Channels
+        </div>
+        {/* <div className="sidebar-element" onClick={() => {}}>
+          <FaComment className="sidebar-icon" /> Chat
+        </div> */}
+        <div className="sidebar-element" onClick={() => handleClick("Calendar")}>
+          <FaCalendarAlt className="sidebar-icon" /> Calendar
+        </div>
+        {/* <div className="sidebar-element" onClick={() => handleClick("Documents")}>
+          <FaFileAlt className="sidebar-icon" /> Documents
+        </div> */}
+        <div className="sidebar-element" onClick={() => handleClick("Settings")}>
+          <FaCog className="sidebar-icon" /> Settings
+        </div>
+        {/* {role === "admin" && <ChannelManager />} */}
       </div>
     </div>
   );
