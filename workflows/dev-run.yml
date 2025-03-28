@@ -1,4 +1,4 @@
-name: Run Dev Server (not typical in CI)
+name: Run Tests
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  run-dev:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Use Node.js
@@ -19,12 +19,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Install dependencies and run tests
         run: |
           cd src
           npm install
-
-      - name: Run Dev Server
-        run: |
-          cd src
-          npm run dev
+          npm test
