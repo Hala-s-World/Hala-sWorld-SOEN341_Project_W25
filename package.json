@@ -34,3 +34,7 @@
     "vite": "^6.0.5"
   }
 }
+"scripts": {
+  "test": "vitest"
+}
+
