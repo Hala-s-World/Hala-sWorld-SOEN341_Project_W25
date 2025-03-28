@@ -1,24 +1,24 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 import LoginPage from '../src/pages/LoginPage'
 
-// Mocking child components to isolate LoginPage
+// Mock components
 vi.mock('../src/assets/components/Login', () => ({
-  default: () => <div>Login Component</div>,
+  default: () => <div>Login Component</div>
 }))
 vi.mock('../src/assets/components/Register', () => ({
-  default: () => <div>Register Component</div>,
+  default: () => <div>Register Component</div>
 }))
 vi.mock('../src/assets/components/LoginOverlay', () => ({
   default: ({ togglePanel }) => (
     <button onClick={togglePanel}>Toggle Panel</button>
-  ),
+  )
 }))
 vi.mock('../src/assets/components/Banner', () => ({
-  default: () => <div>Banner</div>,
+  default: () => <div>Banner</div>
 }))
 vi.mock('../src/store/authStore', () => ({
-  useAuthStore: () => ({ set: () => {} }),
+  useAuthStore: () => ({ set: () => {} })
 }))
 
 describe('LoginPage', () => {
