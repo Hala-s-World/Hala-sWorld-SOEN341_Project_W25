@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 import Homepage from '../src/pages/Homepage'
 import { BrowserRouter } from 'react-router-dom'
 
-// Mock image imports to prevent asset loading errors
+// Mock static assets
 vi.mock('../src/assets/media/logo.png', () => '')
 vi.mock('../src/assets/media/cat.jpg', () => '')
 
