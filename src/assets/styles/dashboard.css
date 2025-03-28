@@ -12,11 +12,7 @@
   width: 100%;
   height: 100%;
   background: rgb(164, 157, 197);
-  background: linear-gradient(
-    180deg,
-    rgb(144, 132, 212) 0%,
-    #c3c4cf 100%
-  );
+  background: linear-gradient(180deg, rgb(144, 132, 212) 0%, #c3c4cf 100%);
 }
 
 .dashboard {
@@ -77,7 +73,7 @@
 .chat-info {
   display: flex;
   flex-direction: column;
-  background-color: #c3c4cf; 
+  background-color: #c3c4cf;
   padding: 10px;
   border-radius: 8px;
   width: 100%;
@@ -98,7 +94,6 @@
   -webkit-line-clamp: 3; /* Number of lines before truncating */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  
 }
 
 .chat-number-of-messages {
@@ -126,7 +121,6 @@
   font-weight: 500;
 }
 
-
 .opened-chat-banner {
   background-color: #2f3136; /* Darker header */
   color: white;
@@ -149,15 +143,14 @@
 }
 
 .chat-messages {
-  height: 95%; 
+  height: 95%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding: 10px;
   background-color: #f9f9f9;
-  scrollbar-width: thin; 
+  scrollbar-width: thin;
 }
-
 
 .chat-message {
   display: flex;
@@ -168,8 +161,7 @@
   color: white;
 }
 
-
-chat-box-chat{
+chat-box-chat {
   margin-top: 10px;
 }
 
@@ -186,8 +178,8 @@ input {
   justify-self: center;
   outline: none;
   font-family: good-matcha;
-  padding: 10px; 
-  text-align: left; 
+  padding: 10px;
+  text-align: left;
   border-radius: 0;
   font-family: "dmsans";
   font-size: medium;
@@ -197,7 +189,7 @@ input {
 input::placeholder {
   color: #929499;
   font-size: medium;
-  text-align: left; 
+  text-align: left;
 }
 
 .send-button {
@@ -216,4 +208,73 @@ input::placeholder {
 .microphone-icon {
   font-size: large;
   color: #756dbd;
+}
+
+/* I put the emoji CSS here */
+.emoji-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+.emoji-picker-wrapper {
+  position: absolute;
+  bottom: 60px;
+  left: 10px;
+  z-index: 999;
+}
+
+/* Fix outer container */
+.EmojiPickerReact {
+  width: 300px;
+  max-height: 350px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  font-family: "dmsans", sans-serif;
+  z-index: 1000;
+}
+
+/* Fix emoji rows */
+.EmojiPickerReact .epr-emoji-category {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Fix category buttons */
+.EmojiPickerReact .epr-category-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1px;
+}
+
+/* Fix search bar */
+.EmojiPickerReact .epr-search-container input {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Emoji buttons */
+.EmojiPickerReact .epr-emoji {
+  padding: 5px;
+  font-size: 20px;
+}
+
+/* Hide scrollbar if needed */
+.EmojiPickerReact .epr-body::-webkit-scrollbar {
+  display: none;
 }
