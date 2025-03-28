@@ -66,6 +66,7 @@ function Dashboard() {
         {activeComponent === "Direct-Messaging" && <DirectMessaging />}
         {activeComponent === "Channel-Manager" && <AddChannel />}
         {activeComponent === "Friends-Page" && <FriendsPage />}
+        {activeComponent === "ChannelManager" && <ChannelManager/>}
       </div>
     </div>
   );
