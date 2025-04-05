@@ -2,8 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import LoginPage from "../src/pages/LoginPage";
 
-// ✅ Mock the CSS with the correct relative path
-vi.mock("../assets/styles/authentication.css", () => ({}));
 
 vi.mock("../src/assets/components/Login", () => ({
   default: () => <div>Login Component</div>,
