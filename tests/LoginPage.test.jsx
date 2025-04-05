@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import LoginPage from "../src/pages/LoginPage";
 
-// ✅ Mock CSS here if alias isn’t catching it in CI
-vi.mock("../src/assets/styles/authentication.css", () => ({}));
+// ✅ Mock the CSS with the correct relative path
+vi.mock("../assets/styles/authentication.css", () => ({}));
 
 vi.mock("../src/assets/components/Login", () => ({
   default: () => <div>Login Component</div>,
