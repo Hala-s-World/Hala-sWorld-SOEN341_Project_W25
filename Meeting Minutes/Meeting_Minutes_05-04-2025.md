@@ -24,7 +24,7 @@
    - If time permits: basic user profile functionality  
 
 3. **Team Assignments**  
-   - **Hala**: Fix CI pipeline, write unit tests, implement user search & Friendship requests, enhance settings page and profike vue if time permits (due Tuesday)  
+   - **Hala**: Fix CI pipeline, write unit tests, implement user search & Friendship requests, enhance settings page and profile view if time permits (due Tuesday)  
    - **Mohamed**: Enhance channel testing (due Tuesday)  
    - **Shayaan and Haytham**: Prepare presentation and demo video (backup plan in case live presentation fails)  
    - **Shayaan**: Implement message search feature (due Tuesday)  
