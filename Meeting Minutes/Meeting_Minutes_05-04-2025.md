@@ -1,6 +1,6 @@
 # Meeting Minutes
 
-## Meeting 6 - April 05, 2025
+## Meeting 5 - April 05, 2025
 
 **Date:** April 05, 2025  
 **Time:** 8:00 PM - 8:30 PM  
@@ -24,6 +24,7 @@
    - If time permits: basic user profile functionality  
 
 3. **Team Assignments**  
+   - **Hala**: Fix CI pipeline, write unit tests, implement user search & Friendship requests, enhance settings page and profike vue if time permits (due Tuesday)  
    - **Mohamed**: Enhance channel testing (due Tuesday)  
    - **Shayaan and Haytham**: Prepare presentation and demo video (backup plan in case live presentation fails)  
    - **Shayaan**: Implement message search feature (due Tuesday)  
