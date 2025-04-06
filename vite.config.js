@@ -16,7 +16,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '../assets/styles/authentication.css': path.resolve(__dirname, './tests/__mocks__/empty-style.js')
+      '../assets/styles/Authentication.css': path.resolve(__dirname, './tests/__mocks__/empty-style.js')
     }
   }
 })
