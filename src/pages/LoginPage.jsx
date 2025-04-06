@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../assets/styles/authentication.css";
+import "../assets/styles/Authentication.css";
 import Login from "../assets/components/Login";
 import Register from "../assets/components/Register";
 import LoginOverlay from "../assets/components/LoginOverlay";
