@@ -9,27 +9,27 @@ import ChannelManager from "./assets/components/ChannelManager";
 function App() {
   return (
     <ActiveComponentProvider>
-    <BrowserRouter>
-      <Routes>
-        {/* Homepage as default */}
-        <Route path="/" element={<Homepage />} />
+      <BrowserRouter>
+        <Routes>
+          {/* Homepage as default */}
+          <Route path="/" element={<Homepage />} />
 
-        {/* Authentication */}
-        <Route path="/login" element={<LoginPage />} />
+          {/* Authentication */}
+          <Route path="/login" element={<LoginPage />} />
 
-        {/* Dashboard */}
-        
-        <Route
-          path="/dashboard"
-          element={
-           <Wrapper>
-              <Dashboard />
-          </Wrapper>
-          }
-        />
-              <Route path="/channels" element={<ChannelManager/>}></Route>
-      </Routes>
-    </BrowserRouter>
+          {/* Dashboard */}
+
+          <Route
+            path="/dashboard"
+            element={
+              <Wrapper>
+                <Dashboard />
+              </Wrapper>
+            }
+          />
+          <Route path="/channels" element={<ChannelManager />}></Route>
+        </Routes>
+      </BrowserRouter>
     </ActiveComponentProvider>
   );
 }
