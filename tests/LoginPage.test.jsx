@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import LoginPage from '../src/pages/LoginPage'
 
-// Remove this if you're mocking CSS via vite.config.js
-// vi.mock('../assets/styles/authentication.css', () => ({}))
+// Remove this if mocking CSS via vite.config.js
+// vi.mock('../assets/styles/Authentication.css', () => ({}))
 
 vi.mock('../src/assets/components/Login', () => ({
   default: () => <div>Login Component</div>
