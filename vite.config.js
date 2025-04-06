@@ -15,8 +15,11 @@ export default defineConfig({
     setupFiles: './tests/setup.js'
   },
   resolve: {
-    alias: {
-      '../assets/styles/Authentication.css': path.resolve(__dirname, './tests/__mocks__/empty-style.js')
-    }
+    alias: [
+      {
+        find: /\.css$/,
+        replacement: path.resolve(__dirname, './tests/__mocks__/style.js')
+      }
+    ]
   }
 })
