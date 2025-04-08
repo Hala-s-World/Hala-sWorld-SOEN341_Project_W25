@@ -6,13 +6,12 @@ import { useAuthStore } from "../../store/authStore";
 import ChannelCard from "./ChannelCard";
 import AddChannel from "./AddChannel";
 import ChannelList from "./ChannelList";
-import ChannelChat from "./channelChat";
+import ChannelChat from "./ChannelChat";
 
 
 export default function ChannelManager() {
 
-    const { user } = useAuthStore();
-    const { role } = useAuthStore();
+    const { user, role } = useAuthStore();
     const [selectedChannel, setSelectedChannel] = useState(null);
     const [channels, setChannels] = useState([]);
 
@@ -35,11 +34,11 @@ export default function ChannelManager() {
                     <>
                         <div className="channels-title-your-channels">YOUR CHANNELS</div>
                         <div className="opened-channels-box">
-                            <ChannelList 
-                            onSelectChannel={(channel) => setSelectedChannel(channel)}/>
-                            <div className="add-channel" onClick={toggleModal}>
+                            <ChannelList
+                                onSelectChannel={(channel) => setSelectedChannel(channel)} />
+                            {role === "admin" && <div className="add-channel" onClick={toggleModal}>
                                 <FaPlus className="sidebar-icon"></FaPlus>Add a new channel
-                            </div>
+                            </div>}
                             {isModalOpen && (
                                 <div className="modal-overlay" onClick={toggleModal}>
                                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -52,6 +51,7 @@ export default function ChannelManager() {
                                 </div>
                             )}
                         </div>
+                        
                     </>
                 ) : (
                     <ChannelChat

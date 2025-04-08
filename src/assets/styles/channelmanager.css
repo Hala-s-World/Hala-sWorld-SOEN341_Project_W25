@@ -75,6 +75,8 @@
 
 .ChannelChat{
   padding: 20px 10px 20px 10px;
+  height: 95%;
+  position: relative;
 }
 
 .back-button{
@@ -167,6 +169,35 @@ input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.chat-message{
+  position: relative;
+}
+
+.delete-message-button{
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: none;
+  padding: 0px 2px;
+  border: 1px solid red;
+  border-radius: 20px;
+  background-color: red;
+  transition: none !important;
+}
+
+.delete-message-button:hover{
+  transition: none !important;
+  background-color: red;
+  color: white;
+  transform:none;
+  translate: none;
 }
 
 .add-channel-button {

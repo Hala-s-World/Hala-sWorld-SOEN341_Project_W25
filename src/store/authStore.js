@@ -99,8 +99,16 @@ export const useAuthStore = create(
         const { data } = await supabase.auth.getSession();
         
         if (data?.session) {
+
+          const { data: roleData} = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("id", data.session.user.id)
+          .single();
+
           set({
             user: data.session.user,
+            role: roleData?.role || "user",
             authenticated: true,
             loading: false,
           });
