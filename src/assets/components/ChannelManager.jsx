@@ -6,12 +6,14 @@ import { useAuthStore } from "../../store/authStore";
 import ChannelCard from "./ChannelCard";
 import AddChannel from "./AddChannel";
 import ChannelList from "./ChannelList";
+import ChannelChat from "./channelChat";
 
 
 export default function ChannelManager() {
 
     const { user } = useAuthStore();
     const { role } = useAuthStore();
+    const [selectedChannel, setSelectedChannel] = useState(null);
     const [channels, setChannels] = useState([]);
 
     const { setActiveComponent } = useActiveComponent()
@@ -29,32 +31,36 @@ export default function ChannelManager() {
     return (
         <div className="main">
             <div className="channels-container">
-                <div className="channels-title-your-channels">YOUR CHANNELS</div>
-                <div className="opened-channels-box">
-                    
-                    <ChannelList/>
-                    {true &&
-                        <div className="add-channel" onClick={toggleModal}>
-                            <FaPlus className="sidebar-icon"></FaPlus>Add a new channel
-                        </div>}
-                    {/* Modal to Show AddChannel Component */}
-                    {isModalOpen && (
-                        <div className="modal-overlay" onClick={toggleModal}>
-                            <div
-                                className="modal-content"
-                                onClick={(e) => e.stopPropagation()} // Prevent closing on modal click
-                            >
-                                <h3>Add New Channel</h3>
-                                {/* Render AddChannel Component */}
-                                <AddChannel />
-                                <button onClick={toggleModal} className="close-btn">
-                                    Cancel
-                                </button>
+                {!selectedChannel ? (
+                    <>
+                        <div className="channels-title-your-channels">YOUR CHANNELS</div>
+                        <div className="opened-channels-box">
+                            <ChannelList 
+                            onSelectChannel={(channel) => setSelectedChannel(channel)}/>
+                            <div className="add-channel" onClick={toggleModal}>
+                                <FaPlus className="sidebar-icon"></FaPlus>Add a new channel
                             </div>
+                            {isModalOpen && (
+                                <div className="modal-overlay" onClick={toggleModal}>
+                                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                        <h3>Add New Channel</h3>
+                                        <AddChannel />
+                                        <button onClick={toggleModal} className="close-btn">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
+                    </>
+                ) : (
+                    <ChannelChat
+                        channel={selectedChannel}
+                        onBack={() => setSelectedChannel(null)}
+                    />
+                )}
             </div>
         </div>
-    )
+    );
+
 }

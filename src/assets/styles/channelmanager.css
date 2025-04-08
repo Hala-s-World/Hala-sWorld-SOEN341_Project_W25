@@ -41,6 +41,7 @@
 }
 
 .ChannelCard{
+  position: relative;
   display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -54,6 +55,49 @@
     cursor: pointer;
     transition: ease-in-out 200ms;
 }
+
+.delete-button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: none;
+  padding: 0px 0px;
+}
+
+.delete-button:hover {
+  background: none;
+}
+
+.ChannelChat{
+  padding: 20px 10px 20px 10px;
+}
+
+.back-button{
+  padding: 0px 0px;
+  background: none;
+  box-shadow: none;
+  border: none;
+  cursor: pointer;
+  color: #9388D3;
+  margin: 0;
+}
+
+.back-button:hover{
+  background: none;
+}
+
+.join-button{
+  text-align: center;
+  font-size: 12px;
+  padding: 2px 5px;
+}
+
+
 
 .ChannelCard:hover{
   background-color: #968CD3;
