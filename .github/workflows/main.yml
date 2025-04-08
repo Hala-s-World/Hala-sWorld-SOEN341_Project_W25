@@ -21,6 +21,5 @@ jobs:
 
       - name: Install dependencies and run tests
         run: |
-          cd src
           npm install
           npm test
