@@ -161,7 +161,7 @@
   color: white;
 }
 
-chat-box-chat {
+.chat-box-chat {
   margin-top: 10px;
 }
 
@@ -171,6 +171,13 @@ chat-box-chat {
   width: 100%;
   display: flex;
   padding: 10px;
+}
+
+.send-message-form{
+  width: 100%;
+  padding: 5px 5px;
+  display: flex;
+  flex-direction: row;
 }
 
 input {
@@ -192,7 +199,7 @@ input::placeholder {
   text-align: left;
 }
 
-.send-button {
+.sendButton {
   background: none;
   border: none;
   color: #b9bbbe;
@@ -201,7 +208,7 @@ input::placeholder {
   margin-left: 10px;
 }
 
-.send-button:hover {
+.sendButton:hover {
   color: #ffffff;
 }
 

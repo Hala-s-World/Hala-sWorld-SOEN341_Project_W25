@@ -21,6 +21,7 @@ import ChannelManager from "../assets/components/ChannelManager";
 import AddChannel from "../assets/components/AddChannel";
 import "../assets/styles/channelmanager.css";
 import FriendsPage from "./FriendsPage";
+import DashboardHome from "./DashboardHome";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -64,9 +65,9 @@ function Dashboard() {
       {/* Main Content */}
       <div className="main-content">
         {activeComponent === "Direct-Messaging" && <DirectMessaging />}
-        {activeComponent === "Channel-Manager" && <AddChannel />}
         {activeComponent === "Friends-Page" && <FriendsPage />}
         {activeComponent === "ChannelManager" && <ChannelManager/>}
+        {activeComponent === "DashboardHome" && <DashboardHome/>}
       </div>
     </div>
   );

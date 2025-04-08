@@ -91,7 +91,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         </div>
       </div>
       <div className="elements-container">
-        <div className="sidebar-element" onClick={() => handleClick("Home")}>
+        <div className="sidebar-element" onClick={() => handleClick("DashboardHome")}>
           <FaHome className="sidebar-icon" /> Home
         </div>
         <div className="sidebar-element"  onClick={() => handleClick("Friends-Page")}>       

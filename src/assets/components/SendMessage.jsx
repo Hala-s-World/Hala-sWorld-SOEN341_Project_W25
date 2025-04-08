@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EmojiPicker from "emoji-picker-react";
 import supabase from "../../helper/supabaseClient";
 import SupabaseAPI from "../../helper/supabaseAPI";
+import "../styles/dashboard.css"
 
 const SendMessage = ({ message, setMessage, handleSendMessage, isSending }) => {
   const [showEmojiPicker, setshowEmojiPicker] = useState(false);
@@ -12,7 +13,7 @@ const SendMessage = ({ message, setMessage, handleSendMessage, isSending }) => {
 
   return (
     <div style={{ position: "relative" }}>
-      <form onSubmit={handleSendMessage}>
+      <form className="send-message-form" onSubmit={handleSendMessage}>
         <div className="input-area">
           <button
             type="button"
