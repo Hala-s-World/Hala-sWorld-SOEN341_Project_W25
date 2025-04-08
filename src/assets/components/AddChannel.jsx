@@ -7,14 +7,12 @@ export default function AddChannel({ onSuccess }) {
     const { user, role } = useAuthStore();
     const isAdmin = role === "admin";
     
-    // Form State
     const [formData, setFormData] = useState({
         channel_name: "",
         description: "",
-        is_private: !isAdmin // Default to private for regular users
+        is_private: !isAdmin
     });
 
-    // Handle Input Changes
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
@@ -23,30 +21,32 @@ export default function AddChannel({ onSuccess }) {
         });
     };
 
-    // Handle Form Submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            // Insert data into Supabase "channel" table
-            const { data, error } = await supabase.from("channel").insert([
-                {
+            // 1. First create the channel
+            const { data: channelData, error: channelError } = await supabase
+                .from("channel")
+                .insert([{
                     channel_name: formData.channel_name,
                     description: formData.description,
                     channel_creator_id: user.id,
                     is_private: formData.is_private
-                },
-            ]).select();
+                }])
+                .select(); // Important: need to return the created channel
 
-            if (error) throw error;
+            if (channelError) throw channelError;
 
-            // Add creator to the channel automatically
-            await supabase.from("users_channels").insert([
-                {
+            // 2. Then add creator to the channel
+            const { error: userChannelError } = await supabase
+                .from("users_channels")
+                .insert([{
                     user_id: user.id,
-                    channel_id: data[0].id,
-                }
-            ]);
+                    channel_id: channelData[0].id
+                }]);
+
+            if (userChannelError) throw userChannelError;
 
             // Reset form and notify parent
             setFormData({
@@ -58,7 +58,7 @@ export default function AddChannel({ onSuccess }) {
             if (onSuccess) onSuccess();
             
         } catch (error) {
-            console.error("Error creating channel:", error.message);
+            console.error("Error in channel creation:", error.message);
             alert("Failed to create channel");
         }
     };
@@ -66,7 +66,6 @@ export default function AddChannel({ onSuccess }) {
     return (
         <div className="AddChannel">
             <form className="add-channel-form" onSubmit={handleSubmit}>
-                {/* Channel Name Input */}
                 <label>Channel Name</label>
                 <input
                     type="text"
@@ -76,7 +75,6 @@ export default function AddChannel({ onSuccess }) {
                     required
                 />
 
-                {/* Channel Description Input */}
                 <label>Description</label>
                 <input
                     type="text"
@@ -86,7 +84,6 @@ export default function AddChannel({ onSuccess }) {
                     required
                 />
 
-                {/* Private Channel Checkbox (only for admins) */}
                 {isAdmin && (
                     <div className="checkbox-container">
                         <label>
@@ -101,7 +98,6 @@ export default function AddChannel({ onSuccess }) {
                     </div>
                 )}
 
-                {/* Submit Button */}
                 <button type="submit" className="add-channel-button">
                     Add Channel
                 </button>

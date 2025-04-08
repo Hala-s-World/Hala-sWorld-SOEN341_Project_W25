@@ -1,6 +1,12 @@
 import "../styles/channelmanager.css";
 
-const ChannelCard = ({ channelName, onJoin, onDelete, isAdmin, onClick }) => {
+const ChannelCard = ({
+    channelName,
+    onJoin,
+    onDelete,
+    isAdmin,
+    onClick,
+    isPrivate}) => {
     return (
         <div className="ChannelCard" onClick={onClick}>
             {isAdmin && (
@@ -13,10 +19,22 @@ const ChannelCard = ({ channelName, onJoin, onDelete, isAdmin, onClick }) => {
                 src="https://static.thenounproject.com/png/2448905-200.png"
                 alt="Channel"
             />
-            <div className="channel-name">{channelName}</div>
-            <button className="join-button" onClick={onJoin}>
-                Join
-            </button>
+            <div
+                className="channel-name">
+                {channelName}
+                {isPrivate && <span className="private-badge">Private</span>}
+            </div>
+            {!isPrivate && (
+                <button
+                    className="join-button"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onJoin();
+                    }}>
+                    Join
+                </button>
+            )}
+            
         </div>
     );
 };
