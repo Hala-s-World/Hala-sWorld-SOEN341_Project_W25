@@ -8,7 +8,7 @@ export default function ChannelList({ onSelectChannel }) {
     const [channels, setChannels] = useState([]);
     const [userChannels, setUserChannels] = useState([]);
     const { user, role } = useAuthStore();
-
+    
     const isAdmin = role === "admin";
 
     useEffect(() => {
@@ -90,6 +90,7 @@ export default function ChannelList({ onSelectChannel }) {
             userChannels.includes(channel.id)
         );
 
+        console.log("user: ", user, "filtered channels: ", filteredChannels, userChannels)
     return (
         <div className="ChannelList">
             {filteredChannels.map((channel) => (
@@ -101,10 +102,10 @@ export default function ChannelList({ onSelectChannel }) {
                     isAdmin={isAdmin}
                     onClick={() => onSelectChannel(channel)}
                     isPrivate={channel.is_private}
-                    isMember={userChannels.includes(channel.id)}
+                    isMember={filteredChannels.includes(user.id)}
                     isCreator={channel.channel_creator === user?.id}
                     channelId={channel.id}
-                    onUserAdded={() => refreshChannelMembers(channel.id)}
+                    onUserAdded={() => refreshChannelMembers(channel.id)} 
                 />
             ))}
         </div>

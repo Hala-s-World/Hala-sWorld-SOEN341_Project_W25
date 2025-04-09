@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import ReceiveMessage from "./ReceiveMessage";
 import { useAuthStore } from "../../store/authStore";
 import supabase from "../../helper/supabaseClient";
+import InviteUserModal from "./InviteUserModal";
+import LeaveChannel from "./LeaveChannel";
 
 const ChannelChat = ({ channel, onBack }) => {
     const [message, setMessage] = useState("");
@@ -14,8 +16,15 @@ const ChannelChat = ({ channel, onBack }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { user } = useAuthStore();
-
+    const [isCreator, setIsCreator] = useState(false);
     // Fetch messages when channel changes
+
+    useEffect(() => {
+        if (user && channel) {
+            setIsCreator(user.id === channel.channel_creator_id);
+        }
+    }, [user, channel]);
+
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -124,14 +133,20 @@ const ChannelChat = ({ channel, onBack }) => {
     const handleMessageDelete = (messageId) => {
         setMessages(prev => prev.filter(msg => msg.id !== messageId));
     };
-    
+
 
     return (
         <div className="ChannelChat">
             <button className="back-button" onClick={onBack}>
                 <FaArrowLeft />
             </button>
-            <div className="opened-chat-banner">banner</div>
+            <div className="opened-chat-banner">
+                {isCreator && (
+                    <InviteUserModal channelId={channel.id} onClose={() => { }} />)}
+                {!isCreator && (
+                    <LeaveChannel channelId={channel.id} onLeave={onBack}/>
+                )}
+            </div>
             <div className="opened-chat-box">
                 <div className="chat-messages">
                     {loading ? (

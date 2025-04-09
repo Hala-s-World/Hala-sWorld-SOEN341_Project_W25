@@ -1,15 +1,17 @@
-.channels-container{
+.channels-container {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: #36393f; /* Discord's dark background */
+  background-color: #36393f;
+  /* Discord's dark background */
   border-radius: 10px;
   padding: 10px;
 }
 
-.channels-title-your-channels{
-  background-color: #2f3136; /* Darker header */
+.channels-title-your-channels {
+  background-color: #2f3136;
+  /* Darker header */
   color: white;
   padding: 15px;
   font-weight: bold;
@@ -18,7 +20,7 @@
   border-radius: 10px;
 }
 
-.opened-channels-box{
+.opened-channels-box {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -32,31 +34,48 @@
 
 
 
-.channels-list{
+.channels-list {
   background-color: white;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-height: 500px; /* Adjust the height as needed */
-    overflow-y: auto;
-    border-radius: 10px;
-    padding-right: 10px; /* Add padding to avoid scrollbar overlap */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 500px;
+  /* Adjust the height as needed */
+  overflow-y: auto;
+  border-radius: 10px;
+  padding-right: 10px;
+  /* Add padding to avoid scrollbar overlap */
 }
 
-.ChannelCard{
+.ChannelCard {
   position: relative;
   display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: start;
-    padding: 15px; /* Increase padding */
-    border-bottom: 1px solid #e0e0e0;
-    margin: 10px; /* Increase margin */
-    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
-    background-color: rgb(233, 233, 233); /* Optional: Add background color for each card */
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow for better separation */
-    cursor: pointer;
-    transition: ease-in-out 200ms;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: start;
+  padding: 15px;
+  /* Increase padding */
+  border-bottom: 1px solid #e0e0e0;
+  margin: 10px;
+  /* Increase margin */
+  border-radius: 5px;
+  /* Optional: Add border-radius for rounded corners */
+  background-color: rgb(233, 233, 233);
+  /* Optional: Add background color for each card */
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+  /* Optional: Add subtle shadow for better separation */
+  cursor: pointer;
+  transition: ease-in-out 200ms;
+}
+
+.invite-user {
+  display: flex;
+  flex-direction: row;
+}
+
+.invite-user button {
+  padding: 5px 5px;
+  font-size: 10px;
 }
 
 .delete-button {
@@ -76,13 +95,13 @@
   background: none;
 }
 
-.ChannelChat{
+.ChannelChat {
   padding: 20px 10px 20px 10px;
   height: 95%;
   position: relative;
 }
 
-.back-button{
+.back-button {
   padding: 0px 0px;
   background: none;
   box-shadow: none;
@@ -92,11 +111,11 @@
   margin: 0;
 }
 
-.back-button:hover{
+.back-button:hover {
   background: none;
 }
 
-.join-button{
+.join-button {
   text-align: center;
   font-size: 12px;
   padding: 2px 5px;
@@ -104,22 +123,22 @@
 
 
 
-.ChannelCard:hover{
+.ChannelCard:hover {
   background-color: #968CD3;
 }
 
-.channel-img{
+.channel-img {
   height: 50px;
   width: 50px;
   border-radius: 30px;
 }
 
-.channel-name{
+.channel-name {
   align-self: center;
   margin-left: 10px;
 }
 
-.add-channel{
+.add-channel {
   margin-top: 10px;
   text-align: center;
   color: white;
@@ -129,7 +148,7 @@
   justify-content: center;
 }
 
-.add-channel:hover{
+.add-channel:hover {
   color: #968CD3;
   cursor: pointer;
 }
@@ -174,11 +193,11 @@ input {
   border-radius: 4px;
 }
 
-.chat-message{
+.chat-message {
   position: relative;
 }
 
-.delete-message-button{
+.delete-message-button {
   position: absolute;
   top: -5px;
   right: -5px;
@@ -195,11 +214,11 @@ input {
   transition: none !important;
 }
 
-.delete-message-button:hover{
+.delete-message-button:hover {
   transition: none !important;
   background-color: red;
   color: white;
-  transform:none;
+  transform: none;
   translate: none;
 }
 
@@ -230,4 +249,37 @@ input {
   border-radius: 10px;
   margin-left: 8px;
   vertical-align: middle;
+}
+
+/************Channel Invitation***********/
+
+.ChannelInvitation {
+  display: flex;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.ChannelInvitation p {
+  display: flex;
+  align-self: center;
+}
+
+.ChannelInvitation button {
+  padding: 5px 5px;
+  box-shadow: none;
+  font-size: small;
+}
+
+/********Invites List******/
+.InvitesList {
+  padding: 10px 15px;
+  margin-top: 10px;
+}
+
+/********Leave Channel*****/
+
+.leave-channel-button{
+  padding: 5px 5px;
+  font-size: 14px;
+  box-shadow: none;
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AddChannel from "../assets/components/AddChannel";
+import InvitesList from "../assets/components/InvitesList";
 
 
 const DashboardHome = () => {
@@ -25,6 +26,7 @@ const DashboardHome = () => {
                         </div>
                     </div>
                 )}
+                <InvitesList/>
             </div>
         </div>
     )

@@ -6,7 +6,9 @@ const ChannelCard = ({
     onDelete,
     isAdmin,
     onClick,
-    isPrivate}) => {
+    isPrivate,
+    isMember}) => {
+        console.log({ channelName, isMember });
     return (
         <div className="ChannelCard" onClick={onClick}>
             {isAdmin && (
@@ -24,7 +26,7 @@ const ChannelCard = ({
                 {channelName}
                 {isPrivate && <span className="private-badge">Private</span>}
             </div>
-            {!isPrivate && (
+            {!isPrivate && !isMember && (
                 <button
                     className="join-button"
                     onClick={(e) => {
