@@ -11,6 +11,7 @@ export default function AuthenticationForm({ handleSubmit, title}) {
     <div>
       <form onSubmit={(event) => handleSubmit(event, email, password)}>
         <h1>{title}</h1>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <input
           type="email"
           placeholder="e-mail"
@@ -26,8 +27,8 @@ export default function AuthenticationForm({ handleSubmit, title}) {
           required
         />
         <button type="submit">
-        {title}
-      </button>
+          {title}
+        </button>
       </form>
     </div>
   );
