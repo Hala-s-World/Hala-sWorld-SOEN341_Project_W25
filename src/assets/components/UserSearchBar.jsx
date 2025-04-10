@@ -32,8 +32,8 @@ function UserSearchBar() {
       }
 
       const { data, error } = await supabase
-        .from("user_profiles")
-        .select("id, username, full_name, avatar")
+        .from("profiles")
+        .select("id, username, full_name, avatar_url")
         .or(`username.ilike.%${query}%,full_name.ilike.%${query}%`);
 
       if (error) {
@@ -41,9 +41,10 @@ function UserSearchBar() {
         return;
       }
 
-      const uniqueResults = data.filter(
-        (user, index, self) => index === self.findIndex((u) => u.id === user.id)
-      );
+      const uniqueResults = data.map((user) => ({
+        ...user,
+        avatar_url: user.avatar_url || DEFAULT_AVATAR,
+      }));
 
       setResults(uniqueResults);
       setShowDropdown(true);
@@ -88,7 +89,7 @@ function UserSearchBar() {
                   className="user-result-card"
                   onClick={() => handleSelectUser(user.id)}
                 >
-                  <img src={user.avatar || DEFAULT_AVATAR} alt="Avatar" />
+                  <img src={user.avatar_url} alt="Avatar" />
                   <div>
                     <strong>{user.username}</strong>
                     <div className="user-full-name">{user.full_name}</div>

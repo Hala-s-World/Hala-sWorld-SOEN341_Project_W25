@@ -26,7 +26,7 @@ function SettingsPage() {
 
         // Use the avatar_url column to set the avatar preview
         if (profile.avatar_url) {
-          console.log("Avatar URL:", profile.avatar_url); // Debugging log
+        
           setAvatarPreview(profile.avatar_url); // Use the URL directly
         } else {
           console.log("No avatar found for user.");
@@ -60,10 +60,10 @@ function SettingsPage() {
         return;
       }
 
-      console.log("Upload response data:", data);
+
 
       const filePath = `public/${user.id}-${avatarFile.name}`;
-      console.log("File path:", filePath);
+
 
       const { data: urlData, error: urlError } = supabase.storage
         .from("avatars")
@@ -75,7 +75,7 @@ function SettingsPage() {
       return;
       }
 
-      console.log("Generated public URL:", urlData.publicUrl);
+
       avatarUrl = urlData.publicUrl; // Use the public URL for the avatar
 
     }

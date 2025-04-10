@@ -70,6 +70,31 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
     };
 
     fetchUserProfile();
+
+    // Subscribe to real-time updates for the user's profile
+    const subscription = supabase
+      .channel("public:profiles")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "profiles",
+          filter: `id=eq.${user.id}`, // Listen only for updates to the current user's profile
+        },
+        (payload) => {
+          console.log("Profile updated in real-time:", payload);
+          if (payload.new.avatar_url) {
+            setAvatar(payload.new.avatar_url); // Update the avatar URL
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup the subscription on component unmount
+    return () => {
+      supabase.removeChannel(subscription);
+    };
   }, [user]);
 
   return (
@@ -124,7 +149,6 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         >
           <FaSatelliteDish className="sidebar-icon" /> Channels
         </div>
-      
         <div
           className="sidebar-element"
           onClick={() => handleClick("Settings")}
