@@ -32,8 +32,6 @@
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-
-
 .channels-list {
   background-color: white;
   display: flex;
@@ -107,7 +105,7 @@
   box-shadow: none;
   border: none;
   cursor: pointer;
-  color: #9388D3;
+  color: #9388d3;
   margin: 0;
 }
 
@@ -121,10 +119,8 @@
   padding: 2px 5px;
 }
 
-
-
 .ChannelCard:hover {
-  background-color: #968CD3;
+  background-color: #968cd3;
 }
 
 .channel-img {
@@ -149,7 +145,7 @@
 }
 
 .add-channel:hover {
-  color: #968CD3;
+  color: #968cd3;
   cursor: pointer;
 }
 
@@ -278,8 +274,109 @@ input {
 
 /********Leave Channel*****/
 
-.leave-channel-button{
+.leave-channel-button {
   padding: 5px 5px;
   font-size: 14px;
   box-shadow: none;
+}
+
+/********Friendship Requests*****/
+.ChannelInvitation {
+  display: flex;
+  color: white;
+  margin-bottom: 10px;
+  background-color: #444;
+  border-radius: 8px;
+  padding: 15px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ChannelInvitation p {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.ChannelInvitation button {
+  padding: 5px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  margin-left: 10px;
+  transition: background-color 0.3s;
+}
+
+.ChannelInvitation button:hover {
+  background-color: #0056b3;
+}
+
+.reject-btn {
+  background-color: #dc3545;
+}
+
+.reject-btn:hover {
+  background-color: #c82333;
+}
+
+.sender-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+/* Styling for Friend Request component */
+.FriendRequest {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.FriendRequest p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.FriendRequest button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* Accept button */
+.accept-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.accept-btn:hover {
+  background-color: #218838;
+}
+
+/* Reject button */
+.reject-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.reject-btn:hover {
+  background-color: #c82333;
 }
