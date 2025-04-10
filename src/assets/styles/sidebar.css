@@ -67,9 +67,6 @@
   cursor: pointer;
 }
 
-.dropdown-list .dropdown-item:hover {
-}
-
 .user-name:hover .dropdown-list {
   display: block;
   cursor: pointer;

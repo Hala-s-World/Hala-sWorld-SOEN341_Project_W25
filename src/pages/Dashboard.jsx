@@ -22,6 +22,8 @@ import AddChannel from "../assets/components/AddChannel";
 import "../assets/styles/channelmanager.css";
 import FriendsPage from "./FriendsPage";
 import DashboardHome from "./DashboardHome";
+import UserSearchBar from "../assets/components/UserSearchBar";
+import SettingsPage from "./SettingsPage";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -59,15 +61,20 @@ function Dashboard() {
       <SideBar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
-
       />
 
       {/* Main Content */}
       <div className="main-content">
+        <div className="dashboard-header">
+          <div className="search-bar-wrapper">
+            <UserSearchBar />
+          </div>
+        </div>
+        {activeComponent === "Settings" && <SettingsPage />}
         {activeComponent === "Direct-Messaging" && <DirectMessaging />}
         {activeComponent === "Friends-Page" && <FriendsPage />}
-        {activeComponent === "ChannelManager" && <ChannelManager/>}
-        {activeComponent === "DashboardHome" && <DashboardHome/>}
+        {activeComponent === "ChannelManager" && <ChannelManager />}
+        {activeComponent === "DashboardHome" && <DashboardHome />}
       </div>
     </div>
   );

@@ -36,9 +36,17 @@
     padding: 15px; /* Increase padding */
     border-bottom: 1px solid #e0e0e0;
     margin: 10px; /* Increase margin */
-    border-radius: 5px; /* Optional: Add border-radius for rounded corners */
-    background-color: rgb(233, 233, 233); /* Optional: Add background color for each card */
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow for better separation */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    background-color: rgb(233, 233, 233); /* Background color for each card */
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for better separation */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effects */
+    cursor: pointer; /* Add pointer cursor to indicate it's clickable */
+}
+
+.friend-card:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+    transform: translateY(-1px); /* Add a slight lift effect */
 }
 
 .friend-name {
@@ -47,7 +55,10 @@
     justify-content: space-between;
     width: 100%;
     font-size: 1.2rem; /* Increase font size */
+    cursor: pointer; /* Add pointer cursor to indicate it's clickable */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
 }
+
 
 .icon {
     margin-left: 15px; /* Increase margin */
