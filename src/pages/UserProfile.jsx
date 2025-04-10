@@ -22,26 +22,35 @@ function UserProfile() {
   // Fetch Profile and Friendship Status
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data, error } = await supabase
-        .from("user_profiles")
-        .select("full_name, username, bio, avatar")
-        .eq("id", id)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("full_name, username, bio, avatar_url")
+          .eq("id", id)
+          .single();
 
-      if (!error) {
-        setProfile(data);
-        setFormData({
-          full_name: data.full_name || "",
-          bio: data.bio || "",
-        });
+        if (!error) {
+          setProfile({
+            ...data,
+            avatar_url: data.avatar_url || DEFAULT_AVATAR,
+          });
+          setFormData({
+            full_name: data.full_name || "",
+            bio: data.bio || "",
+          });
+        } else {
+          console.error("Error fetching profile:", error.message);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     const checkFriendship = async () => {
       if (!user || !id || user.id === id) return;
 
-      // Check if a friendship exists in the "friends" table
       const { data, error } = await supabase
         .from("friends")
         .select()
@@ -55,10 +64,8 @@ function UserProfile() {
       }
 
       if (data.length > 0) {
-        // If a friendship exists, set the status to "friends"
         setFriendStatus("friends");
       } else {
-        // If no friendship exists, check for pending requests in the "friendrequests" table
         const { data: requestData, error: requestError } = await supabase
           .from("friendrequests")
           .select()
@@ -116,7 +123,7 @@ function UserProfile() {
 
   const handleSave = async () => {
     const { error } = await supabase
-      .from("user_profiles")
+      .from("profiles")
       .update(formData)
       .eq("id", user.id);
 
@@ -132,7 +139,7 @@ function UserProfile() {
   return (
     <div className="profile-container">
       <img
-        src={profile.avatar || DEFAULT_AVATAR}
+        src={profile.avatar_url || DEFAULT_AVATAR}
         alt="Profile Avatar"
         className="profile-avatar"
       />

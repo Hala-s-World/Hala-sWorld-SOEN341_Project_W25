@@ -17,6 +17,7 @@ const FriendCard = ({ friendId, friendName }) => {
   const [lastSeenTime, setLastSeenTime] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [friendAvatar, setFriendAvatar] = useState(null); // New state for friend's avatar
   const navigate = useNavigate();
 
   const handleSelectUser = () => {
@@ -60,9 +61,31 @@ const FriendCard = ({ friendId, friendName }) => {
       }
     };
 
+    const fetchFriendAvatar = async () => {
+      try {
+        const { data, error } = await SupabaseAPI.getUserProfile(friendId);
+        if (data?.avatar_url) {
+          setFriendAvatar(data.avatar_url); // Set the friend's avatar URL
+        } else {
+          setFriendAvatar(
+            "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar
+          );
+        }
+        if (error) {
+          console.error("Error fetching friend's avatar:", error.message);
+        }
+      } catch (error) {
+        console.error("Error fetching friend's profile:", error.message);
+        setFriendAvatar(
+          "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar in case of error
+        );
+      }
+    };
+
     fetchStatus();
     fetchLastSeen();
     fetchUnreadCount();
+    fetchFriendAvatar(); // Fetch the friend's avatar
 
     const statusChannel = SupabaseAPI.subscribeToFriendStatus(
       friendId,
@@ -99,7 +122,10 @@ const FriendCard = ({ friendId, friendName }) => {
     <div onClick={handleSelectUser} className="friend-card">
       <img
         className="chat-item-profile-picture"
-        src="https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg"
+        src={
+          friendAvatar ||
+          "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar if none is set
+        }
         alt="User avatar"
       />
       <div className="friend-name">{friendName}</div>

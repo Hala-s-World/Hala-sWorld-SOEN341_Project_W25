@@ -9,14 +9,11 @@ import {
   FaUserFriends,
   FaSatelliteDish,
 } from "react-icons/fa";
-import SupabaseAPI from "../../helper/supabaseAPI";
 import supabase from "../../helper/supabaseClient";
 import "../styles/sidebar.css";
 import { useActiveComponent } from "../../helper/activeComponent";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
-import ChannelManager from "./ChannelManager";
-import FriendsPage from "../../pages/FriendsPage";
 import GetUserStatus from "./GetUserStatus";
 
 export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
@@ -50,24 +47,21 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
 
   useEffect(() => {
     if (!user) return;
-    const fetchUsername = async () => {
+
+    const fetchUserProfile = async () => {
       try {
         const { data, error } = await supabase
           .from("profiles")
-          .select("full_name, avatar")
+          .select("full_name, avatar_url") // Fetch avatar_url instead of avatar
           .eq("id", user.id)
           .single();
 
         if (data) {
           setUsername(data.full_name);
-          if (data.avatar) {
-            setAvatar(
-              URL.createObjectURL(new Blob([new Uint8Array(data.avatar)]))
-            );
-          }
+          setAvatar(data.avatar_url); // Set the avatar URL directly
         }
 
-        if (error) console.error("Avatar fetch error:", error.message);
+        if (error) console.error("Error fetching profile:", error.message);
       } catch (error) {
         console.error("Error fetching profile:", error.message);
       } finally {
@@ -75,8 +69,8 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
       }
     };
 
-    fetchUsername();
-  }, []);
+    fetchUserProfile();
+  }, [user]);
 
   return (
     <div className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
@@ -86,7 +80,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
             className="user-picture"
             src={
               avatar ||
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ0FpBg5Myb9CQ-bQpFou9BY9JXoRG6208_Q&s"
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ0FpBg5Myb9CQ-bQpFou9BY9JXoRG6208_Q&s" // Default avatar if none selected
             }
             alt="User"
           />
@@ -94,7 +88,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         <div className="user-name">
           {username}
           <div className="status">
-            <GetUserStatus></GetUserStatus>
+            <GetUserStatus />
           </div>
           <span>
             <FaAngleDown className="dropdown-icon" />
