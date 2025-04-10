@@ -138,9 +138,10 @@ const SupabaseAPI = {
   async getUserProfile(userId) {
     const { data, error } = await supabase
       .from("profiles")
-      .select("username, full_name, bio, avatar")
+      .select("username, full_name, bio, avatar_url")
       .eq("id", userId)
       .single();
+      
 
     if (error) throw new Error(error.message);
     return data;
