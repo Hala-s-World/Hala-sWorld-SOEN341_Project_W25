@@ -20,7 +20,7 @@ function SettingsPage() {
 
     const { error } = await supabase.from("profiles").upsert({
       id: user.id,
-      username, // Add username to upsert
+      username: username, // Add username to upsert
       full_name: fullName,
       bio,
       avatar: avatar ? new Uint8Array(avatar) : undefined,
