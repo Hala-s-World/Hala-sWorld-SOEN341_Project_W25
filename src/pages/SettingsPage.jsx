@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import supabase from "../helper/supabaseClient";
+import SupabaseAPI from "../helper/supabaseAPI"; // Import the updated SupabaseAPI
 import { useAuthStore } from "../store/authStore";
 import "../assets/styles/settings.css";
 
@@ -7,9 +8,40 @@ function SettingsPage() {
   const { user } = useAuthStore();
   const [fullName, setFullName] = useState("");
   const [bio, setBio] = useState("");
-  const [username, setUsername] = useState(""); // New state for username
+  const [username, setUsername] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null); // Preview for the avatar
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
+  // Fetch user profile on component mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await SupabaseAPI.getUserProfile(user.id);
+        console.log("Fetched profile:", profile);
+
+        setUsername(profile.username || "");
+        setFullName(profile.full_name || "");
+        setBio(profile.bio || "");
+
+        if (profile.avatar) {
+          // Debug avatar data
+          console.log("Avatar data:", profile.avatar);
+
+          // Convert avatar to a preview URL
+          const avatarUrl = URL.createObjectURL(
+            new Blob([new Uint8Array(profile.avatar)])
+          );
+          setAvatarPreview(avatarUrl);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error.message);
+      }
+    };
+
+    if (user?.id) {
+      fetchProfile();
+    }
+  }, [user]);
 
   // Handle Save functionality
   const handleSave = async () => {
@@ -20,7 +52,7 @@ function SettingsPage() {
 
     const { error } = await supabase.from("profiles").upsert({
       id: user.id,
-      username: username, // Add username to upsert
+      username: username,
       full_name: fullName,
       bio,
       avatar: avatar ? new Uint8Array(avatar) : undefined,

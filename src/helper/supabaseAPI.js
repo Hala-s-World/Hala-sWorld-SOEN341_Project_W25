@@ -135,6 +135,17 @@ const SupabaseAPI = {
     return data;
   },
 
+  async getUserProfile(userId) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("username, full_name, bio, avatar")
+      .eq("id", userId)
+      .single();
+
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
  
 
   async createUserRole(userId){
@@ -406,7 +417,7 @@ unsubscribeFromUnreadMessages(channel) {
       .from('friends')
       .delete()
       .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${userId})`);
-  
+    console.log(userId, friendId)
     if (error) throw new Error(error.message);
   },
 

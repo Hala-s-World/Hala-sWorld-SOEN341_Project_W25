@@ -30,11 +30,7 @@ const FriendRequest = ({ request, onRemove }) => {
           friend_id: request.sender_id, // Current user becomes friends with the sender
           created_at: new Date(),
         },
-        {
-          user_id: request.sender_id, // The sender becomes friends with the current user
-          friend_id: user.id,
-          created_at: new Date(),
-        },
+      
       ]);
 
       if (insertError) {

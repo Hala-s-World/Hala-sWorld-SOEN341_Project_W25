@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import supabase from "../helper/supabaseClient";
+import SupabaseAPI from "../helper/supabaseAPI";
 import "../assets/styles/UserProfile.css";
 import { useAuthStore } from "../store/authStore";
 
@@ -40,23 +41,35 @@ function UserProfile() {
     const checkFriendship = async () => {
       if (!user || !id || user.id === id) return;
 
-      // Check if the user is already friends by checking for two rows in the "friends" table
-      const { data } = await supabase
+      // Check if a friendship exists in the "friends" table
+      const { data, error } = await supabase
         .from("friends")
         .select()
-        .or(`user_id.eq.${user.id},friend_id.eq.${user.id}`)
-        .or(`user_id.eq.${id},friend_id.eq.${id}`);
+        .or(
+          `and(user_id.eq.${user.id},friend_id.eq.${id}),and(user_id.eq.${id},friend_id.eq.${user.id})`
+        );
 
-      if (data.length === 2) {
-        // Check if there are two rows in the friends table
+      if (error) {
+        console.error("Error checking friendship:", error.message);
+        return;
+      }
+
+      if (data.length > 0) {
+        // If a friendship exists, set the status to "friends"
         setFriendStatus("friends");
       } else {
-        // If not in the "friends" table, check for pending requests in "friendrequests" table
-        const { data: requestData } = await supabase
+        // If no friendship exists, check for pending requests in the "friendrequests" table
+        const { data: requestData, error: requestError } = await supabase
           .from("friendrequests")
           .select()
-          .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-          .or(`sender_id.eq.${id},recipient_id.eq.${id}`);
+          .or(
+            `and(sender_id.eq.${user.id},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${user.id})`
+          );
+
+        if (requestError) {
+          console.error("Error checking friend requests:", requestError.message);
+          return;
+        }
 
         if (requestData.length > 0) {
           const entry = requestData.find(
@@ -94,12 +107,7 @@ function UserProfile() {
   };
 
   const unfriend = async () => {
-    await supabase
-      .from("friends")
-      .delete()
-      .or(
-        `and(user_id.eq.${user.id},friend_id.eq.${id}),and(user_id.eq.${id},friend_id.eq.${user.id})`
-      );
+    await SupabaseAPI.deleteFriend(user.id, id);
     setFriendStatus("none");
   };
 

@@ -8,6 +8,7 @@ import SupabaseAPI from "../../helper/supabaseAPI";
 import FriendStatus from "./GetFriendStatus";
 import LastSeen from "./LastSeen";
 import UnreadCount from "./UnreadCount";
+import { useNavigate } from "react-router-dom";
 
 const FriendCard = ({ friendId, friendName }) => {
   const { setActiveComponent } = useActiveComponent();
@@ -16,6 +17,11 @@ const FriendCard = ({ friendId, friendName }) => {
   const [lastSeenTime, setLastSeenTime] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSelectUser = () => {
+    navigate(`/profile/${friendId}`);
+  };
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -74,7 +80,8 @@ const FriendCard = ({ friendId, friendName }) => {
     };
   }, [friendId, user.id]);
 
-  const handleChatOnClick = () => {
+  const handleChatOnClick = (e) => {
+    e.stopPropagation(); // Prevent the parent onClick from firing
     setCurrentFriend({ friendName: friendName, friendId: friendId });
     setActiveComponent("Direct-Messaging");
 
@@ -89,7 +96,7 @@ const FriendCard = ({ friendId, friendName }) => {
   };
 
   return (
-    <div className="friend-card">
+    <div onClick={handleSelectUser} className="friend-card">
       <img
         className="chat-item-profile-picture"
         src="https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg"
@@ -109,11 +116,14 @@ const FriendCard = ({ friendId, friendName }) => {
       )}
       <LuMessageCircle
         className="icon message-icon"
-        onClick={handleChatOnClick}
+        onClick={handleChatOnClick} // Call the updated function
       />
       <TiDeleteOutline
         className="icon delete-icon"
-        onClick={handleDeleteOnClick}
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent the parent onClick from firing
+          handleDeleteOnClick();
+        }}
       />
     </div>
   );
