@@ -124,12 +124,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         >
           <FaSatelliteDish className="sidebar-icon" /> Channels
         </div>
-        <div
-          className="sidebar-element"
-          onClick={() => handleClick("Calendar")}
-        >
-          <FaCalendarAlt className="sidebar-icon" /> Calendar
-        </div>
+      
         <div
           className="sidebar-element"
           onClick={() => handleClick("Settings")}
