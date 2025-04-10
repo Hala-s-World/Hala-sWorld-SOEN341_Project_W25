@@ -286,3 +286,14 @@ input::placeholder {
 .EmojiPickerReact .epr-body::-webkit-scrollbar {
   display: none;
 }
+
+.chat-search-bar {
+  padding: 10px;
+}
+
+.chat-search-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
