@@ -1,7 +1,7 @@
 .channels-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 90%;
   width: 100%;
   background-color: #36393f;
   /* Discord's dark background */

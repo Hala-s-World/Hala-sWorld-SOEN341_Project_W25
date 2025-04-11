@@ -11,7 +11,6 @@ import UnreadCount from "./UnreadCount";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../helper/supabaseClient";
 
-
 const FriendCard = ({ friendId, friendName }) => {
   const { setActiveComponent } = useActiveComponent();
   const { setCurrentFriend, user } = useAuthStore();
@@ -19,7 +18,8 @@ const FriendCard = ({ friendId, friendName }) => {
   const [lastSeenTime, setLastSeenTime] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [friendAvatar, setFriendAvatar] = useState(null); // New state for friend's avatar
+  const [friendAvatar, setFriendAvatar] = useState(null); // Friend's avatar URL
+  const [isAvatarLoaded, setIsAvatarLoaded] = useState(false); // Track avatar loading state
   const navigate = useNavigate();
 
   const handleSelectUser = () => {
@@ -64,30 +64,26 @@ const FriendCard = ({ friendId, friendName }) => {
 
     const fetchFriendAvatar = async () => {
       try {
-        // const { data, error } = await SupabaseAPI.getUserProfile(friendId);
         const { data, error } = await supabase
           .from("profiles")
-          .select("full_name, avatar_url") // Fetch avatar_url instead of avatar
+          .select("avatar_url")
           .eq("id", friendId)
           .single();
 
-        
-        if (data?.avatar_url) {
-         
-          setFriendAvatar(data.avatar_url); // Set the friend's avatar URL
-        } else {
-          setFriendAvatar(
-            "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar
-          );
-        }
         if (error) {
           console.error("Error fetching friend's avatar:", error.message);
         }
+
+        if (data?.avatar_url) {
+          setFriendAvatar(data.avatar_url); // Set the friend's avatar URL
+        } else {
+          setFriendAvatar(null); // Explicitly set to null if no avatar exists
+        }
       } catch (error) {
         console.error("Error fetching friend's profile:", error.message);
-        setFriendAvatar(
-          "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar in case of error
-        );
+        setFriendAvatar(null); // Explicitly set to null in case of error
+      } finally {
+        setIsAvatarLoaded(true); // Mark avatar loading as complete
       }
     };
 
@@ -132,10 +128,13 @@ const FriendCard = ({ friendId, friendName }) => {
       <img
         className="chat-item-profile-picture"
         src={
-          friendAvatar ||
-          "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar if none is set
+          isAvatarLoaded
+            ? friendAvatar || "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar if no avatar exists
+            : "" // Empty string while loading
         }
         alt="User avatar"
+        onLoad={() => setIsAvatarLoaded(true)} // Mark as loaded when the image finishes loading
+        onError={() => setFriendAvatar(null)} // Handle image load errors
       />
       <div className="friend-name">{friendName}</div>
 
