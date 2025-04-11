@@ -9,6 +9,8 @@ import FriendStatus from "./GetFriendStatus";
 import LastSeen from "./LastSeen";
 import UnreadCount from "./UnreadCount";
 import { useNavigate } from "react-router-dom";
+import supabase from "../../helper/supabaseClient";
+
 
 const FriendCard = ({ friendId, friendName }) => {
   const { setActiveComponent } = useActiveComponent();
@@ -54,7 +56,6 @@ const FriendCard = ({ friendId, friendName }) => {
           user.id,
           friendId
         );
-        console.log("unread count:", count);
         setUnreadCount(count);
       } catch (error) {
         console.error("Error fetching unread messages count:", error);
@@ -63,8 +64,16 @@ const FriendCard = ({ friendId, friendName }) => {
 
     const fetchFriendAvatar = async () => {
       try {
-        const { data, error } = await SupabaseAPI.getUserProfile(friendId);
+        // const { data, error } = await SupabaseAPI.getUserProfile(friendId);
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("full_name, avatar_url") // Fetch avatar_url instead of avatar
+          .eq("id", friendId)
+          .single();
+
+        
         if (data?.avatar_url) {
+         
           setFriendAvatar(data.avatar_url); // Set the friend's avatar URL
         } else {
           setFriendAvatar(
