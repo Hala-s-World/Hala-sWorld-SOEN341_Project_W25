@@ -318,7 +318,7 @@ const SupabaseAPI = {
         sender:sender_id ( username ),
         receiver:receiver_id ( username )
       `)
-      .or(`and(sender_id.eq.${senderId},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},sender_id.eq.${senderId})`)
+      .or(`and(sender_id.eq.${senderId},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},receiver_id.eq.${senderId})`)
       .order('created_at', { ascending: true });
 
     if (error) throw new Error(error.message);
