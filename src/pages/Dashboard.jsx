@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAuthStore } from "../store/authStore";
 import "../assets/styles/dashboard.css";
 import { FaBars } from "react-icons/fa";
 import DirectMessaging from "../assets/components/DirectMessaging";

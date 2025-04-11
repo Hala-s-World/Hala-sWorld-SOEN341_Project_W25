@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useActiveComponent } from "../../helper/activeComponent";
 import "../styles/channelmanager.css";
 import { useAuthStore } from "../../store/authStore";
 import AddChannel from "./AddChannel";
