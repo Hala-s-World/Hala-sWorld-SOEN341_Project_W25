@@ -28,7 +28,7 @@ import SettingsPage from "./SettingsPage";
 function Dashboard() {
   const navigate = useNavigate();
   const { logout, errorMessage, currentFriend } = useAuthStore();
-  const { activeComponent } = useActiveComponent();
+  const { activeComponent } = useActiveComponent("DashboardHome");
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
