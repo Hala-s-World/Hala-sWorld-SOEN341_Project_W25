@@ -7,59 +7,81 @@ import { useState } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event, email, password) => {
     event.preventDefault();
-  
-    setErrorMessage("");  
-  
+
+    setErrorMessage("");
+
     try {
+      // Sign up the user
+      const { user } = await SupabaseAPI.signUp(email, password);
 
-      const { error } = await SupabaseAPI.signUp(email, password);
-  
-      if (error) {
-        setErrorMessage(error.message);
+      console.log("SignUp Response:", user); // Debugging log
+
+      if (!user) {
+        setErrorMessage("Signup failed: No user data returned.");
+        return;
+      }
+
+      const userId = user.id; // Get the user's ID
+
+      // Log out the user after signup
+      await supabase.auth.signOut();
+
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || sessionData?.session) {
+        setErrorMessage("Failed to clear session before logging in new user.");
+        return;
+      }
+
+      // Log in the new user
+      const { user: loggedInUser, session, error: loginError } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (loginError) {
+        setErrorMessage("Login failed after signup: " + loginError.message);
       } else {
+        console.log("New user logged in successfully");
 
-        await supabase.auth.signOut(); 
-        
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-        if (sessionError || sessionData?.session) {
-          setErrorMessage("Failed to clear session before logging in new user.");
-          return;
-        }
+        // Set the user and session in authStore
+        setAuthState(loggedInUser, session);
 
-        // After signing out, log in the new user
-        const { user, session, error: loginError } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password,
-        });
-  
-        if (loginError) {
-          setErrorMessage("Login failed after signup: " + loginError.message);
-        } else {
-          console.log("New user logged in successfully");
-          setAuthState(user, session);
-          navigate("/dashboard");
-        }
+        // Navigate to the dashboard
+        navigate("/dashboard");
       }
     } catch (error) {
       console.log("Error signing up:", error.message);
       setErrorMessage("An error occurred during the signup process.");
     }
-  }
+  };
+
   const setAuthState = (user, session) => {
     const { setAuthenticatedUser, setSession } = useAuthStore.getState();
-    setAuthenticatedUser(user); 
-    setSession(session); 
+    setAuthenticatedUser(user); // Set the user in authStore
+    setSession(session); // Set the session in authStore
   };
-  
 
   return (
     <div>
       <AuthenticationForm title="REGISTER" handleSubmit={handleSubmit} />
-       {errorMessage && <div style={{ color: "red", fontSize: "12px", marginTop: "10px", justifyItems:"center", alignItems:"center", textAlign:"center"}}>{errorMessage}</div>}
+      {errorMessage && (
+        <div
+          style={{
+            color: "red",
+            fontSize: "12px",
+            marginTop: "10px",
+            justifyItems: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          {errorMessage}
+        </div>
+      )}
     </div>
   );
 };

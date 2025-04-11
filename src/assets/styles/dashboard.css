@@ -26,6 +26,7 @@
 }
 
 .dashboard.sidebar-open .main-content {
+  height:100%;
   margin-left: 300px;
   width: calc(100% - 300px);
 }
@@ -285,4 +286,15 @@ input::placeholder {
 /* Hide scrollbar if needed */
 .EmojiPickerReact .epr-body::-webkit-scrollbar {
   display: none;
+}
+
+.chat-search-bar {
+  padding: 10px;
+}
+
+.chat-search-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }

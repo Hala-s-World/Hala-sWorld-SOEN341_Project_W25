@@ -90,7 +90,6 @@ export default function ChannelList({ onSelectChannel }) {
             userChannels.includes(channel.id)
         );
 
-        console.log("user: ", user, "filtered channels: ", filteredChannels, userChannels)
     return (
         <div className="ChannelList">
             {filteredChannels.map((channel) => (

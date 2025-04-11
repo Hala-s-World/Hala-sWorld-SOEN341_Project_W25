@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import supabase from "../helper/supabaseClient";
+import SupabaseAPI from "../helper/supabaseAPI";
 import "../assets/styles/UserProfile.css";
 import { useAuthStore } from "../store/authStore";
 
@@ -21,42 +22,61 @@ function UserProfile() {
   // Fetch Profile and Friendship Status
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data, error } = await supabase
-        .from("user_profiles")
-        .select("full_name, username, bio, avatar")
-        .eq("id", id)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("full_name, username, bio, avatar_url")
+          .eq("id", id)
+          .single();
 
-      if (!error) {
-        setProfile(data);
-        setFormData({
-          full_name: data.full_name || "",
-          bio: data.bio || "",
-        });
+        if (!error) {
+          setProfile({
+            ...data,
+            avatar_url: data.avatar_url || DEFAULT_AVATAR,
+          });
+          setFormData({
+            full_name: data.full_name || "",
+            bio: data.bio || "",
+          });
+        } else {
+          console.error("Error fetching profile:", error.message);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     const checkFriendship = async () => {
       if (!user || !id || user.id === id) return;
 
-      // Check if the user is already friends by checking for two rows in the "friends" table
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("friends")
         .select()
-        .or(`user_id.eq.${user.id},friend_id.eq.${user.id}`)
-        .or(`user_id.eq.${id},friend_id.eq.${id}`);
+        .or(
+          `and(user_id.eq.${user.id},friend_id.eq.${id}),and(user_id.eq.${id},friend_id.eq.${user.id})`
+        );
 
-      if (data.length === 2) {
-        // Check if there are two rows in the friends table
+      if (error) {
+        console.error("Error checking friendship:", error.message);
+        return;
+      }
+
+      if (data.length > 0) {
         setFriendStatus("friends");
       } else {
-        // If not in the "friends" table, check for pending requests in "friendrequests" table
-        const { data: requestData } = await supabase
+        const { data: requestData, error: requestError } = await supabase
           .from("friendrequests")
           .select()
-          .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-          .or(`sender_id.eq.${id},recipient_id.eq.${id}`);
+          .or(
+            `and(sender_id.eq.${user.id},recipient_id.eq.${id}),and(sender_id.eq.${id},recipient_id.eq.${user.id})`
+          );
+
+        if (requestError) {
+          console.error("Error checking friend requests:", requestError.message);
+          return;
+        }
 
         if (requestData.length > 0) {
           const entry = requestData.find(
@@ -94,12 +114,7 @@ function UserProfile() {
   };
 
   const unfriend = async () => {
-    await supabase
-      .from("friends")
-      .delete()
-      .or(
-        `and(user_id.eq.${user.id},friend_id.eq.${id}),and(user_id.eq.${id},friend_id.eq.${user.id})`
-      );
+    await SupabaseAPI.deleteFriend(user.id, id);
     setFriendStatus("none");
   };
 
@@ -108,7 +123,7 @@ function UserProfile() {
 
   const handleSave = async () => {
     const { error } = await supabase
-      .from("user_profiles")
+      .from("profiles")
       .update(formData)
       .eq("id", user.id);
 
@@ -124,7 +139,7 @@ function UserProfile() {
   return (
     <div className="profile-container">
       <img
-        src={profile.avatar || DEFAULT_AVATAR}
+        src={profile.avatar_url || DEFAULT_AVATAR}
         alt="Profile Avatar"
         className="profile-avatar"
       />

@@ -8,6 +8,9 @@ import SupabaseAPI from "../../helper/supabaseAPI";
 import FriendStatus from "./GetFriendStatus";
 import LastSeen from "./LastSeen";
 import UnreadCount from "./UnreadCount";
+import { useNavigate } from "react-router-dom";
+import supabase from "../../helper/supabaseClient";
+
 
 const FriendCard = ({ friendId, friendName }) => {
   const { setActiveComponent } = useActiveComponent();
@@ -16,6 +19,12 @@ const FriendCard = ({ friendId, friendName }) => {
   const [lastSeenTime, setLastSeenTime] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [friendAvatar, setFriendAvatar] = useState(null); // New state for friend's avatar
+  const navigate = useNavigate();
+
+  const handleSelectUser = () => {
+    navigate(`/profile/${friendId}`);
+  };
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -47,16 +56,45 @@ const FriendCard = ({ friendId, friendName }) => {
           user.id,
           friendId
         );
-        console.log("unread count:", count);
         setUnreadCount(count);
       } catch (error) {
         console.error("Error fetching unread messages count:", error);
       }
     };
 
+    const fetchFriendAvatar = async () => {
+      try {
+        // const { data, error } = await SupabaseAPI.getUserProfile(friendId);
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("full_name, avatar_url") // Fetch avatar_url instead of avatar
+          .eq("id", friendId)
+          .single();
+
+        
+        if (data?.avatar_url) {
+         
+          setFriendAvatar(data.avatar_url); // Set the friend's avatar URL
+        } else {
+          setFriendAvatar(
+            "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar
+          );
+        }
+        if (error) {
+          console.error("Error fetching friend's avatar:", error.message);
+        }
+      } catch (error) {
+        console.error("Error fetching friend's profile:", error.message);
+        setFriendAvatar(
+          "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar in case of error
+        );
+      }
+    };
+
     fetchStatus();
     fetchLastSeen();
     fetchUnreadCount();
+    fetchFriendAvatar(); // Fetch the friend's avatar
 
     const statusChannel = SupabaseAPI.subscribeToFriendStatus(
       friendId,
@@ -74,7 +112,8 @@ const FriendCard = ({ friendId, friendName }) => {
     };
   }, [friendId, user.id]);
 
-  const handleChatOnClick = () => {
+  const handleChatOnClick = (e) => {
+    e.stopPropagation(); // Prevent the parent onClick from firing
     setCurrentFriend({ friendName: friendName, friendId: friendId });
     setActiveComponent("Direct-Messaging");
 
@@ -89,10 +128,13 @@ const FriendCard = ({ friendId, friendName }) => {
   };
 
   return (
-    <div className="friend-card">
+    <div onClick={handleSelectUser} className="friend-card">
       <img
         className="chat-item-profile-picture"
-        src="https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg"
+        src={
+          friendAvatar ||
+          "https://byuc.wordpress.com/wp-content/uploads/2012/07/avat-2.jpg" // Default avatar if none is set
+        }
         alt="User avatar"
       />
       <div className="friend-name">{friendName}</div>
@@ -109,11 +151,14 @@ const FriendCard = ({ friendId, friendName }) => {
       )}
       <LuMessageCircle
         className="icon message-icon"
-        onClick={handleChatOnClick}
+        onClick={handleChatOnClick} // Call the updated function
       />
       <TiDeleteOutline
         className="icon delete-icon"
-        onClick={handleDeleteOnClick}
+        onClick={(e) => {
+          e.stopPropagation(); // Prevent the parent onClick from firing
+          handleDeleteOnClick();
+        }}
       />
     </div>
   );

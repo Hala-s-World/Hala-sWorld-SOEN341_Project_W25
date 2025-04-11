@@ -7,19 +7,87 @@ const SupabaseAPI = {
    *  ───────────────────────────── */
    
   async signUp(email, password) {
-    //create user in supabase
+    // Create user in Supabase
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
 
-    //insert new record in user table
     if (error) throw new Error(error.message);
-    await this.createUser(data.user.id,'testUsefasdrname' );
 
-    //insert role "user" for new user
-    await this.createUserRole(data.user.id)
-    return data.user;
+    // Ensure the user object exists
+    const user = data.user;
+    if (!user) {
+      throw new Error("User creation failed. No user data returned.");
+    }
+
+    const userId = user.id; // Get the user's ID
+
+    // Insert a new record in the user table
+    const { error: userTableError } = await supabase.from("user").insert([
+      {
+        id: userId, // Use the user's ID as the primary key
+        email: email, // Include the email
+        username: "NewUser", // Default username (can be updated later)
+      },
+    ]);
+
+    if (userTableError) throw new Error(userTableError.message);
+
+    console.log("User record created successfully for user:", userId);
+
+    // Insert a new record in the profiles table
+    const DEFAULT_AVATAR =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ0FpBg5Myb9CQ-bQpFou9BY9JXoRG6208_Q&s";
+
+    const { error: profileError } = await supabase.from("profiles").insert([
+      {
+        id: userId, // Use the user's ID as the primary key
+        avatar_url: DEFAULT_AVATAR, // Set the default avatar
+        username: "NewUser", // Default username (can be updated later)
+        full_name: "", // Default full name (can be updated later)
+        bio: "", // Default bio (can be updated later)
+      },
+    ]);
+
+    if (profileError) throw new Error(profileError.message);
+
+    console.log("Profile created successfully for user:", userId);
+
+    // Check if a record already exists in the user_status table
+    const { data: existingStatus, error: fetchStatusError } = await supabase
+      .from("user_status")
+      .select("user_id")
+      .eq("user_id", userId)
+      .single();
+
+    if (fetchStatusError && fetchStatusError.code !== "PGRST116") {
+      // Ignore "No Rows Found" error (PGRST116)
+      throw new Error(fetchStatusError.message);
+    }
+
+    if (!existingStatus) {
+      // Insert a new record in the user_status table if it doesn't exist
+      const { error: statusError } = await supabase.from("user_status").insert([
+        {
+          user_id: userId, // Use the user's ID as the primary key
+          status: "online", // Initialize the status as online
+          last_active: new Date().toISOString(), // Set the last active timestamp
+        },
+      ]);
+
+      if (statusError) throw new Error(statusError.message);
+
+      console.log("User status initialized successfully for user:", userId);
+    } else {
+      console.log("User status record already exists for user:", userId);
+    }
+
+    // Insert role "user" for the new user
+    await this.createUserRole(userId);
+
+    // Return the user object in the expected format
+    return { user };
   },
 
   async signIn(email, password) {
@@ -135,6 +203,18 @@ const SupabaseAPI = {
     return data;
   },
 
+  async getUserProfile(userId) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("username, full_name, bio, avatar_url")
+      .eq("id", userId)
+      .single();
+      
+
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
  
 
   async createUserRole(userId){
@@ -194,9 +274,42 @@ const SupabaseAPI = {
   },
 
   async getChannelMessages(channelId) {
-    const { data, error } = await supabase.from('channel_messages').select('*').eq('channel_id', channelId).order('created_at', { ascending: true });
-    if (error) throw new Error(error.message);
-    return data;
+    // Step 1: Get all messages for the channel
+  const { data: messages, error: messagesError } = await supabase
+  .from('channel_messages')
+  .select('*')
+  .eq('channel_id', channelId)
+  .order('created_at', { ascending: true });
+
+if (messagesError) throw new Error(`Error fetching messages: ${messagesError.message}`);
+
+// Step 2: Extract unique sender IDs
+const senderIds = [...new Set(messages.map((msg) => msg.sender_id))];
+
+// Step 3: Fetch sender profiles
+const { data: profiles, error: profilesError } = await supabase
+  .from('profiles')
+  .select('id, username, avatar_url')
+  .in('id', senderIds);
+
+if (profilesError) throw new Error(`Error fetching profiles: ${profilesError.message}`);
+
+// Step 4: Map sender profiles by ID for fast lookup
+const profileMap = {};
+profiles.forEach((profile) => {
+  profileMap[profile.id] = profile;
+});
+
+// Step 5: Return formatted messages with sender info
+return messages.map((message) => {
+  const sender = profileMap[message.sender_id];
+  return {
+    ...message,
+    sender_username: sender?.username || "Unknown",
+    sender_avatar: sender?.avatar_url || "/default-avatar.png",
+    formattedDate: format(new Date(message.created_at), "dd MMM yyyy HH:mm"),
+  };
+});
   },
 
   async sendChannelMessage(userId, channelId, messageText) {
@@ -405,8 +518,8 @@ unsubscribeFromUnreadMessages(channel) {
     const { error } = await supabase
       .from('friends')
       .delete()
-      .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},friend_id.eq.${userId})`);
-  
+      .or(`and(user_id.eq.${userId},friend_id.eq.${friendId}),and(user_id.eq.${friendId},user_id.eq.${userId})`);
+    console.log(userId, friendId)
     if (error) throw new Error(error.message);
   },
 

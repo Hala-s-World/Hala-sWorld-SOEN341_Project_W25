@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import supabase from "../helper/supabaseClient";
+import SupabaseAPI from "../helper/supabaseAPI"; // Import the updated SupabaseAPI
 import { useAuthStore } from "../store/authStore";
 import "../assets/styles/settings.css";
 
@@ -7,29 +8,93 @@ function SettingsPage() {
   const { user } = useAuthStore();
   const [fullName, setFullName] = useState("");
   const [bio, setBio] = useState("");
-  const [username, setUsername] = useState(""); // New state for username
+  const [username, setUsername] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null); // Preview for the avatar
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
+  // Fetch user profile on component mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        console.log("Fetching profile for user ID:", user.id); // Debugging log
+        const profile = await SupabaseAPI.getUserProfile(user.id);
+        console.log("Fetched profile:", profile);
+
+        setUsername(profile.username || "");
+        setFullName(profile.full_name || "");
+        setBio(profile.bio || "");
+
+        // Use the avatar_url column to set the avatar preview
+        if (profile.avatar_url) {
+        
+          setAvatarPreview(profile.avatar_url); // Use the URL directly
+        } else {
+          console.log("No avatar found for user.");
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error.message);
+      }
+    };
+
+    if (user?.id) {
+      fetchProfile();
+    }
+  }, [user]);
 
   // Handle Save functionality
   const handleSave = async () => {
-    let avatar = null;
+    let avatarUrl = avatarPreview; // Default to the current avatar URL
+
     if (avatarFile) {
-      avatar = await avatarFile.arrayBuffer();
+      // Upload the avatar to Supabase Storage
+      const { data, error: uploadError } = await supabase.storage
+        .from("avatars") // Ensure this matches your bucket name
+        .upload(`public/${user.id}-${avatarFile.name}`, avatarFile, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      if (uploadError) {
+        console.error("Error uploading avatar:", uploadError.message);
+        alert("Failed to upload avatar. Please try again.");
+        return;
+      }
+
+
+
+      const filePath = `public/${user.id}-${avatarFile.name}`;
+
+
+      const { data: urlData, error: urlError } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+      if (urlError) {
+      console.error("Error getting public URL:", urlError.message);
+      alert("Failed to retrieve avatar URL. Please try again.");
+      return;
+      }
+
+
+      avatarUrl = urlData.publicUrl; // Use the public URL for the avatar
+
     }
 
+    // Save the profile data, including the avatar URL, in the database
     const { error } = await supabase.from("profiles").upsert({
       id: user.id,
-      username: username, // Add username to upsert
+      username: username,
       full_name: fullName,
       bio,
-      avatar: avatar ? new Uint8Array(avatar) : undefined,
+      avatar_url: avatarUrl, // Save the URL in the new column
     });
 
     if (error) {
-      console.error(error);
+      console.error("Error saving profile:", error.message);
+      alert("Failed to save profile. Please try again.");
     } else {
-      alert("Profile updated");
+      alert("Profile updated successfully!");
+      setAvatarPreview(avatarUrl); // Update the preview with the new avatar URL
     }
   };
 
