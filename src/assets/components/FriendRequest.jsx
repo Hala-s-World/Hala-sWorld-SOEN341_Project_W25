@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import supabase from "../../helper/supabaseClient";
 import { useAuthStore } from "../../store/authStore";
 import "../styles/channelmanager.css";
 
 const FriendRequest = ({ request, onRemove }) => {
   const { user } = useAuthStore(); // Correctly using the auth store
+  const [friendProfile, setFriendProfile] = useState({ username: "", avatar_url: "" });
+
+  // Fetch the friend's profile (username and avatar) from the "profiles" table
+  useEffect(() => {
+    const fetchFriendProfile = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("username, avatar_url")
+          .eq("id", request.sender_id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching friend's profile:", error);
+          return;
+        }
+
+        setFriendProfile(data);
+      } catch (error) {
+        console.error("Unexpected error fetching friend's profile:", error);
+      }
+    };
+
+    fetchFriendProfile();
+  }, [request.sender_id]);
 
   const handleAccept = async () => {
     try {
@@ -30,7 +55,6 @@ const FriendRequest = ({ request, onRemove }) => {
           friend_id: request.sender_id, // Current user becomes friends with the sender
           created_at: new Date(),
         },
-      
       ]);
 
       if (insertError) {
@@ -80,14 +104,23 @@ const FriendRequest = ({ request, onRemove }) => {
   };
 
   return (
-    <div className="FriendRequest">
-      <p>Friend request from {request.sender_username}</p>
-      <button onClick={handleAccept} className="accept-btn">
-        Accept
-      </button>
-      <button onClick={handleReject} className="reject-btn">
-        Reject
-      </button>
+    <div className="Invitation">
+      <div className="friend-info">
+        <img
+          src={friendProfile.avatar_url || "/default-avatar.png"}
+          alt={`${friendProfile.username}'s avatar`}
+          className="sender-avatar"
+        />
+        <p>Friend request from {friendProfile.username || "Loading..."}</p>
+      </div>
+      <div className="actions">
+        <button onClick={handleAccept} className="accept-btn">
+          Accept
+        </button>
+        <button onClick={handleReject} className="reject-btn">
+          Reject
+        </button>
+      </div>
     </div>
   );
 };

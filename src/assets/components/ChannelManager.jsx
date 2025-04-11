@@ -5,8 +5,8 @@ import "../styles/channelmanager.css"
 import { useAuthStore } from "../../store/authStore";
 import ChannelCard from "./ChannelCard";
 import AddChannel from "./AddChannel";
+import ChannelChat from "./channelChat";
 import ChannelList from "./ChannelList";
-import ChannelChat from "./ChannelChat";
 
 
 export default function ChannelManager() {

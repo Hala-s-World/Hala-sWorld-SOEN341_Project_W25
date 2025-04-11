@@ -274,9 +274,42 @@ const SupabaseAPI = {
   },
 
   async getChannelMessages(channelId) {
-    const { data, error } = await supabase.from('channel_messages').select('*').eq('channel_id', channelId).order('created_at', { ascending: true });
-    if (error) throw new Error(error.message);
-    return data;
+    // Step 1: Get all messages for the channel
+  const { data: messages, error: messagesError } = await supabase
+  .from('channel_messages')
+  .select('*')
+  .eq('channel_id', channelId)
+  .order('created_at', { ascending: true });
+
+if (messagesError) throw new Error(`Error fetching messages: ${messagesError.message}`);
+
+// Step 2: Extract unique sender IDs
+const senderIds = [...new Set(messages.map((msg) => msg.sender_id))];
+
+// Step 3: Fetch sender profiles
+const { data: profiles, error: profilesError } = await supabase
+  .from('profiles')
+  .select('id, username, avatar_url')
+  .in('id', senderIds);
+
+if (profilesError) throw new Error(`Error fetching profiles: ${profilesError.message}`);
+
+// Step 4: Map sender profiles by ID for fast lookup
+const profileMap = {};
+profiles.forEach((profile) => {
+  profileMap[profile.id] = profile;
+});
+
+// Step 5: Return formatted messages with sender info
+return messages.map((message) => {
+  const sender = profileMap[message.sender_id];
+  return {
+    ...message,
+    sender_username: sender?.username || "Unknown",
+    sender_avatar: sender?.avatar_url || "/default-avatar.png",
+    formattedDate: format(new Date(message.created_at), "dd MMM yyyy HH:mm"),
+  };
+});
   },
 
   async sendChannelMessage(userId, channelId, messageText) {

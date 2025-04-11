@@ -8,7 +8,7 @@ const ChannelCard = ({
     onClick,
     isPrivate,
     isMember}) => {
-        console.log({ channelName, isMember });
+        
     return (
         <div className="ChannelCard" onClick={onClick}>
             {isAdmin && (

@@ -25,7 +25,8 @@ const InvitesList = () => {
       if (channelInviteError) {
         console.error("Error fetching channel invites:", channelInviteError);
       } else {
-        setChannelInvites(channelInvitesData);
+        console.log("Fetched channel invites:", channelInvitesData); // Debugging
+        setChannelInvites(channelInvitesData || []); // Replace the current state
       }
 
       // Fetch pending friend requests
@@ -39,12 +40,13 @@ const InvitesList = () => {
       if (friendRequestError) {
         console.error("Error fetching friend requests:", friendRequestError);
       } else {
-        setFriendRequests(friendRequestsData);
+        console.log("Fetched friend requests:", friendRequestsData); // Debugging
+        setFriendRequests(friendRequestsData || []); // Replace the current state
       }
     };
 
     fetchInvites();
-  }, [user]);
+  }, [user?.id]); // Only re-run when user.id changes
 
   const handleRemoveInvite = (inviteId) => {
     setChannelInvites((prev) => prev.filter((inv) => inv.id !== inviteId));
