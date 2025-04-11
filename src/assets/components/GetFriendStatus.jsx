@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const FriendStatus = ({ friendId, friendStatus }) => {
+const FriendStatus = ({ friendStatus }) => {
 
   const statusToDisplay = friendStatus;
 
@@ -28,7 +28,6 @@ const FriendStatus = ({ friendId, friendStatus }) => {
 };
 
 FriendStatus.propTypes = {
-    friendId: PropTypes.string.isRequired,
     friendStatus: PropTypes.string.isRequired,
 };
 

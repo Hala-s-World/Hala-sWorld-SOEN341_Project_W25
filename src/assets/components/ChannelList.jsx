@@ -83,10 +83,6 @@ export default function ChannelList({ onSelectChannel }) {
         }
     };
 
-    const refreshChannelMembers = () => {
-        // Define the function logic here
-    };
-
     // Filter channels based on user role and membership
     const filteredChannels = isAdmin
         ? channels

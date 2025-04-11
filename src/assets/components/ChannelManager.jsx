@@ -11,8 +11,6 @@ export default function ChannelManager() {
     const { role } = useAuthStore();
     const [selectedChannel, setSelectedChannel] = useState(null);
 
-    const { setActiveComponent } = useActiveComponent();
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import "../assets/styles/dashboard.css";
 import { FaBars } from "react-icons/fa";
@@ -13,8 +12,6 @@ import UserSearchBar from "../assets/components/UserSearchBar";
 import SettingsPage from "./SettingsPage";
 
 function Dashboard() {
-  const navigate = useNavigate();
-  const { logout, errorMessage } = useAuthStore();
   const { activeComponent } = useActiveComponent("DashboardHome");
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

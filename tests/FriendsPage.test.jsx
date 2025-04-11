@@ -19,7 +19,7 @@ vi.mock("../src/helper/supabaseAPI", () => ({
 describe("FriendsPage", () => {
   it("renders friends names correctly", () => {
     // Render the component
-    const { container } = render(<FriendsPage />);
+    render(<FriendsPage />);
 
     // Simulate the presence of friends in the content
     const isJohnPresent = true;
@@ -36,7 +36,7 @@ describe("FriendsPage", () => {
     }));
 
     // Render the component
-    const { container } = render(<FriendsPage />);
+    render(<FriendsPage />);
 
     // Simulating assuming that the fallback or placeholder exists
     const isNoFriendsMessagePresent = true;

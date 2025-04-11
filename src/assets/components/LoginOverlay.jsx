@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function LoginOverlay({ isRegister, togglePanel }) {
+function LoginOverlay({ togglePanel }) {
   return (
     <div className="overlay-container">
           <div className="overlay">
@@ -25,7 +25,6 @@ function LoginOverlay({ isRegister, togglePanel }) {
 }
 
 LoginOverlay.propTypes = {
-    isRegister: PropTypes.bool.isRequired,
     togglePanel: PropTypes.func.isRequired,
 };
 
