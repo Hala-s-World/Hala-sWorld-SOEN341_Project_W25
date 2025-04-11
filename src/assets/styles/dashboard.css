@@ -26,6 +26,7 @@
 }
 
 .dashboard.sidebar-open .main-content {
+  height:100%;
   margin-left: 300px;
   width: calc(100% - 300px);
 }
