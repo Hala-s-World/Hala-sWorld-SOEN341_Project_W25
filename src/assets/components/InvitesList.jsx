@@ -58,14 +58,15 @@ const InvitesList = () => {
 
   return (
     <div className="InvitesList">
-      <h3>Invitations</h3>
 
       {/* Channel Invitations */}
       <div className="section-header">
-        <h4>Channel Invitations</h4>
+        <h3>Channel Invitations</h3>
       </div>
       {channelInvites.length === 0 ? (
+        <div className="no-channel-invites">
         <p>No pending channel invitations.</p>
+        </div>
       ) : (
         channelInvites.map((invite) => (
           <ChannelInvitation
@@ -78,10 +79,12 @@ const InvitesList = () => {
 
       {/* Friend Requests */}
       <div className="section-header">
-        <h4>Friend Requests</h4>
+        <h3>Friend Requests</h3>
       </div>
       {friendRequests.length === 0 ? (
+        <div className="no-friend-requests">
         <p>No pending friend requests.</p>
+        </div>
       ) : (
         friendRequests.map((request) => (
           <FriendRequest

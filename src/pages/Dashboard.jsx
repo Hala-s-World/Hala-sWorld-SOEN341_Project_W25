@@ -24,6 +24,7 @@ import FriendsPage from "./FriendsPage";
 import DashboardHome from "./DashboardHome";
 import UserSearchBar from "../assets/components/UserSearchBar";
 import SettingsPage from "./SettingsPage";
+import catImage from "../assets/media/cat.jpg"; // Import cat image
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ function Dashboard() {
             <UserSearchBar />
           </div>
         </div>
+        
         {activeComponent === "Settings" && <SettingsPage />}
         {activeComponent === "Direct-Messaging" && <DirectMessaging />}
         {activeComponent === "Friends-Page" && <FriendsPage />}

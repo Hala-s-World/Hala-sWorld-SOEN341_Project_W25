@@ -113,6 +113,7 @@ function SettingsPage() {
 
   return (
     <div className="sp-settings-page">
+      <div className="sp-settings-container">
       <h2 className="sp-settings-page__header">Settings</h2>
 
       {/* Avatar section */}
@@ -167,6 +168,7 @@ function SettingsPage() {
       >
         Save
       </button>
+    </div>
     </div>
   );
 }

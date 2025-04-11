@@ -33,12 +33,23 @@ export default function ChannelManager() {
                 {!selectedChannel ? (
                     <>
                         <div className="channels-title-your-channels">YOUR CHANNELS</div>
+    
+                        {/* Add a private channel button for users */}
+                        {role === "user" && (
+                            <div className="add-channel" onClick={toggleModal}>
+                                Add a private channel
+                            </div>
+                        )}
+    
                         <div className="opened-channels-box">
                             <ChannelList
-                                onSelectChannel={(channel) => setSelectedChannel(channel)} />
-                            {role === "admin" && <div className="add-channel" onClick={toggleModal}>
-                                <FaPlus className="sidebar-icon"></FaPlus>Add a new channel
-                            </div>}
+                                onSelectChannel={(channel) => setSelectedChannel(channel)} 
+                            />
+                            {role === "admin" && (
+                                <div className="add-channel" onClick={toggleModal}>
+                                    <FaPlus className="sidebar-icon"></FaPlus>Add a new channel
+                                </div>
+                            )}
                             {isModalOpen && (
                                 <div className="modal-overlay" onClick={toggleModal}>
                                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -51,7 +62,6 @@ export default function ChannelManager() {
                                 </div>
                             )}
                         </div>
-                        
                     </>
                 ) : (
                     <ChannelChat

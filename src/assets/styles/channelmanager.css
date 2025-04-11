@@ -1,7 +1,13 @@
+@font-face {
+  font-family: "dmsans";
+  src: url("..\fonts\DMSans-VariableFont_opsz,wght.ttf");
+}
+
+
 .channels-container {
   display: flex;
   flex-direction: column;
-  height: 90%;
+  height: 100%;
   width: 100%;
   background-color: #36393f;
   /* Discord's dark background */
@@ -443,4 +449,31 @@ input {
   border-radius: 50%;
   margin-right: 10px;
   object-fit: cover;
+}
+
+.section-header{
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ffffff;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.no-friend-requests, .no-channel-invites{
+  font-family: "dmsans";
+  letter-spacing: 1px;
+  background-color: white;
+  padding: 20px;
+  font-size: 11px;
+  border-radius: 8px;
+  color: #4c4c4c;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.add-channel{
+  background-color: #5c5c5c;
+  border-radius: 8px;
+  padding: 4px;
 }
