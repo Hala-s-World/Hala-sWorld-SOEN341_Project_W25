@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import "../styles/channelmanager.css";
 import supabase from "../../helper/supabaseClient";
 import { useAuthStore } from "../../store/authStore";
@@ -7,13 +8,11 @@ function InviteUserModal({ channelId, onClose }) {
     const [email, setEmail] = useState('');
     const { user } = useAuthStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState(null);
 
     const handleInvite = async () => {
         if (!email || !user) return;
         
         setIsSubmitting(true);
-        setError(null);
         
         try {
             // 1. Lookup user by email
@@ -28,7 +27,7 @@ function InviteUserModal({ channelId, onClose }) {
             }
 
             if (!invitedUser) {
-                setError("User not found");
+                alert("User not found");
                 return;
             }
 
@@ -54,7 +53,7 @@ function InviteUserModal({ channelId, onClose }) {
             
         } catch (error) {
             console.error("Invite failed:", error);
-            setError(error.message || "An error occurred");
+            alert(error.message || "An error occurred");
         } finally {
             setIsSubmitting(false);
         }
@@ -78,5 +77,10 @@ function InviteUserModal({ channelId, onClose }) {
         </div>
     );
 }
+
+InviteUserModal.propTypes = {
+    channelId: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired,
+};
 
 export default InviteUserModal;

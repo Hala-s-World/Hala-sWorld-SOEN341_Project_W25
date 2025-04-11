@@ -1,3 +1,4 @@
+import React from "react";
 import "../assets/styles/FriendsPage.css";
 import SupabaseAPI from "../helper/supabaseAPI";
 import { useAuthStore } from "../store/authStore";

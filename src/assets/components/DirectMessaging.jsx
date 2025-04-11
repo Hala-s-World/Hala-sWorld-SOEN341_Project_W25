@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import supabase from "../../helper/supabaseClient";
 import SupabaseAPI from "../../helper/supabaseAPI";
 import { useAuthStore } from "../../store/authStore";
@@ -10,7 +10,6 @@ export default function DirectMessaging() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [messages, setMessages] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [friendStatus, setFriendStatus] = useState("offline");
 
   let {friendId, friendName} = currentFriend;
@@ -39,8 +38,6 @@ export default function DirectMessaging() {
       } catch (error) {
           console.error("Error fetching user status:", error);
           setFriendStatus("offline");
-      } finally {
-          setIsLoaded(true);
       }
     };
 

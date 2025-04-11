@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import AddChannel from "../assets/components/AddChannel";
 import InvitesList from "../assets/components/InvitesList";

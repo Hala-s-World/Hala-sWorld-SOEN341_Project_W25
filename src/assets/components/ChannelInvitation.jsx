@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import supabase from "../../helper/supabaseClient";
 import "../styles/channelmanager.css";
 
@@ -109,6 +110,15 @@ const ChannelInvitation = ({ invite, onRemove }) => {
       </div>
     </div>
   );
+};
+
+ChannelInvitation.propTypes = {
+  invite: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    channel_id: PropTypes.string.isRequired,
+    recipient_id: PropTypes.string,
+  }).isRequired,
+  onRemove: PropTypes.func.isRequired,
 };
 
 export default ChannelInvitation;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import "../styles/channelmanager.css";
 import supabase from "../../helper/supabaseClient";
 import { useAuthStore } from "../../store/authStore";
@@ -105,3 +106,7 @@ export default function AddChannel({ onSuccess }) {
         </div>
     );
 }
+
+AddChannel.propTypes = {
+    onSuccess: PropTypes.func.isRequired,
+};

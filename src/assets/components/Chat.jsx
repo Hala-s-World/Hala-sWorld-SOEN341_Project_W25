@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import SendMessage from "./SendMessage";
 import ReceiveMessage from "./ReceiveMessage";
 import "../styles/dashboard.css";
@@ -58,3 +59,14 @@ export default function Chat({
     </div>
   );
 }
+
+Chat.propTypes = {
+  messages: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  error: PropTypes.string,
+  message: PropTypes.string.isRequired,
+  setMessage: PropTypes.func.isRequired,
+  handleSendMessage: PropTypes.func.isRequired,
+  isSending: PropTypes.bool.isRequired,
+  header: PropTypes.string.isRequired,
+};

@@ -1,6 +1,7 @@
+import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import SettingsPage from "../src/pages/SettingsPage";
-import { vi } from "vitest";
+import { vi, describe, it, expect } from "vitest";
 
 // Mock the supabaseClient and the functions it uses
 vi.mock("../src/helper/supabaseAPI", () => ({

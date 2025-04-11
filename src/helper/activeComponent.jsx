@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import PropTypes from "prop-types";
 
 const ActiveComponentContext = createContext();
 
@@ -11,4 +12,8 @@ export const ActiveComponentProvider = ({children}) => {
             {children}
         </ActiveComponentContext.Provider>
     );
+};
+
+ActiveComponentProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };

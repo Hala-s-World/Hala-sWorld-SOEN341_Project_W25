@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import { useAuthStore } from "../../store/authStore";
 import supabase from "../../helper/supabaseClient";
 import "../styles/channelmanager.css";
@@ -106,6 +107,13 @@ const ReceiveMessage = ({ messages, user, error, onMessageDelete }) => {
       <div ref={messagesEndRef} />
     </div>
   );
+};
+
+ReceiveMessage.propTypes = {
+  messages: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  error: PropTypes.object,
+  onMessageDelete: PropTypes.func.isRequired,
 };
 
 export default ReceiveMessage;

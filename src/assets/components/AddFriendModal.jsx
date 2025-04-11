@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "../styles/AddFriendModal.css";
 import supabase from "../helper/supabaseClient";
 import { useAuthStore } from "../store/authStore";
@@ -11,7 +12,7 @@ const AddFriendModal = ({ isOpen, onClose }) => {
     const username = e.target.elements.friendUsername.value.trim();
     if (!username || !user) return;
 
-    const { data: targetUser, error: userError } = await supabase
+    const { data: targetUser } = await supabase
       .from("user_profiles")
       .select("id")
       .eq("username", username)
@@ -68,6 +69,11 @@ const AddFriendModal = ({ isOpen, onClose }) => {
       </div>
     </div>
   );
+};
+
+AddFriendModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default AddFriendModal;

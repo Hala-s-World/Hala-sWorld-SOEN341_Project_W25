@@ -1,3 +1,4 @@
+import React from "react";
 import supabase from "../../helper/supabaseClient";
 import AuthenticationForm from "./AuthenticationForm";
 import SupabaseAPI from "../../helper/supabaseAPI";
@@ -24,8 +25,6 @@ const Register = () => {
         setErrorMessage("Signup failed: No user data returned.");
         return;
       }
-
-      const userId = user.id; // Get the user's ID
 
       // Log out the user after signup
       await supabase.auth.signOut();

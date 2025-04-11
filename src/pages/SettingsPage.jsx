@@ -47,7 +47,7 @@ function SettingsPage() {
 
     if (avatarFile) {
       // Upload the avatar to Supabase Storage
-      const { data, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from("avatars") // Ensure this matches your bucket name
         .upload(`public/${user.id}-${avatarFile.name}`, avatarFile, {
           cacheControl: "3600",

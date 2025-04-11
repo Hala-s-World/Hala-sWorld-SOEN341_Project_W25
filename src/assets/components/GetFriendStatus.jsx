@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import SupabaseAPI from "../../helper/supabaseAPI";
+import React from "react";
+import PropTypes from "prop-types";
 
 const FriendStatus = ({ friendId, friendStatus }) => {
 
@@ -25,6 +25,11 @@ const FriendStatus = ({ friendId, friendStatus }) => {
       ></span>
     </div>
   );
+};
+
+FriendStatus.propTypes = {
+    friendId: PropTypes.string.isRequired,
+    friendStatus: PropTypes.string.isRequired,
 };
 
 export default FriendStatus;

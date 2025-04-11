@@ -1,31 +1,22 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { useActiveComponent } from "../../helper/activeComponent";
-import "../styles/channelmanager.css"
+import "../styles/channelmanager.css";
 import { useAuthStore } from "../../store/authStore";
-import ChannelCard from "./ChannelCard";
 import AddChannel from "./AddChannel";
 import ChannelChat from "./channelChat";
 import ChannelList from "./ChannelList";
 
-
 export default function ChannelManager() {
-
-    const { user, role } = useAuthStore();
+    const { role } = useAuthStore();
     const [selectedChannel, setSelectedChannel] = useState(null);
-    const [channels, setChannels] = useState([]);
 
-    const { setActiveComponent } = useActiveComponent()
-
-    const handleClick = (componentName) => {
-        setActiveComponent(componentName);
-    }
+    const { setActiveComponent } = useActiveComponent();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
-
 
     return (
         <div className="main">
@@ -62,5 +53,4 @@ export default function ChannelManager() {
             </div>
         </div>
     );
-
 }

@@ -1,6 +1,6 @@
 import supabase from "./supabaseClient";
 
-const { data, error } = await supabase
+await supabase
     .from('channel_invitations')
     .insert([
         {
@@ -37,7 +37,7 @@ await supabase
     .eq('id', 'invitation-uuid');
 
     //list pending invitations for a user
-    const { data: invitations } = await supabase
+await supabase
     .from('channel_invitations')
     .select(`
         id,

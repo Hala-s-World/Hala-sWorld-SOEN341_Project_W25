@@ -1,7 +1,8 @@
+import React from "react";
 import supabase from "../../helper/supabaseClient";
 import { useAuthStore } from "../../store/authStore";
-import "../styles/channelmanager.css"
-
+import "../styles/channelmanager.css";
+import PropTypes from "prop-types";
 
 const LeaveChannel = ({channelId, onLeave}) => {
 
@@ -36,5 +37,10 @@ const LeaveChannel = ({channelId, onLeave}) => {
         </div>
     )
 }
+
+LeaveChannel.propTypes = {
+    channelId: PropTypes.string.isRequired,
+    onLeave: PropTypes.func.isRequired,
+};
 
 export default LeaveChannel;

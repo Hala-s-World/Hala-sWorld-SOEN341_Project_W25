@@ -3,6 +3,7 @@ import "../styles/channelmanager.css";
 import supabase from "../../helper/supabaseClient";
 import ChannelCard from "./ChannelCard";
 import { useAuthStore } from "../../store/authStore";
+import PropTypes from "prop-types";
 
 export default function ChannelList({ onSelectChannel }) {
     const [channels, setChannels] = useState([]);
@@ -82,6 +83,10 @@ export default function ChannelList({ onSelectChannel }) {
         }
     };
 
+    const refreshChannelMembers = () => {
+        // Define the function logic here
+    };
+
     // Filter channels based on user role and membership
     const filteredChannels = isAdmin
         ? channels
@@ -104,9 +109,12 @@ export default function ChannelList({ onSelectChannel }) {
                     isMember={filteredChannels.includes(user.id)}
                     isCreator={channel.channel_creator === user?.id}
                     channelId={channel.id}
-                    onUserAdded={() => refreshChannelMembers(channel.id)} 
                 />
             ))}
         </div>
     );
 }
+
+ChannelList.propTypes = {
+    onSelectChannel: PropTypes.func.isRequired,
+};

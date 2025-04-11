@@ -1,3 +1,4 @@
+import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import "../styles/dashboard.css";
 import "../styles/channelmanager.css";
@@ -8,6 +9,7 @@ import { useAuthStore } from "../../store/authStore";
 import supabase from "../../helper/supabaseClient";
 import InviteUserModal from "./InviteUserModal";
 import LeaveChannel from "./LeaveChannel";
+import PropTypes from "prop-types";
 
 const ChannelChat = ({ channel, onBack }) => {
   const [message, setMessage] = useState("");
@@ -229,6 +231,14 @@ const ChannelChat = ({ channel, onBack }) => {
       </div>
     </div>
   );
+};
+
+ChannelChat.propTypes = {
+  channel: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    channel_creator_id: PropTypes.string.isRequired,
+  }).isRequired,
+  onBack: PropTypes.func.isRequired,
 };
 
 export default ChannelChat;

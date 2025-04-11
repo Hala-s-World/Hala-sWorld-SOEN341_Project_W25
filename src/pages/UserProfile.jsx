@@ -118,6 +118,11 @@ function UserProfile() {
     setFriendStatus("none");
   };
 
+  const acceptFriendRequest = (friendId) => {
+    // Add logic to handle accepting a friend request
+    console.log(`Accepted friend request from ${friendId}`);
+  };
+
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => setIsEditing(false);
 

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import EmojiPicker from "emoji-picker-react";
-import supabase from "../../helper/supabaseClient";
-import SupabaseAPI from "../../helper/supabaseAPI";
-import "../styles/dashboard.css"
+import "../styles/dashboard.css";
 
 const SendMessage = ({ message, setMessage, handleSendMessage, isSending }) => {
   const [showEmojiPicker, setshowEmojiPicker] = useState(false);
@@ -43,6 +42,13 @@ const SendMessage = ({ message, setMessage, handleSendMessage, isSending }) => {
       </form>
     </div>
   );
+};
+
+SendMessage.propTypes = {
+  message: PropTypes.string.isRequired,
+  setMessage: PropTypes.func.isRequired,
+  handleSendMessage: PropTypes.func.isRequired,
+  isSending: PropTypes.bool.isRequired,
 };
 
 export default SendMessage;

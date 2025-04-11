@@ -1,6 +1,7 @@
+import React from "react";
 import { render } from "@testing-library/react";
 import FriendsPage from "../src/pages/FriendsPage";
-import { vi } from "vitest";
+import { vi, describe, it, expect } from "vitest";
 
 // Mocking the necessary components and API for testing purposes
 vi.mock("../src/assets/components/FriendCard", () => ({
@@ -21,9 +22,6 @@ describe("FriendsPage", () => {
     const { container } = render(<FriendsPage />);
 
     // Simulate the presence of friends in the content
-    const content = container.innerHTML;
-
-    // Simulate that "John" and "Jane" are in the content
     const isJohnPresent = true;
     const isJanePresent = true;
 
@@ -39,8 +37,6 @@ describe("FriendsPage", () => {
 
     // Render the component
     const { container } = render(<FriendsPage />);
-
-    const content = container.innerHTML;
 
     // Simulating assuming that the fallback or placeholder exists
     const isNoFriendsMessagePresent = true;

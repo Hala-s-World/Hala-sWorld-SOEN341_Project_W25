@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import supabase from "../../helper/supabaseClient";
 import { useAuthStore } from "../../store/authStore";
 import "../styles/channelmanager.css";
@@ -123,6 +124,14 @@ const FriendRequest = ({ request, onRemove }) => {
       </div>
     </div>
   );
+};
+
+FriendRequest.propTypes = {
+  request: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    sender_id: PropTypes.string.isRequired,
+  }).isRequired,
+  onRemove: PropTypes.func.isRequired,
 };
 
 export default FriendRequest;

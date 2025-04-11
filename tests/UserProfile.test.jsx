@@ -1,6 +1,7 @@
+import React from "react";
 import { render } from "@testing-library/react";
 import UserProfile from "../src/pages/UserProfile";
-import { vi } from "vitest";
+import { vi, describe, it, expect } from "vitest";
 
 // Mocking the necessary modules
 vi.mock("../src/helper/supabaseClient", () => ({

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
 function LoginOverlay({ isRegister, togglePanel }) {
-
-
   return (
     <div className="overlay-container">
           <div className="overlay">
@@ -15,7 +14,7 @@ function LoginOverlay({ isRegister, togglePanel }) {
             </div>
             <div className="overlay-panel overlay-right">
               <h1 className="title">CREATE AN ACCOUNT</h1>
-              <p>If you don't have an account yet, join us!</p>
+              <p>If you don&apos;t have an account yet, join us!</p>
               <button className="ghost" onClick={() => togglePanel(true)} id="register">
                 REGISTER
               </button>
@@ -24,5 +23,10 @@ function LoginOverlay({ isRegister, togglePanel }) {
         </div>
   );
 }
+
+LoginOverlay.propTypes = {
+    isRegister: PropTypes.bool.isRequired,
+    togglePanel: PropTypes.func.isRequired,
+};
 
 export default LoginOverlay;

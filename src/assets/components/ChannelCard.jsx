@@ -1,3 +1,5 @@
+import React from "react";
+import PropTypes from "prop-types";
 import "../styles/channelmanager.css";
 
 const ChannelCard = ({
@@ -39,6 +41,16 @@ const ChannelCard = ({
             
         </div>
     );
+};
+
+ChannelCard.propTypes = {
+    channelName: PropTypes.string.isRequired,
+    onJoin: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    isAdmin: PropTypes.bool,
+    onClick: PropTypes.func,
+    isPrivate: PropTypes.bool,
+    isMember: PropTypes.bool,
 };
 
 export default ChannelCard;

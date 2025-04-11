@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from "react";
 import {
-  FaCalendarAlt,
-  FaComment,
   FaHome,
-  FaFileAlt,
   FaCog,
   FaAngleDown,
   FaUserFriends,
   FaSatelliteDish,
 } from "react-icons/fa";
+import PropTypes from "prop-types";
 import supabase from "../../helper/supabaseClient";
 import "../styles/sidebar.css";
 import { useActiveComponent } from "../../helper/activeComponent";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import GetUserStatus from "./GetUserStatus";
 
-export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
+export default function SideBar({ isSidebarOpen }) {
   const { setActiveComponent } = useActiveComponent();
-  const [isOpen, setIsOpen] = useState(false);
-  const { role } = useAuthStore();
   const [username, setUsername] = useState(null);
   const [avatar, setAvatar] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -64,8 +59,6 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
         if (error) console.error("Error fetching profile:", error.message);
       } catch (error) {
         console.error("Error fetching profile:", error.message);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -159,3 +152,7 @@ export default function SideBar({ isSidebarOpen, setIsSidebarOpen }) {
     </div>
   );
 }
+
+SideBar.propTypes = {
+  isSidebarOpen: PropTypes.bool.isRequired,
+};

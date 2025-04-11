@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { LuMessageCircle } from "react-icons/lu";
