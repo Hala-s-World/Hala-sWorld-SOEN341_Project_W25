@@ -43,12 +43,15 @@ const ChannelInvitation = ({ invite, onRemove }) => {
         return;
       }
 
+      console.log(invite)
+
       // Add the user to the channel (e.g., in a "channel_members" table)
-      const { error: insertError } = await supabase.from("channel_members").insert([
+      const { error: insertError } = await supabase.from("users_channels").insert([
         {
           channel_id: invite.channel_id,
           user_id: invite.recipient_id,
           joined_at: new Date(),
+          added_by: invite.sender_id, 
         },
       ]);
 
